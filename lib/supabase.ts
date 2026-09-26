@@ -13,15 +13,36 @@ import { createClient } from '@supabase/supabase-js';
  * kiderüljön — nem csendben, éles üzemben.
  */
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+/**
+ * A Supabase felületén több cím is szerepel, és könnyű a rosszat
+ * kimásolni. A kliensnek a projekt ALAP-URL-je kell:
+ *
+ *   jó:    https://abcdefgh.supabase.co
+ *   rossz: https://abcdefgh.supabase.co/rest/v1/
+ *
+ * Ezért a záró perjelet és a /rest/v1 utótagot itt levágjuk — így egy
+ * félremásolt cím nem okoz nehezen érthető hibát üzem közben.
+ */
+function normalizaltUrl(nyers: string): string {
+  return nyers
+    .trim()
+    .replace(/\/+$/, '')          // záró perjelek
+    .replace(/\/rest\/v\d+$/, '') // /rest/v1 vagy /rest/v2
+    .replace(/\/+$/, '');
+}
+
+const nyersUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-if (!url || !anonKey) {
+if (!nyersUrl || !anonKey) {
   throw new Error(
     'Hiányzik a NEXT_PUBLIC_SUPABASE_URL vagy a NEXT_PUBLIC_SUPABASE_ANON_KEY. ' +
-      'Másold le a .env.example fájlt .env.local néven, és töltsd ki.'
+      'Vidd fel őket a Vercel "Environment Variables" beállításai közé ' +
+      '(vagy helyi futtatásnál a .env.local fájlba).'
   );
 }
+
+const url = normalizaltUrl(nyersUrl);
 
 /** Böngészőben és szerveren is használható, publikus adatokhoz. */
 export const supabase = createClient(url, anonKey);
@@ -45,7 +66,7 @@ export function supabaseAdmin() {
     throw new Error('Hiányzik a SUPABASE_SERVICE_ROLE_KEY környezeti változó.');
   }
 
-  return createClient(url!, serviceKey, {
+  return createClient(url, serviceKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }

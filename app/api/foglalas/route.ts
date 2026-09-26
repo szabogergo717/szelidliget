@@ -21,6 +21,9 @@ type Keres = {
   erkezes: string;
   tavozas: string;
   fo: number;
+  /** A weboldal ezt küldi: stabil, olvasható azonosítók. */
+  extrak_slug?: string[];
+  /** Régebbi hívók kedvéért továbbra is elfogadjuk a belső id-ket. */
   extrak?: { extra_id: string; mennyiseg: number }[];
   vendeg: {
     nev: string;
@@ -83,14 +86,25 @@ export async function POST(req: NextRequest) {
     .select('id, slug, ar, ejszakankent')
     .eq('aktiv', true);
 
+  // A weboldal slug-okat küld; azokat itt fordítjuk belső azonosítóra.
+  // Ismeretlen slug csendben kimarad — nem hibázunk miatta.
+  const extrakLista = (extrak ?? []) as Extra[];
+  const slugbolValasztott = (k.extrak_slug ?? [])
+    .map((slug: string) => extrakLista.find((e: Extra) => e.slug === slug))
+    .filter((e): e is Extra => Boolean(e))
+    .map((e: Extra) => ({ extra_id: e.id, mennyiseg: 1 }));
+
+  const valasztottExtrak =
+    slugbolValasztott.length > 0 ? slugbolValasztott : k.extrak ?? [];
+
   // ---------- Ár újraszámítása szerveroldalon ----------
   const ajanlat = arajanlat({
     haz: haz as Haz,
     erkezes: k.erkezes,
     tavozas: k.tavozas,
     arazasok: (arazasok ?? []) as Arazas[],
-    extrak: (extrak ?? []) as Extra[],
-    valasztott_extrak: k.extrak ?? [],
+    extrak: extrakLista,
+    valasztott_extrak: valasztottExtrak,
   });
 
   const hibak = foglalasHibai({
@@ -189,17 +203,20 @@ export async function POST(req: NextRequest) {
 
   // ---------- Fizetés indítása ----------
   const alap = process.env.NEXT_PUBLIC_OLDAL_URL ?? 'https://www.szelidliget.hu';
+  const vendegNyelv = k.vendeg.nyelv === 'en' ? 'en' : 'hu';
   try {
     const fizetes = await fizetestIndit({
       orderRef: foglalas.azonosito,
       total: ajanlat.vegosszeg,
       customer: k.vendeg.nev,
       customerEmail: k.vendeg.email,
-      nyelv: (k.vendeg.nyelv ?? 'hu').toUpperCase() as 'HU' | 'EN',
-      sikeresUrl: `${alap}/foglalas/siker?ref=${foglalas.azonosito}`,
-      sikertelenUrl: `${alap}/foglalas/hiba?ref=${foglalas.azonosito}`,
-      megszakitottUrl: `${alap}/foglalas/megszakitva?ref=${foglalas.azonosito}`,
-      idouSzUrl: `${alap}/foglalas/lejart?ref=${foglalas.azonosito}`,
+      nyelv: vendegNyelv.toUpperCase() as 'HU' | 'EN',
+      // A nyelvet visszük magunkkal, hogy a vendég a saját nyelvén
+      // lássa a fizetés utáni visszajelzést is.
+      sikeresUrl: `${alap}/foglalas/siker?ref=${foglalas.azonosito}&lang=${vendegNyelv}`,
+      sikertelenUrl: `${alap}/foglalas/hiba?ref=${foglalas.azonosito}&lang=${vendegNyelv}`,
+      megszakitottUrl: `${alap}/foglalas/megszakitva?ref=${foglalas.azonosito}&lang=${vendegNyelv}`,
+      idouSzUrl: `${alap}/foglalas/lejart?ref=${foglalas.azonosito}&lang=${vendegNyelv}`,
       ipnUrl: `${alap}/api/simplepay/ipn`,
     });
 

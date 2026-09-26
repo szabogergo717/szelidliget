@@ -192,21 +192,85 @@ kipróbálhatod az egészet valódi pénz nélkül.
 
 ### 2.4 — A fájlok feltöltése
 
-Most egy majdnem üres oldalt látsz, pár paranccsal. Ne foglalkozz velük.
+> ⚠ **A GitHub webes feltöltője megbízhatatlan, ha mappákat húzol bele.**
+> Gyakran „ellapítja" a szerkezetet: a mélyebben lévő fájlokat (pl. az
+> `app/api/foglalas/route.ts`-t) a gyökérbe rakja, mappák nélkül. Ilyenkor
+> a Vercel később ezt a hibát adja:
+> `Couldn't find any 'pages' or 'app' directory`.
+>
+> **Ezért a Codespaces-es utat javaslom** (2.4/B). Ott a zip kicsomagolása
+> megőrzi a szerkezetet, és az egész 5 perc.
+
+#### 2.4/A — Húzogatós feltöltés (gyors, de hibázhat)
 
 1. Keresd meg a linket: **„uploading an existing file"** (a szöveg közepén,
    kék betűvel). Kattints rá.
 2. Nyisd meg egy külön ablakban a kicsomagolt `szelidliget` mappát.
 3. **Jelöld ki a mappa teljes tartalmát** (Ctrl+A / Cmd+A), és **húzd át**
    a böngészőablakba, a szaggatott vonallal jelölt területre.
-
-   > Fontos: a mappa **tartalmát** húzd át, ne magát a `szelidliget` mappát.
-   > Ha a végén a GitHubon egy `szelidliget` nevű mappa jelenik meg a fájlok
-   > helyett, akkor a mappát húztad át — töröld, és próbáld újra a tartalommal.
-
-4. Várd meg, míg mind feltöltődik (a fájlnevek megjelennek alul).
+4. Várd meg, míg mind feltöltődik.
 5. Alul a **Commit changes** mezőbe írj valamit, pl. `Elso feltoltes`.
 6. **Commit changes** gomb.
+
+Utána **feltétlenül ellenőrizd a 2.5 pontot.** Ha az `app` mappa nem jelent
+meg, vagy `route.ts` fájlokat látsz a gyökérben, akkor a szerkezet elveszett
+— menj a 2.4/B pontra.
+
+#### 2.4/B — Codespaces (megbízható, ezt javaslom)
+
+Ez akkor is működik, ha a tárolód már össze van zavarva egy elrontott
+feltöltéstől — mindent kitakarít és újraépít.
+
+**Ha a tárolód még teljesen üres**, előbb hozz létre benne egy fájlt,
+különben nem indul a Codespace: **Add file → Create new file**, a név
+legyen `ideiglenes.txt`, írj bele egy betűt, majd **Commit changes**.
+
+1. A tárolód főoldalán: zöld **Code** gomb → **Codespaces** fül →
+   **Create codespace on main**. Az indulás 1–2 perc.
+2. Megjelenik egy VS Code a böngészőben. Bal oldalt a fájllista.
+3. **Húzd bele a `szelidliget-projekt.zip` fájlt** a bal oldali fájllistába
+   (a gépedről, egyenesen a böngészőbe). Várd meg, míg megjelenik a listában.
+4. Alul a terminálba (ha nem látszik: **Terminal → New Terminal**) másold be
+   **soronként** ezeket, mindegyik után Enter:
+
+```bash
+find . -maxdepth 1 ! -name '.' ! -name '.git' ! -name '*.zip' -exec rm -rf {} +
+```
+
+```bash
+unzip -q -o szelidliget-projekt.zip
+```
+
+```bash
+mv szelidliget/.gitignore szelidliget/.env.example . && mv szelidliget/* . && rmdir szelidliget && rm szelidliget-projekt.zip
+```
+
+> **Mit csinálnak?** Az első kitakarítja a tároló tartalmát (a `.git`
+> mappát és a zipet meghagyja). A második kicsomagolja a zipet. A harmadik
+> feljebb mozgatja a fájlokat a helyes szintre, és kitörli a zipet.
+
+5. Ellenőrizd: írd be a terminálba `ls`, és ezt kell látnod:
+
+```
+README.md  app  demo  lib  next.config.mjs  package.json  public  supabase  tests  tsconfig.json
+```
+
+6. Most mentsd el: a terminálba soronként:
+
+```bash
+git add -A
+```
+
+```bash
+git commit -m "Projekt feltoltes"
+```
+
+```bash
+git push
+```
+
+7. **Állítsd le a Codespace-t**, hogy ne fogyassza a keretet: bal lent a
+   Codespaces menüben → **Stop Current Codespace**.
 
 ### 2.5 — Ellenőrzés
 
@@ -222,7 +286,20 @@ app/        lib/        public/     supabase/   tests/
 > azonnal (a fájlra kattintva a kuka ikonnal), mert titkos kulcsok lennének
 > benne.
 
-✅ **Kész, ha:** a fájlok fent vannak, és nincs köztük `.env.local`.
+**Nyisd meg az `app` mappát is**, és ellenőrizd, hogy benne van-e:
+
+```
+app/api/foglalas/route.ts
+app/api/simplepay/ipn/route.ts
+app/api/szabad-napok/route.ts
+```
+
+> ⚠ Ha `route.ts` fájlokat látsz a **gyökérben**, `app` mappa nélkül, akkor
+> a feltöltés ellapította a szerkezetet. Ezzel a Vercel nem fog lefordulni.
+> Menj vissza a **2.4/B** pontra (Codespaces) — az kitakarítja és helyreállítja.
+
+✅ **Kész, ha:** az `app` mappa megvan a három `route.ts` fájllal, és nincs
+`.env.local` a listában.
 
 ---
 
@@ -364,10 +441,9 @@ Ha ezt látod, **minden összeköttetés működik**:
 
 Az üres lista azt jelenti: még nincs foglalás. Pontosan ez a helyes.
 
-> **A főoldal egy „404 — This page could not be found" lapot fog mutatni,
-> és ez így helyes.** A weboldal felülete még nincs kész, csak a „motor".
-> A fenti `/api/szabad-napok` cím az, ami már működik. A demót addig a
-> `szelidliget-demo.html` fájl megnyitásával nézheted meg.
+> **A főoldalnak most már a valódi weboldalt kell mutatnia.** Ha még
+> 404-et látsz, a legutóbbi kódfrissítés nem jutott fel a GitHubra —
+> ellenőrizd, hogy a tárolódban ott van-e az `app/page.tsx` fájl.
 
 > **Ha a fenti cím `{"hiba":"A naptár most nem érhető el."}` üzenetet ad**,
 > az azt jelenti, hogy a Supabase-kulcsok nem jók vagy hiányoznak.
@@ -745,6 +821,20 @@ Nem vitted fel az összes kulcsot a Vercelre, vagy elgépelted a nevet.
 A **Settings → Environment Variables** listában ellenőrizd mind a hetet,
 és **Redeploy** után nézd meg újra.
 
+### `Couldn't find any 'pages' or 'app' directory` a Vercelen
+
+A feltöltés ellapította a mappaszerkezetet: az `app` mappa nem jutott fel,
+a `route.ts` fájlok a gyökérbe kerültek. **Két eset van:**
+
+**Ha a GitHubon egy `szelidliget` nevű mappa van, és abban a fájlok:**
+a szerkezet jó, csak egy szinttel lejjebb. Nem kell újratölteni —
+Vercel → **Settings** → **General** → **Root Directory** → **Edit** →
+írd be: `szelidliget` → **Save**, majd **Deployments** → **…** → **Redeploy**.
+
+**Ha nincs `app` mappa, és `route.ts` fájlok vannak a gyökérben:**
+a szerkezet elveszett. Javítsd a **2.4/B** pont (Codespaces) szerint —
+az kitakarítja a tárolót és helyesen építi újra.
+
 ### A Vercel „Build failed" hibát ír
 
 Kattints a hibás telepítésre, és nézd meg a naplót. A leggyakoribb ok, hogy
@@ -792,14 +882,19 @@ szerkesztéshez kell, az oldal futásához nem.
 - Foglaltság-ellenőrzés és publikus naptár
 - SimplePay fizetésindítás, IPN fogadás és hitelesítés
 - Foglalás rögzítése, visszaigazoló e-mail magyarul és angolul
+- **A weboldal felülete**, magyarul (`/`) és angolul (`/en`)
+- **Működő foglalóűrlap** élő árszámítással
+- **Fizetés utáni oldalak** (siker, hiba, megszakítva, lejárt)
+- Oldaltérkép és robots.txt a keresőknek
 
 **Még hátravan:**
-- A weboldal felülete (a demó megvan, abból készül)
 - Admin felület a foglalások kezelésére
 - Számlázz.hu integráció
 - Booking.com / Szallas.hu szinkron
 - Érkezés előtti automatikus e-mail
 - Lejárt, kifizetetlen foglalások automatikus felszabadítása
+- Valódi fotók a faházakról (most növénymotívumok állnak a helyükön)
+- ÁSZF, adatvédelmi tájékoztató, impresszum (a lábléc hivatkozásai üresek)
 
 ---
 
