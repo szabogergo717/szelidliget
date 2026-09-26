@@ -150,7 +150,7 @@ export async function POST(req: NextRequest) {
       tavozas: k.tavozas,
       fo: k.fo,
       statusz: 'fuggoben',
-      mandula: 'sajat',
+      forras: 'sajat',
       szallasdij: ajanlat.szallasdij,
       extrak_dij: ajanlat.extrak_dij,
       vegosszeg: ajanlat.vegosszeg,

@@ -262,8 +262,31 @@ Most létrehozod a „fiókokat", ahová az adatok kerülnek.
 **Ellenőrzés:** bal oldalt kattints a **Table Editor**-ra. Látnod kell egy
 `hazak` táblát, benne két sorral: **Füge** és **Mandula**.
 
-> Ez az SQL le van tesztelve valódi PostgreSQL adatbázison — ha pontosan
-> másolod, le fog futni.
+> Ez az SQL **többször is futtatható** — ha kétszer nyomod meg a Run gombot,
+> vagy egy korábbi futtatás félbeszakadt, nyugodtan futtasd le újra.
+> Nem hoz létre duplikált adatot, és nem ír felül semmit.
+>
+> Ha „NOTICE: policy ... does not exist, skipping" üzeneteket látsz, az
+> **nem hiba** — ezek csak tájékoztató üzenetek. Csak az „ERROR" számít.
+
+### Ha hibát kapsz
+
+**`ERROR: 42710: type "foglalas_statusz" already exists`**
+
+Ez a régi sémafájllal fordulhatott elő, ha egy korábbi futtatás félbeszakadt.
+Megoldás: töltsd le a projekt **legújabb változatát**, és onnan másold be
+a `001_foglalas_sema.sql` fájlt — az új változat többször is futtatható.
+
+Ha teljesen tiszta lappal akarsz indulni (és **még nincs valódi vendégfoglalás**
+az adatbázisban):
+
+1. SQL Editor → New query
+2. Másold be a `supabase/migrations/000_TORLES_tiszta_lap.sql` tartalmát
+3. **Run** — ez mindent töröl
+4. Új query, és futtasd le a `001_foglalas_sema.sql`-t elölről
+
+> ⚠ A törlő szkript **minden adatot töröl**, foglalásokat és vendégadatot is.
+> Csak addig használd, amíg tesztadatok vannak a rendszerben.
 
 ### 3.3 — A három kulcs kimásolása
 
@@ -703,6 +726,12 @@ Meghívhatod a GitHub-tárolóhoz: **Settings → Collaborators → Add people**
 
 <a name="ha-valami-nem-mukodik"></a>
 ## Ha valami nem működik
+
+### `ERROR: 42710: type "..." already exists` a séma futtatásakor
+
+A séma egy része már lefutott korábban. Az útmutató 3.2 pontjának végén
+(„Ha hibát kapsz") ott a megoldás. Röviden: a projekt legújabb változatában
+lévő sémafájl többször is futtatható, azzal próbáld újra.
 
 ### A GitHubon egy `szelidliget` mappa van a fájlok helyett
 

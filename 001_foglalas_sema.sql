@@ -5,29 +5,38 @@
 
 -- ---------- Segédtípusok ----------
 
-create type foglalas_statusz as enum (
-  'fuggoben',      -- létrejött, de még nincs fizetve
-  'elolegezve',    -- előleg beérkezett
-  'kifizetve',     -- teljes összeg beérkezett
-  'lemondva',
-  'nem_jelent_meg'
-);
+do $$ begin
+  create type foglalas_statusz as enum (
+    'fuggoben',      -- létrejött, de még nincs fizetve
+    'elolegezve',    -- előleg beérkezett
+    'kifizetve',     -- teljes összeg beérkezett
+    'lemondva',
+    'nem_jelent_meg'
+  );
+exception when duplicate_object then null;
+end $$;
 
-create type foglalas_mandula as enum (
-  'sajat',         -- a saját weboldalról
-  'booking',
-  'szallas_hu',
-  'kezi'           -- admin vitte fel telefonos foglalásnál
-);
+do $$ begin
+  create type foglalas_forras as enum (
+    'sajat',         -- a saját weboldalról
+    'booking',
+    'szallas_hu',
+    'kezi'           -- admin vitte fel telefonos foglalásnál
+  );
+exception when duplicate_object then null;
+end $$;
 
-create type fizetes_statusz as enum (
-  'varakozik', 'sikeres', 'sikertelen', 'visszateritve'
-);
+do $$ begin
+  create type fizetes_statusz as enum (
+    'varakozik', 'sikeres', 'sikertelen', 'visszateritve'
+  );
+exception when duplicate_object then null;
+end $$;
 
 
 -- ---------- Faházak ----------
 
-create table hazak (
+create table if not exists hazak (
   id             uuid primary key default gen_random_uuid(),
   slug           text not null unique,          -- 'fuge', 'mandula'
   nev            text not null,
@@ -40,7 +49,7 @@ create table hazak (
 
 -- Kétnyelvű tartalom külön táblában, hogy új nyelv ne igényeljen
 -- séma-módosítást (ez a kétnyelvűség tiszta megoldása)
-create table hazak_forditas (
+create table if not exists hazak_forditas (
   haz_id     uuid not null references hazak(id) on delete cascade,
   nyelv      text not null check (nyelv in ('hu','en')),
   cim        text not null,
@@ -54,7 +63,7 @@ create table hazak_forditas (
 -- Időszakos árak: szezon, hétvége, ünnep. Ami nincs lefedve,
 -- arra a hazak.alap_ar érvényes.
 
-create table arazas (
+create table if not exists arazas (
   id          uuid primary key default gen_random_uuid(),
   haz_id      uuid not null references hazak(id) on delete cascade,
   kezdet      date not null,
@@ -66,12 +75,12 @@ create table arazas (
   check (veg >= kezdet)
 );
 
-create index on arazas (haz_id, kezdet, veg);
+create index if not exists arazas_haz_idoszak_idx on arazas (haz_id, kezdet, veg);
 
 
 -- ---------- Extra szolgáltatások ----------
 
-create table extrak (
+create table if not exists extrak (
   id           uuid primary key default gen_random_uuid(),
   slug         text not null unique,
   ar           int  not null,
@@ -79,7 +88,7 @@ create table extrak (
   aktiv        boolean not null default true
 );
 
-create table extrak_forditas (
+create table if not exists extrak_forditas (
   extra_id uuid not null references extrak(id) on delete cascade,
   nyelv    text not null check (nyelv in ('hu','en')),
   nev      text not null,
@@ -90,7 +99,7 @@ create table extrak_forditas (
 
 -- ---------- Vendégek ----------
 
-create table vendegek (
+create table if not exists vendegek (
   id         uuid primary key default gen_random_uuid(),
   email      text not null,
   nev        text not null,
@@ -103,12 +112,12 @@ create table vendegek (
   letrehozva timestamptz not null default now()
 );
 
-create index on vendegek (lower(email));
+create index if not exists vendegek_email_idx on vendegek (lower(email));
 
 
 -- ---------- Foglalások ----------
 
-create table foglalasok (
+create table if not exists foglalasok (
   id            uuid primary key default gen_random_uuid(),
   azonosito     text not null unique,            -- 'SZL-2026-0147', vendégnek
   haz_id        uuid not null references hazak(id),
@@ -117,7 +126,7 @@ create table foglalasok (
   tavozas       date not null,
   fo            int  not null check (fo > 0),
   statusz       foglalas_statusz not null default 'fuggoben',
-  mandula        foglalas_mandula  not null default 'sajat',
+  forras        foglalas_forras  not null default 'sajat',
   kulso_id      text,                            -- Booking.com foglalásazonosító
   -- pénzügy (Ft-ban, egész számként — soha ne float!)
   szallasdij    int not null default 0,
@@ -135,20 +144,23 @@ create table foglalasok (
 -- ellenőrzésén. A '[)' azt jelenti: a távozás napja már szabad.
 create extension if not exists btree_gist;
 
-alter table foglalasok add constraint nincs_tulfoglalas
-  exclude using gist (
-    haz_id with =,
-    daterange(erkezes, tavozas, '[)') with &&
-  )
-  where (statusz in ('fuggoben','elolegezve','kifizetve'));
+do $$ begin
+  alter table foglalasok add constraint nincs_tulfoglalas
+    exclude using gist (
+      haz_id with =,
+      daterange(erkezes, tavozas, '[)') with &&
+    )
+    where (statusz in ('fuggoben','elolegezve','kifizetve'));
+exception when duplicate_table or duplicate_object then null;
+end $$;
 
-create index on foglalasok (haz_id, erkezes);
-create index on foglalasok (statusz);
+create index if not exists foglalasok_haz_erkezes_idx on foglalasok (haz_id, erkezes);
+create index if not exists foglalasok_statusz_idx on foglalasok (statusz);
 
 
 -- ---------- Foglaláshoz tartozó extrák ----------
 
-create table foglalas_extrak (
+create table if not exists foglalas_extrak (
   foglalas_id uuid not null references foglalasok(id) on delete cascade,
   extra_id    uuid not null references extrak(id),
   mennyiseg   int  not null default 1,
@@ -160,22 +172,22 @@ create table foglalas_extrak (
 -- ---------- Blokkolt időszakok ----------
 -- Karbantartás, saját használat, külső naptárból jövő zárás
 
-create table blokkolt_idoszakok (
+create table if not exists blokkolt_idoszakok (
   id         uuid primary key default gen_random_uuid(),
   haz_id     uuid not null references hazak(id) on delete cascade,
   kezdet     date not null,
   veg        date not null,
   indok      text,
-  mandula     foglalas_mandula not null default 'kezi',
+  forras     foglalas_forras not null default 'kezi',
   check (veg > kezdet)
 );
 
-create index on blokkolt_idoszakok (haz_id, kezdet);
+create index if not exists blokkolt_haz_kezdet_idx on blokkolt_idoszakok (haz_id, kezdet);
 
 
 -- ---------- Fizetések ----------
 
-create table fizetesek (
+create table if not exists fizetesek (
   id             uuid primary key default gen_random_uuid(),
   foglalas_id    uuid not null references foglalasok(id),
   osszeg         int not null,
@@ -187,12 +199,12 @@ create table fizetesek (
   letrehozva     timestamptz not null default now()
 );
 
-create index on fizetesek (foglalas_id);
+create index if not exists fizetesek_foglalas_idx on fizetesek (foglalas_id);
 
 
 -- ---------- Számlák ----------
 
-create table szamlak (
+create table if not exists szamlak (
   id            uuid primary key default gen_random_uuid(),
   foglalas_id   uuid not null references foglalasok(id),
   tipus         text not null check (tipus in ('eloleg','vegszamla','sztorno')),
@@ -206,7 +218,7 @@ create table szamlak (
 -- ---------- Kiküldött e-mailek naplója ----------
 -- Enélkül nem tudod megmondani, kapott-e a vendég visszaigazolást
 
-create table email_naplo (
+create table if not exists email_naplo (
   id          uuid primary key default gen_random_uuid(),
   foglalas_id uuid references foglalasok(id),
   tipus       text not null,        -- 'visszaigazolas', 'erkezes_elott', ...
@@ -238,14 +250,19 @@ alter table email_naplo          enable row level security;
 alter table blokkolt_idoszakok   enable row level security;
 
 -- Publikusan olvasható: a házak és az áraik
+drop policy if exists "hazak publikus" on hazak;
 create policy "hazak publikus" on hazak
   for select using (aktiv = true);
+drop policy if exists "hazak forditas publikus" on hazak_forditas;
 create policy "hazak forditas publikus" on hazak_forditas
   for select using (true);
+drop policy if exists "extrak publikus" on extrak;
 create policy "extrak publikus" on extrak
   for select using (aktiv = true);
+drop policy if exists "extrak forditas publikus" on extrak_forditas;
 create policy "extrak forditas publikus" on extrak_forditas
   for select using (true);
+drop policy if exists "arazas publikus" on arazas;
 create policy "arazas publikus" on arazas
   for select using (true);
 
@@ -285,5 +302,6 @@ grant execute on function foglalt_napok(text, date, date) to anon;
 -- ---------- Kezdő adatok ----------
 
 insert into hazak (slug, nev, max_fo, alap_ar, min_ejszaka) values
-  ('fuge', 'Füge', 4, 42000, 2),
-  ('mandula',  'Mandula',  6, 48000, 2);
+  ('fuge',    'Füge',    4, 42000, 2),
+  ('mandula', 'Mandula', 6, 48000, 2)
+on conflict (slug) do nothing;
