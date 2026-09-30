@@ -190,16 +190,49 @@ export const T = {
 
   szamlazasCim: S('Számlázási adatok', 'Billing details'),
   szamlazasBevezeto: S(
-    'A számlát ezekkel az adatokkal állítjuk ki.',
-    'Your invoice will be issued with these details.'
+    'A számlát ezekkel az adatokkal állítjuk ki. A cím megadása kötelező — ' +
+      'számlát cím nélkül nem lehet kiállítani.',
+    'Your invoice will be issued with these details. The address is required — ' +
+      'an invoice cannot be issued without it.'
   ),
   szamlazasSajat: S(
-    'A fenti adatokkal kérem a számlát',
-    'Use the details above for the invoice'
+    'A fenti névvel kérem a számlát',
+    'Use the name above on the invoice'
   ),
   mezoSzlaNev: S('SZÁMLÁZÁSI NÉV', 'BILLING NAME'),
-  mezoSzlaCim: S('SZÁMLÁZÁSI CÍM', 'BILLING ADDRESS'),
+  mezoSzlaCim: S('UTCA, HÁZSZÁM', 'STREET AND NUMBER'),
+  mezoSzlaIrsz: S('IRÁNYÍTÓSZÁM', 'POSTCODE'),
+  mezoSzlaVaros: S('VÁROS', 'CITY'),
+  mezoSzlaOrszag: S('ORSZÁG', 'COUNTRY'),
   mezoSzlaAdoszam: S('ADÓSZÁM (céges számlához)', 'TAX NUMBER (for company invoice)'),
+
+  // ---------- Naptár ----------
+  naptarCim: S('Szabad időpontok', 'Availability'),
+  naptarValasszErkezes: S('Válaszd ki az érkezés napját', 'Pick your arrival day'),
+  naptarValasszTavozas: S('Most a távozás napját', 'Now pick your departure day'),
+  naptarBetoltes: S('Naptár betöltése…', 'Loading calendar…'),
+  naptarHiba: S(
+    'A naptár most nem érhető el — a dátumokat kézzel is megadhatod.',
+    'The calendar is unavailable — you can still enter the dates by hand.'
+  ),
+  naptarElozo: S('Előző hónap', 'Previous month'),
+  naptarKovetkezo: S('Következő hónap', 'Next month'),
+  naptarSzabad: S('Szabad', 'Available'),
+  naptarFoglalt: S('Foglalt', 'Booked'),
+  naptarFelnap: S('Érkezés- vagy távozásnap', 'Arrival or departure day'),
+  naptarDelutanFoglalt: S(
+    'délelőtt még szabad, délután érkezik valaki',
+    'free until midday, someone arrives in the afternoon'
+  ),
+  naptarDelelottFoglalt: S(
+    'délelőtt még foglalt, délután szabad',
+    'occupied until midday, free in the afternoon'
+  ),
+  naptarMinEjszaka: S(
+    'Legalább {n} éjszakára lehet foglalni.',
+    'Minimum stay: {n} nights.'
+  ),
+  ejszaka: S('éjszaka', 'nights'),
 
   fizetesCim: S('Fizetési mód', 'Payment method'),
   fizetesKartya: S('Bankkártya', 'Card payment'),

@@ -27,22 +27,35 @@ export type FoglalasSor = {
   vendeg_email: string | null;
   vendeg_telefon: string | null;
   vendeg_nyelv: string | null;
+  /** Számlázási adatok — a számla kiállításához. */
+  szla_nev: string | null;
+  szla_cim: string | null;
+  szla_irsz: string | null;
+  szla_varos: string | null;
+  szla_orszag: string | null;
+  szla_adoszam: string | null;
 };
 
 type NyersSor = Omit<
   FoglalasSor,
-  'haz_nev' | 'haz_slug' | 'vendeg_nev' | 'vendeg_email' | 'vendeg_telefon' | 'vendeg_nyelv'
+  | 'haz_nev' | 'haz_slug' | 'vendeg_nev' | 'vendeg_email' | 'vendeg_telefon'
+  | 'vendeg_nyelv' | 'szla_nev' | 'szla_cim' | 'szla_irsz' | 'szla_varos'
+  | 'szla_orszag' | 'szla_adoszam'
 > & {
   hazak: { nev: string; slug: string } | null;
   vendegek: {
     nev: string; email: string; telefon: string | null; nyelv: string;
+    szla_nev: string | null; szla_cim: string | null; szla_irsz: string | null;
+    szla_varos: string | null; szla_orszag: string | null;
+    szla_adoszam: string | null;
   } | null;
 };
 
 const MEZOK =
   'id, azonosito, erkezes, tavozas, fo, statusz, forras, vegosszeg, ' +
   'szallasdij, extrak_dij, megjegyzes, letrehozva, ' +
-  'hazak(nev, slug), vendegek(nev, email, telefon, nyelv)';
+  'hazak(nev, slug), vendegek(nev, email, telefon, nyelv, szla_nev, ' +
+  'szla_cim, szla_irsz, szla_varos, szla_orszag, szla_adoszam)';
 
 function lapit(s: NyersSor): FoglalasSor {
   return {
@@ -64,6 +77,12 @@ function lapit(s: NyersSor): FoglalasSor {
     vendeg_email: s.vendegek?.email ?? null,
     vendeg_telefon: s.vendegek?.telefon ?? null,
     vendeg_nyelv: s.vendegek?.nyelv ?? null,
+    szla_nev: s.vendegek?.szla_nev ?? null,
+    szla_cim: s.vendegek?.szla_cim ?? null,
+    szla_irsz: s.vendegek?.szla_irsz ?? null,
+    szla_varos: s.vendegek?.szla_varos ?? null,
+    szla_orszag: s.vendegek?.szla_orszag ?? null,
+    szla_adoszam: s.vendegek?.szla_adoszam ?? null,
   };
 }
 

@@ -144,3 +144,27 @@ alter table foglalasok
 --   select e.slug, e.ar, f.nev from extrak e
 --     join extrak_forditas f on f.extra_id = e.id and f.nyelv = 'hu'
 --     where e.aktiv = true order by e.ar desc;
+
+
+-- ---------- 7. Régi faházak eltávolítása ----------
+-- A korábbi változatokban „Fenyves” és „Forrás” néven szerepelt a két ház.
+-- Ha az adatbázisodban még ott vannak ezek a sorok, itt tűnnek el.
+--
+-- Óvatosan dolgozik: amelyik házhoz tartozik már foglalás, azt NEM törli
+-- (az a foglalás története), csak inaktívvá teszi, hogy ne jelenjen meg
+-- az oldalon. Amelyikhez nincs foglalás, azt véglegesen törli.
+
+-- Az árak és blokkolt időszakok a hazak törlésével maguktól eltűnnek
+-- (on delete cascade), a hazak_forditas és arazas sorokkal együtt.
+
+update hazak set aktiv = false
+where slug not in ('fuge', 'mandula')
+  and id in (select distinct haz_id from foglalasok);
+
+delete from hazak
+where slug not in ('fuge', 'mandula')
+  and id not in (select distinct haz_id from foglalasok);
+
+-- ---------- Ellenőrzés a 7. ponthoz ----------
+-- Futtatás után ennek PONTOSAN két sort kell adnia (Füge, Mandula):
+--   select slug, nev, aktiv from hazak order by slug;

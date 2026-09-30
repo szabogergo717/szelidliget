@@ -158,7 +158,14 @@ img { max-width: 100%; display: block; }
   .hero-media video { display: none; }
   .hero-media { background: url('/hero-poster.jpg') center / cover no-repeat; }
 }
-.hero-logo { width: min(420px, 72vw); margin: 0 auto 30px; }
+/* A logó eredeti aránya 869:517. A `height: auto` nélkül a böngésző
+   a HTML-ben megadott magasságot tartaná, és a kép megnyúlna. */
+.hero-logo {
+  width: min(420px, 72vw);
+  height: auto;
+  aspect-ratio: 869 / 517;
+  margin: 0 auto 30px;
+}
 .hero h1 {
   font-size: clamp(30px, 4.4vw, 50px); line-height: 1.18;
   max-width: 17ch; margin: 0 auto; color: var(--slate);
@@ -354,7 +361,7 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
   display: flex; justify-content: space-between; align-items: center; gap: 20px;
   padding: 26px 0; flex-wrap: wrap; color: rgba(254, 252, 245, 0.55); font-size: 14px;
 }
-.foot-brand img { height: 34px; }
+.foot-brand img { height: 34px; width: auto; }
 .foot-brand span { color: var(--cream); font-size: 14px; letter-spacing: 0.22em; }
 .foot ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; }
 .foot a { text-decoration: none; color: rgba(254, 252, 245, 0.55); }
@@ -571,4 +578,111 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
 .jogi-labl {
   margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--line-soft);
   font-size: 14px; color: var(--slate-soft);
+}
+
+/* ---------- foglaltsági naptár ---------- */
+.naptar {
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--cream);
+  padding: 16px 16px 14px;
+}
+.naptar-fejlec {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; margin-bottom: 14px;
+}
+.naptar-allapot {
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 13.5px; letter-spacing: 0.04em; color: var(--slate-soft);
+  text-align: center; flex: 1;
+}
+.naptar-lep {
+  border: 1px solid var(--line); background: transparent; color: var(--slate);
+  width: 32px; height: 32px; border-radius: 3px; cursor: pointer;
+  font-size: 19px; line-height: 1; flex: 0 0 auto;
+}
+.naptar-lep:hover:not(:disabled) { background: var(--cream-2); }
+.naptar-lep:disabled { opacity: 0.3; cursor: default; }
+
+.naptar-honapok { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+@media (max-width: 720px) { .naptar-honapok { grid-template-columns: 1fr; } }
+
+.naptar-honapnev {
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ochre-dark); text-align: center; margin-bottom: 8px;
+}
+.naptar-racs { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.naptar-napnev {
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 11px; letter-spacing: 0.06em; color: var(--slate-soft);
+  text-align: center; padding-bottom: 4px;
+}
+
+.naptar-nap {
+  aspect-ratio: 1 / 1;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 13.5px;
+  color: var(--slate);
+  cursor: pointer;
+  padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+
+/* A színek a nap két felét jelentik: bal felső = délelőtt,
+   jobb alsó = délután. Ezért a fél napokat átlós átmenet mutatja. */
+.naptar-nap.szabad  { background: rgba(63, 125, 84, 0.22); }
+.naptar-nap.foglalt { background: rgba(168, 69, 47, 0.34); color: rgba(62,66,80,.5); }
+
+/* A fél napokat átlós vágás mutatja: a bal felső háromszög a délelőtt,
+   a jobb alsó a délután. A közéjük tett vékony krém csík teszi
+   első pillantásra láthatóvá, hogy ez két különböző fél. */
+.naptar-nap.tavozo {
+  background: linear-gradient(135deg,
+    rgba(168, 69, 47, 0.34) 0 46%,
+    var(--cream) 46% 54%,
+    rgba(63, 125, 84, 0.22) 54% 100%);
+}
+.naptar-nap.erkezo {
+  background: linear-gradient(135deg,
+    rgba(63, 125, 84, 0.22) 0 46%,
+    var(--cream) 46% 54%,
+    rgba(168, 69, 47, 0.34) 54% 100%);
+}
+.naptar-nap.mult { background: transparent; color: rgba(62, 66, 80, 0.25); }
+
+.naptar-nap:hover:not(:disabled) { border-color: var(--ochre); }
+.naptar-nap:disabled { cursor: default; }
+
+.naptar-nap.koztes { background: var(--ochre-light); color: #fff; }
+.naptar-nap.kezdet, .naptar-nap.veg {
+  background: var(--ochre); color: #fff; border-color: var(--ochre-dark);
+  font-weight: 500;
+}
+
+.naptar-jelmagyarazat {
+  display: flex; flex-wrap: wrap; gap: 16px; margin-top: 14px;
+  padding-top: 12px; border-top: 1px solid var(--line-soft);
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 12.5px; color: var(--slate-soft);
+}
+.naptar-jelmagyarazat span { display: flex; align-items: center; gap: 6px; }
+.naptar-jelmagyarazat .jel {
+  width: 14px; height: 14px; border-radius: 2px; display: inline-block;
+}
+.jel.szabad  { background: rgba(63, 125, 84, 0.34); }
+.jel.foglalt { background: rgba(168, 69, 47, 0.42); }
+.jel.felig {
+  background: linear-gradient(135deg,
+    rgba(168, 69, 47, 0.42) 0 44%,
+    var(--cream) 44% 56%,
+    rgba(63, 125, 84, 0.34) 56% 100%);
+}
+.naptar-sugo {
+  margin-top: 8px; font-size: 13px; color: var(--slate-soft);
+  font-family: var(--betu-cim), system-ui, sans-serif;
 }

@@ -358,7 +358,8 @@ mappa másik két fájljával, **ebben a sorrendben**:
 | Sorrend | Fájl | Mit csinál |
 |---|---|---|
 | 2. | `002_hirlevel.sql` | a hírlevél-feliratkozók táblája |
-| 3. | `003_arak_extrak_fizetes.sql` | a végleges árak, a hat extra és az utalásos fizetés |
+| 3. | `003_arak_extrak_fizetes.sql` | a végleges árak, a hat extra, az utalásos fizetés, és a régi faházak kitakarítása |
+| 4. | `004_szamlazasi_cim.sql` | a számlázási cím mezői (irányítószám, város, ország) |
 
 Mindhárom fájl **többször is futtatható**, tehát ha elbizonytalanodsz,
 nyugodtan futtasd le újra.
@@ -366,11 +367,16 @@ nyugodtan futtasd le újra.
 ✅ **Ellenőrzés a 003 után:** SQL Editor → New query → futtasd le ezt:
 
 ```sql
-select slug, nev, max_fo, alap_ar, min_ejszaka from hazak order by slug;
+select slug, nev, aktiv, max_fo, alap_ar, min_ejszaka from hazak order by slug;
 ```
 
-Két sort kell kapnod: **Füge** és **Mandula**, mindkettő **2 fő**,
-**49 000 Ft**, **2 éjszaka** minimum.
+**Pontosan két sort** kell kapnod: **Füge** és **Mandula**, mindkettő
+`aktiv = true`, **2 fő**, **49 000 Ft**, **2 éjszaka** minimum.
+
+> Ha a régi „Fenyves" vagy „Forrás" ház is megjelenik `aktiv = false`
+> állapottal, az azt jelenti, hogy tartozik hozzá régi foglalás, ezért
+> a rendszer nem törölte — csak elrejtette. A weboldalon így sem
+> látszik. Ha az a foglalás is mehet, szólj, és adok rá parancsot.
 
 ### Ha hibát kapsz
 
@@ -1018,6 +1024,9 @@ szerkesztéshez kell, az oldal futásához nem.
 - **Google Maps térkép** kattintásra töltődő módon (nem kell sütibanner)
 - **Jogi oldalak** (ÁSZF, adatvédelem, házirend, impresszum) — vázlat szinten
 - **Környék rovat** 12 programajánlóval, két nyelven
+- **Vizuális foglaltsági naptár** — zöld/piros napokkal, a fél napok
+  (érkezés- és távozásnap) átlósan kettéosztva
+- **Kötelező számlázási cím** — számlát cím nélkül nem lehet kiállítani
 
 **Még hátravan:**
 - **Számlázz.hu integráció** — a számla most kézzel készül. A beépítéshez

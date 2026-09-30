@@ -14,7 +14,7 @@ export default function JogiOldal({
       <header className="site-header">
         <div className="nav">
           <Link className="brand" href={utvonal(nyelv)}>
-            <Image src="/logo-mark.png" alt="" width={120} height={69} priority />
+            <Image src="/logo-mark.png" alt="" width={695} height={400} priority />
             <span>SZELID LIGET</span>
           </Link>
           <div className="nav-right">

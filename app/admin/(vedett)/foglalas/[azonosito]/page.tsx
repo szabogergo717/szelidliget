@@ -89,6 +89,36 @@ export default async function FoglalasReszlet({
             </div>
           </div>
 
+          {/* A számla kiállításához kell — ezért külön dobozban,
+              hogy egyben ki lehessen másolni. */}
+          <div className="doboz">
+            <h2>Számlázási adatok</h2>
+            <div className="par">
+              <span className="k">Név</span>
+              <span className="v">{f.szla_nev ?? f.vendeg_nev ?? '—'}</span>
+            </div>
+            <div className="par">
+              <span className="k">Cím</span>
+              <span className="v">
+                {f.szla_irsz || f.szla_varos || f.szla_cim ? (
+                  <>
+                    {[f.szla_irsz, f.szla_varos].filter(Boolean).join(' ')}
+                    {f.szla_cim ? <><br />{f.szla_cim}</> : null}
+                    {f.szla_orszag ? <><br />{f.szla_orszag}</> : null}
+                  </>
+                ) : (
+                  <span className="halvany">
+                    Nincs megadva — a foglalás a cím kötelezővé tétele előtt készült.
+                  </span>
+                )}
+              </span>
+            </div>
+            <div className="par">
+              <span className="k">Adószám</span>
+              <span className="v">{f.szla_adoszam ?? '—'}</span>
+            </div>
+          </div>
+
           <div className="doboz">
             <h2>Fizetési kísérletek</h2>
             {fiz.length === 0 ? (

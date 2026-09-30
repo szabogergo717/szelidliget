@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { T, type Nyelv } from '@/lib/tartalom';
+import Naptar from './Naptar';
 
 /**
  * Foglalóűrlap.
@@ -88,6 +89,11 @@ export default function FoglaloUrlap({
   const [szlaSajat, setSzlaSajat] = useState(true);
   const [szlaNev, setSzlaNev] = useState('');
   const [szlaCim, setSzlaCim] = useState('');
+  const [szlaIrsz, setSzlaIrsz] = useState('');
+  const [szlaVaros, setSzlaVaros] = useState('');
+  const [szlaOrszag, setSzlaOrszag] = useState(
+    nyelv === 'hu' ? 'Magyarország' : ''
+  );
   const [szlaAdoszam, setSzlaAdoszam] = useState('');
 
   const [fizetesiMod, setFizetesiMod] = useState<FizetesiMod>('kartya');
@@ -145,8 +151,15 @@ export default function FoglaloUrlap({
   // valódi vendéget zárna ki.
   const telefonErvenyes = telefon.replace(/[^0-9]/g, '').length >= 7;
 
-  const szamlazasKesz =
-    szlaSajat || (szlaNev.trim().length > 1 && szlaCim.trim().length > 4);
+  // A cím mindig kell: számlát cím nélkül nem lehet kiállítani.
+  // A név csak akkor külön, ha a vendég más nevet kér a számlára.
+  const cimKesz =
+    szlaIrsz.trim().length >= 4 &&
+    szlaVaros.trim().length > 1 &&
+    szlaCim.trim().length > 2 &&
+    szlaOrszag.trim().length > 1;
+
+  const szamlazasKesz = cimKesz && (szlaSajat || szlaNev.trim().length > 1);
 
   const adatokKeszek =
     nev.trim().length > 1 && emailErvenyes && telefonErvenyes && szamlazasKesz;
@@ -181,8 +194,11 @@ export default function FoglaloUrlap({
             telefon,
             nyelv,
             szla_nev: szlaSajat ? nev : szlaNev,
-            szla_cim: szlaSajat ? null : szlaCim,
-            szla_adoszam: szlaSajat ? null : szlaAdoszam || null,
+            szla_cim: szlaCim,
+            szla_irsz: szlaIrsz,
+            szla_varos: szlaVaros,
+            szla_orszag: szlaOrszag,
+            szla_adoszam: szlaAdoszam || null,
           },
           megjegyzes,
           hirlevel,
@@ -269,6 +285,20 @@ export default function FoglaloUrlap({
             />
           </div>
         </div>
+
+        {/* A naptár ugyanazt a két dátumot állítja, mint a mezők fent —
+            aki szívesebben gépel, annak a mezők maradnak. */}
+        <Naptar
+          hazSlug={hazSlug}
+          erkezes={erkezes}
+          tavozas={tavozas}
+          nyelv={nyelv}
+          minEjszaka={haz?.min_ejszaka ?? 1}
+          onValaszt={(be, ki) => {
+            setErkezes(be);
+            setTavozas(ki);
+          }}
+        />
 
         {/* Hat éjszakától egyedi kedvezmény jár — szóljunk időben. */}
         {ar && ar.ejszakak >= 6 && (
@@ -359,33 +389,62 @@ export default function FoglaloUrlap({
         </label>
 
         {!szlaSajat && (
-          <>
-            <div className="row" style={{ marginTop: 16 }}>
-              <div className="field">
-                <label htmlFor="f-szla-nev">{T.mezoSzlaNev[nyelv]}</label>
-                <input
-                  id="f-szla-nev" type="text" value={szlaNev}
-                  onChange={(e) => setSzlaNev(e.target.value)} required
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="f-szla-ado">{T.mezoSzlaAdoszam[nyelv]}</label>
-                <input
-                  id="f-szla-ado" type="text" value={szlaAdoszam}
-                  onChange={(e) => setSzlaAdoszam(e.target.value)}
-                />
-              </div>
-            </div>
+          <div className="row" style={{ marginTop: 16 }}>
             <div className="field">
-              <label htmlFor="f-szla-cim">{T.mezoSzlaCim[nyelv]}</label>
+              <label htmlFor="f-szla-nev">{T.mezoSzlaNev[nyelv]}</label>
               <input
-                id="f-szla-cim" type="text" value={szlaCim}
-                autoComplete="street-address"
-                onChange={(e) => setSzlaCim(e.target.value)} required
+                id="f-szla-nev" type="text" value={szlaNev}
+                onChange={(e) => setSzlaNev(e.target.value)} required
               />
             </div>
-          </>
+            <div className="field">
+              <label htmlFor="f-szla-ado">{T.mezoSzlaAdoszam[nyelv]}</label>
+              <input
+                id="f-szla-ado" type="text" value={szlaAdoszam}
+                autoComplete="off"
+                onChange={(e) => setSzlaAdoszam(e.target.value)}
+              />
+            </div>
+          </div>
         )}
+
+        {/* A cím mindig látszik és mindig kötelező. */}
+        <div className="row" style={{ marginTop: 16 }}>
+          <div className="field keskeny">
+            <label htmlFor="f-szla-irsz">{T.mezoSzlaIrsz[nyelv]}</label>
+            <input
+              id="f-szla-irsz" type="text" value={szlaIrsz}
+              inputMode="numeric" autoComplete="postal-code"
+              onChange={(e) => setSzlaIrsz(e.target.value)} required
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="f-szla-varos">{T.mezoSzlaVaros[nyelv]}</label>
+            <input
+              id="f-szla-varos" type="text" value={szlaVaros}
+              autoComplete="address-level2"
+              onChange={(e) => setSzlaVaros(e.target.value)} required
+            />
+          </div>
+        </div>
+        <div className="row">
+          <div className="field">
+            <label htmlFor="f-szla-cim">{T.mezoSzlaCim[nyelv]}</label>
+            <input
+              id="f-szla-cim" type="text" value={szlaCim}
+              autoComplete="street-address"
+              onChange={(e) => setSzlaCim(e.target.value)} required
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="f-szla-orszag">{T.mezoSzlaOrszag[nyelv]}</label>
+            <input
+              id="f-szla-orszag" type="text" value={szlaOrszag}
+              autoComplete="country-name"
+              onChange={(e) => setSzlaOrszag(e.target.value)} required
+            />
+          </div>
+        </div>
 
         {/* ---------- Fizetési mód ---------- */}
         <div className="extras-title" style={{ marginTop: 26 }}>

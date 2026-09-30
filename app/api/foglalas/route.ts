@@ -33,6 +33,9 @@ type Keres = {
     nyelv?: 'hu' | 'en';
     szla_nev?: string;
     szla_cim?: string;
+    szla_irsz?: string;
+    szla_varos?: string;
+    szla_orszag?: string;
     szla_adoszam?: string;
   };
   megjegyzes?: string;
@@ -62,6 +65,11 @@ export async function POST(req: NextRequest) {
   if (!k.vendeg?.telefon || k.vendeg.telefon.replace(/[^0-9]/g, '').length < 7) {
     hianyzo.push('telefonszám');
   }
+  // A számlázási cím 2026.09.30-tól kötelező: számlát cím nélkül
+  // nem lehet kiállítani.
+  if (!k.vendeg?.szla_irsz?.trim()) hianyzo.push('irányítószám');
+  if (!k.vendeg?.szla_varos?.trim()) hianyzo.push('város');
+  if (!k.vendeg?.szla_cim?.trim()) hianyzo.push('utca, házszám');
   if (hianyzo.length) {
     return NextResponse.json(
       { hiba: `Hiányzó adat: ${hianyzo.join(', ')}.` },
@@ -149,9 +157,12 @@ export async function POST(req: NextRequest) {
       email: k.vendeg.email.toLowerCase().trim(),
       telefon: k.vendeg.telefon,
       nyelv: k.vendeg.nyelv ?? 'hu',
-      szla_nev: k.vendeg.szla_nev,
-      szla_cim: k.vendeg.szla_cim,
-      szla_adoszam: k.vendeg.szla_adoszam,
+      szla_nev: k.vendeg.szla_nev?.trim() || k.vendeg.nev,
+      szla_cim: k.vendeg.szla_cim?.trim(),
+      szla_irsz: k.vendeg.szla_irsz?.trim(),
+      szla_varos: k.vendeg.szla_varos?.trim(),
+      szla_orszag: k.vendeg.szla_orszag?.trim() || 'Magyarország',
+      szla_adoszam: k.vendeg.szla_adoszam?.trim() || null,
     })
     .select('id')
     .single();

@@ -25,7 +25,7 @@ function Fejlec({ nyelv }: { nyelv: Nyelv }) {
     <header className="site-header">
       <div className="nav">
         <Link className="brand" href={utvonal(nyelv)}>
-          <Image src="/logo-mark.png" alt="" width={120} height={69} priority />
+          <Image src="/logo-mark.png" alt="" width={695} height={400} priority />
           <span>SZELID LIGET</span>
         </Link>
         <nav className="nav-links">
@@ -74,7 +74,7 @@ function Lablec({ nyelv }: { nyelv: Nyelv }) {
       <div className="wrap foot">
         <div className="foot-bal">
           <Link className="brand foot-brand" href={utvonal(nyelv)}>
-            <Image src="/logo-mark-light.png" alt="" width={110} height={63} />
+            <Image src="/logo-mark-light.png" alt="" width={620} height={356} />
             <span>SZELID LIGET</span>
           </Link>
           <p className="foot-ceg">
@@ -222,7 +222,11 @@ export default function Oldal({
           <Image
             className="hero-logo"
             src={videoVan ? '/logo-light.png' : '/logo-transparent.png'}
-            alt="Szelid Liget" width={760} height={452} priority
+            alt="Szelid Liget"
+            width={869}
+            height={517}
+            sizes="(max-width: 600px) 72vw, 420px"
+            priority
           />
           <h1>{T.heroCim[nyelv]}</h1>
           <p className="hero-sub">{T.heroAlcim[nyelv]}</p>
