@@ -22,6 +22,7 @@ export type HazAdat = {
 export type ExtraAdat = {
   slug: string;
   nev: string;
+  leiras?: string | null;
   ar: number;
   ejszakankent: boolean;
 };
@@ -36,6 +37,8 @@ type Arvalasz = {
   foglalt: boolean;
   foglalhato: boolean;
 };
+
+type FizetesiMod = 'kartya' | 'utalas';
 
 function ft(n: number, nyelv: Nyelv): string {
   return new Intl.NumberFormat(nyelv === 'en' ? 'en-GB' : 'hu-HU').format(n) + ' Ft';
@@ -79,19 +82,25 @@ export default function FoglaloUrlap({
   const [email, setEmail] = useState('');
   const [telefon, setTelefon] = useState('');
   const [megjegyzes, setMegjegyzes] = useState('');
+
+  // Számlázási adatok. Alapból a vendég adataival egyeznek — a legtöbb
+  // foglalásnál ez a helyzet, és így nem kell kétszer begépelni.
+  const [szlaSajat, setSzlaSajat] = useState(true);
+  const [szlaNev, setSzlaNev] = useState('');
+  const [szlaCim, setSzlaCim] = useState('');
+  const [szlaAdoszam, setSzlaAdoszam] = useState('');
+
+  const [fizetesiMod, setFizetesiMod] = useState<FizetesiMod>('kartya');
+  const [hirlevel, setHirlevel] = useState(false);
   const [kuldes, setKuldes] = useState(false);
   const [kuldesiHiba, setKuldesiHiba] = useState<string | null>(null);
 
   const haz = hazak.find((h) => h.slug === hazSlug) ?? hazak[0];
 
-  // A ház váltásakor a létszám ne maradjon a kapacitás fölött.
   useEffect(() => {
     if (haz && fo > haz.max_fo) setFo(haz.max_fo);
   }, [haz, fo]);
 
-  // Az árlekérdezéseket késleltetjük, hogy a dátum gépelése közben
-  // ne induljon tíz kérés. A kérés sorszáma megakadályozza, hogy egy
-  // korábbi, lassabb válasz felülírjon egy frissebbet.
   const keresSorszam = useRef(0);
 
   const arLekerdez = useCallback(async () => {
@@ -111,9 +120,7 @@ export default function FoglaloUrlap({
         }),
       });
       const adat = await v.json();
-      if (sajatSorszam === keresSorszam.current) {
-        setAr(v.ok ? adat : null);
-      }
+      if (sajatSorszam === keresSorszam.current) setAr(v.ok ? adat : null);
     } catch {
       if (sajatSorszam === keresSorszam.current) setAr(null);
     } finally {
@@ -133,8 +140,23 @@ export default function FoglaloUrlap({
   }
 
   const emailErvenyes = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
-  const adatokKeszek = nev.trim().length > 1 && emailErvenyes;
+  // Telefon: kötelező, de nem kötjük formátumhoz — a külföldi számok
+  // sokféle alakot vesznek fel, és egy túl szigorú ellenőrzés
+  // valódi vendéget zárna ki.
+  const telefonErvenyes = telefon.replace(/[^0-9]/g, '').length >= 7;
+
+  const szamlazasKesz =
+    szlaSajat || (szlaNev.trim().length > 1 && szlaCim.trim().length > 4);
+
+  const adatokKeszek =
+    nev.trim().length > 1 && emailErvenyes && telefonErvenyes && szamlazasKesz;
+
   const kuldheto = Boolean(ar?.foglalhato) && adatokKeszek && !kuldes && !tolt;
+
+  // Van-e olyan kiválasztott extra, aminek az ára egyeztetés kérdése?
+  const arKeresreValasztva = valasztottExtrak.some(
+    (s) => extrak.find((e) => e.slug === s)?.ar === 0
+  );
 
   async function foglal(e: React.FormEvent) {
     e.preventDefault();
@@ -151,17 +173,30 @@ export default function FoglaloUrlap({
           erkezes,
           tavozas,
           fo,
-          extrak: [], // a szerver a slug-ok alapján számol, lásd lent
           extrak_slug: valasztottExtrak,
-          vendeg: { nev, email, telefon, nyelv },
+          fizetesi_mod: fizetesiMod,
+          vendeg: {
+            nev,
+            email,
+            telefon,
+            nyelv,
+            szla_nev: szlaSajat ? nev : szlaNev,
+            szla_cim: szlaSajat ? null : szlaCim,
+            szla_adoszam: szlaSajat ? null : szlaAdoszam || null,
+          },
           megjegyzes,
+          hirlevel,
         }),
       });
       const adat = await v.json();
 
       if (v.ok && adat.fizetesi_url) {
-        // Átadjuk a vendéget a SimplePay fizetőoldalának.
         window.location.href = adat.fizetesi_url;
+        return;
+      }
+      if (v.ok && adat.tovabb) {
+        // Utalásos foglalás: nincs fizetőoldal, saját visszajelzés jön.
+        window.location.href = adat.tovabb;
         return;
       }
       setKuldesiHiba(adat.hiba ?? T.hibaAltalanos[nyelv]);
@@ -175,7 +210,17 @@ export default function FoglaloUrlap({
   const uzenet = (() => {
     if (tolt && !ar) return { szoveg: T.allapotBetoltes[nyelv], stilus: '' };
     if (!ar) return null;
-    if (ar.hibak.length) return { szoveg: ar.hibak[0], stilus: 'warn' };
+    if (ar.hibak.length) {
+      // Ha a minimum éjszaka miatt bukik, elmondjuk a kivételt is:
+      // egy kimaradó nap egy éjszakára is kiadható.
+      const minHiba = ar.ejszakak === 1;
+      return {
+        szoveg: minHiba
+          ? `${ar.hibak[0]} ${T.egyEjszakaTajekoztato[nyelv]}`
+          : ar.hibak[0],
+        stilus: 'warn',
+      };
+    }
     if (ar.foglalt) return { szoveg: T.allapotFoglalt[nyelv], stilus: 'bad' };
     return { szoveg: T.allapotSzabad[nyelv], stilus: 'ok' };
   })();
@@ -202,6 +247,9 @@ export default function FoglaloUrlap({
                 <option key={n} value={n}>{n}</option>
               ))}
             </select>
+            {fo === 1 && (
+              <span className="mezo-sugo">{T.egyFoTajekoztato[nyelv]}</span>
+            )}
           </div>
         </div>
 
@@ -222,6 +270,13 @@ export default function FoglaloUrlap({
           </div>
         </div>
 
+        {/* Hat éjszakától egyedi kedvezmény jár — szóljunk időben. */}
+        {ar && ar.ejszakak >= 6 && (
+          <div className="notice" style={{ marginTop: 4 }}>
+            {T.hosszuFoglalasKedvezmeny[nyelv]}
+          </div>
+        )}
+
         {extrak.length > 0 && (
           <>
             <div className="extras-title">{T.extrakCim[nyelv]}</div>
@@ -236,11 +291,19 @@ export default function FoglaloUrlap({
                   <span>
                     {x.nev}
                     {x.ejszakankent ? ` (${T.ejszakankent[nyelv]})` : ''}
+                    {x.leiras && <span className="extra-leiras">{x.leiras}</span>}
                   </span>
                 </label>
-                <span className="p">+{ft(x.ar, nyelv)}</span>
+                <span className="p">
+                  {x.ar > 0 ? `+${ft(x.ar, nyelv)}` : T.arKeresre[nyelv]}
+                </span>
               </div>
             ))}
+            {arKeresreValasztva && (
+              <p className="mezo-sugo" style={{ marginTop: 10 }}>
+                {T.arKeresreMagyarazat[nyelv]}
+              </p>
+            )}
           </>
         )}
 
@@ -264,11 +327,11 @@ export default function FoglaloUrlap({
           </div>
         </div>
         <div className="row">
-          <div className="field">
+          <div className={`field${telefon && !telefonErvenyes ? ' hiba' : ''}`}>
             <label htmlFor="f-tel">{T.mezoTelefon[nyelv]}</label>
             <input
               id="f-tel" type="tel" value={telefon} autoComplete="tel"
-              onChange={(e) => setTelefon(e.target.value)}
+              onChange={(e) => setTelefon(e.target.value)} required
             />
           </div>
           <div className="field">
@@ -280,14 +343,97 @@ export default function FoglaloUrlap({
           </div>
         </div>
 
+        {/* ---------- Számlázási adatok ---------- */}
+        <div className="extras-title" style={{ marginTop: 26 }}>
+          {T.szamlazasCim[nyelv].toUpperCase()}
+        </div>
+        <p className="mezo-sugo" style={{ marginBottom: 10 }}>
+          {T.szamlazasBevezeto[nyelv]}
+        </p>
+        <label className="valaszto-sor">
+          <input
+            type="checkbox" checked={szlaSajat}
+            onChange={(e) => setSzlaSajat(e.target.checked)}
+          />
+          <span>{T.szamlazasSajat[nyelv]}</span>
+        </label>
+
+        {!szlaSajat && (
+          <>
+            <div className="row" style={{ marginTop: 16 }}>
+              <div className="field">
+                <label htmlFor="f-szla-nev">{T.mezoSzlaNev[nyelv]}</label>
+                <input
+                  id="f-szla-nev" type="text" value={szlaNev}
+                  onChange={(e) => setSzlaNev(e.target.value)} required
+                />
+              </div>
+              <div className="field">
+                <label htmlFor="f-szla-ado">{T.mezoSzlaAdoszam[nyelv]}</label>
+                <input
+                  id="f-szla-ado" type="text" value={szlaAdoszam}
+                  onChange={(e) => setSzlaAdoszam(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="field">
+              <label htmlFor="f-szla-cim">{T.mezoSzlaCim[nyelv]}</label>
+              <input
+                id="f-szla-cim" type="text" value={szlaCim}
+                autoComplete="street-address"
+                onChange={(e) => setSzlaCim(e.target.value)} required
+              />
+            </div>
+          </>
+        )}
+
+        {/* ---------- Fizetési mód ---------- */}
+        <div className="extras-title" style={{ marginTop: 26 }}>
+          {T.fizetesCim[nyelv].toUpperCase()}
+        </div>
+        <div className="fizetes-valaszto">
+          <label className={`fizetes-opcio${fizetesiMod === 'kartya' ? ' aktiv' : ''}`}>
+            <input
+              type="radio" name="fizmod" value="kartya"
+              checked={fizetesiMod === 'kartya'}
+              onChange={() => setFizetesiMod('kartya')}
+            />
+            <span>
+              <strong>{T.fizetesKartya[nyelv]}</strong>
+              <span className="fizetes-leiras">{T.fizetesKartyaLeiras[nyelv]}</span>
+            </span>
+          </label>
+          <label className={`fizetes-opcio${fizetesiMod === 'utalas' ? ' aktiv' : ''}`}>
+            <input
+              type="radio" name="fizmod" value="utalas"
+              checked={fizetesiMod === 'utalas'}
+              onChange={() => setFizetesiMod('utalas')}
+            />
+            <span>
+              <strong>{T.fizetesUtalas[nyelv]}</strong>
+              <span className="fizetes-leiras">{T.fizetesUtalasLeiras[nyelv]}</span>
+            </span>
+          </label>
+        </div>
+
+        <label className="hirlevel">
+          <input
+            type="checkbox"
+            checked={hirlevel}
+            onChange={(e) => setHirlevel(e.target.checked)}
+          />
+          <span>
+            {T.hirlevelCimke[nyelv]}
+            <span className="hirlevel-magyarazat">{T.hirlevelMagyarazat[nyelv]}</span>
+          </span>
+        </label>
+
         {uzenet && (
           <div className={`notice ${uzenet.stilus}`} role="status" aria-live="polite">
             {uzenet.szoveg}
           </div>
         )}
-        {kuldesiHiba && (
-          <div className="notice bad" role="alert">{kuldesiHiba}</div>
-        )}
+        {kuldesiHiba && <div className="notice bad" role="alert">{kuldesiHiba}</div>}
       </div>
 
       <aside className="panel-side">
@@ -317,7 +463,11 @@ export default function FoglaloUrlap({
           style={{ width: '100%', marginTop: 20 }}
           disabled={!kuldheto}
         >
-          {kuldes ? T.gombFeldolgozas[nyelv] : T.gombTovabb[nyelv]}
+          {kuldes
+            ? T.gombFeldolgozas[nyelv]
+            : fizetesiMod === 'utalas'
+              ? T.gombUtalas[nyelv]
+              : T.gombTovabb[nyelv]}
         </button>
       </aside>
     </form>

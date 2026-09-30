@@ -4,6 +4,7 @@ import { arajanlat, foglalasHibai, foglalasAzonosito } from '@/lib/pricing';
 import type { Haz, Arazas, Extra } from '@/lib/pricing';
 import { szabad } from '@/lib/availability';
 import { fizetestIndit } from '@/lib/simplepay';
+import { utalasiEmail, adminErtesito } from '@/lib/email';
 
 /**
  * Foglalás létrehozása és fizetés indítása.
@@ -35,6 +36,10 @@ type Keres = {
     szla_adoszam?: string;
   };
   megjegyzes?: string;
+  /** Külön, önkéntes hozzájárulás marketing levelekhez. */
+  hirlevel?: boolean;
+  /** 'kartya' = SimplePay, 'utalas' = banki átutalás. */
+  fizetesi_mod?: 'kartya' | 'utalas';
 };
 
 export async function POST(req: NextRequest) {
@@ -52,6 +57,11 @@ export async function POST(req: NextRequest) {
   if (!k.tavozas) hianyzo.push('távozás');
   if (!k.vendeg?.email) hianyzo.push('e-mail cím');
   if (!k.vendeg?.nev) hianyzo.push('név');
+  // A telefonszám 2026.09.27-től kötelező: érkezés napján ezen tudjuk
+  // elérni a vendéget, ha bármi közbejön.
+  if (!k.vendeg?.telefon || k.vendeg.telefon.replace(/[^0-9]/g, '').length < 7) {
+    hianyzo.push('telefonszám');
+  }
   if (hianyzo.length) {
     return NextResponse.json(
       { hiba: `Hiányzó adat: ${hianyzo.join(', ')}.` },
@@ -128,6 +138,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const vendegNyelv = k.vendeg.nyelv === 'en' ? 'en' : 'hu';
+  const fizetesiMod = k.fizetesi_mod === 'utalas' ? 'utalas' : 'kartya';
+
   // ---------- Vendég ----------
   const { data: vendeg, error: vendegHiba } = await db
     .from('vendegek')
@@ -171,6 +184,7 @@ export async function POST(req: NextRequest) {
       // Teljes összeg fizetendő foglaláskor (így döntöttünk).
       elolegoosszeg: ajanlat.vegosszeg,
       megjegyzes: k.megjegyzes,
+      fizetesi_mod: fizetesiMod,
     })
     .select('id, azonosito')
     .single();
@@ -201,9 +215,59 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // ---------- Fizetés indítása ----------
+  // ---------- Hírlevél-feliratkozás ----------
+  // Csak akkor, ha a vendég KIFEJEZETTEN bepipálta. A hozzájárulás
+  // idejét is eltároljuk, mert vita esetén ez a bizonyíték.
+  // Ha a mentés elhasal, a foglalás attól még létrejön — egy hírlevél
+  // nem érhet annyit, hogy elbukjon miatta egy fizetés.
+  if (k.hirlevel === true) {
+    try {
+      await db.from('hirlevel_feliratkozok').upsert(
+        {
+          email: k.vendeg.email.toLowerCase().trim(),
+          nev: k.vendeg.nev,
+          nyelv: vendegNyelv,
+          hozzajarult: true,
+          hozzajarulas_ideje: new Date().toISOString(),
+          forras: 'foglalas',
+          leiratkozott: false,
+          leiratkozas_ideje: null,
+        },
+        { onConflict: 'email' }
+      );
+    } catch (e) {
+      console.error('[foglalas] hírlevél-feliratkozás:', e);
+    }
+  }
+
   const alap = process.env.NEXT_PUBLIC_OLDAL_URL ?? 'https://www.szelidliget.hu';
-  const vendegNyelv = k.vendeg.nyelv === 'en' ? 'en' : 'hu';
+
+  // ---------- Utalásos foglalás ----------
+  // Nincs fizetőoldal: a foglalás „fuggoben” marad, és e-mailben
+  // elküldjük az utalási adatokat. A státuszt akkor állítod
+  // „kifizetve”-re az admin felületen, amikor a pénz megérkezett.
+  if (fizetesiMod === 'utalas') {
+    try {
+      await utalasiEmail(foglalas.id);
+    } catch (e) {
+      // Ha az e-mail nem megy ki, a foglalás akkor is él — az admin
+      // felületen látod, és kézzel is kiküldheted az adatokat.
+      console.error('[foglalas] utalási e-mail:', e);
+    }
+    try {
+      await adminErtesito(foglalas.id, 'uj_foglalas');
+    } catch (e) {
+      console.error('[foglalas] admin értesítő:', e);
+    }
+
+    return NextResponse.json({
+      azonosito: foglalas.azonosito,
+      vegosszeg: ajanlat.vegosszeg,
+      tovabb: `${alap}/foglalas/utalas?ref=${foglalas.azonosito}&lang=${vendegNyelv}`,
+    });
+  }
+
+  // ---------- Bankkártyás fizetés indítása ----------
   try {
     const fizetes = await fizetestIndit({
       orderRef: foglalas.azonosito,

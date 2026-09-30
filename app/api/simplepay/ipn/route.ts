@@ -5,7 +5,7 @@ import {
   ipnNyugta,
   statuszbolFoglalas,
 } from '@/lib/simplepay';
-import { visszaigazoloEmail } from '@/lib/email';
+import { visszaigazoloEmail, adminErtesito } from '@/lib/email';
 
 /**
  * SimplePay IPN (szerver-szerver értesítés).
@@ -108,6 +108,13 @@ async function feldolgoz(uzenet: {
       await visszaigazoloEmail(foglalas.id);
     } catch (e) {
       console.error('[IPN] visszaigazoló e-mail nem ment ki:', e);
+    }
+
+    // Értesítjük a tulajdonost is, hogy ne az adminban kelljen figyelni.
+    try {
+      await adminErtesito(foglalas.id, 'kifizetve');
+    } catch (e) {
+      console.error('[IPN] admin értesítő nem ment ki:', e);
     }
 
     // TODO: Számlázz.hu számlakiállítás.

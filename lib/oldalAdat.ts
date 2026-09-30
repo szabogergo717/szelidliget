@@ -33,7 +33,7 @@ export async function oldalAdat(nyelv: Nyelv): Promise<OldalAdat> {
         .order('alap_ar', { ascending: true }),
       db
         .from('extrak')
-        .select('slug, ar, ejszakankent, extrak_forditas(nyelv, nev)')
+        .select('slug, ar, ejszakankent, extrak_forditas(nyelv, nev, leiras)')
         .eq('aktiv', true)
         .order('ar', { ascending: true }),
     ]);
@@ -49,18 +49,18 @@ export async function oldalAdat(nyelv: Nyelv): Promise<OldalAdat> {
       slug: string;
       ar: number;
       ejszakankent: boolean;
-      extrak_forditas: { nyelv: string; nev: string }[] | null;
+      extrak_forditas: { nyelv: string; nev: string; leiras: string | null }[] | null;
     };
 
     const extrakAdat: ExtraAdat[] = ((extrak ?? []) as unknown as ExtraSor[]).map(
       (e: ExtraSor): ExtraAdat => {
         const forditasok = e.extrak_forditas;
         // Ha a kért nyelv hiányzik, inkább az első fordítás, mint semmi.
-        const nev =
-          forditasok?.find((f) => f.nyelv === nyelv)?.nev ??
-          forditasok?.[0]?.nev ??
-          e.slug;
-        return { slug: e.slug, nev, ar: e.ar, ejszakankent: e.ejszakankent };
+        const sajat = forditasok?.find((f) => f.nyelv === nyelv);
+        const tartalek = forditasok?.[0];
+        const nev = sajat?.nev ?? tartalek?.nev ?? e.slug;
+        const leiras = sajat?.leiras ?? tartalek?.leiras ?? null;
+        return { slug: e.slug, nev, leiras, ar: e.ar, ejszakankent: e.ejszakankent };
       }
     );
 

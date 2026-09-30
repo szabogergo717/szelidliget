@@ -20,11 +20,15 @@ A két faház: **Füge** (2–4 fő) és **Mandula** (2–6 fő).
 - [4. lépés — Vercel (az oldal közzététele)](#4-lepes)
 - [5. lépés — Az árak felvitele](#5-lepes)
 - [6. lépés — Resend (az e-mailek)](#6-lepes)
+- [6.5 — Érkezés előtti emlékeztető](#emlekezteto)
 - [7. lépés — A domain rákötése](#7-lepes)
 - [8. lépés — Ha szerkesztened kell: Codespaces](#8-lepes)
 - [9. lépés — SimplePay összekötése](#9-lepes)
 - [10. lépés — Tesztelés élesítés előtt](#10-lepes)
 - [11. lépés — Élesítés](#11-lepes)
+- [Admin felület](#admin)
+- [Hírlevél](#hirlevel)
+- [Háttérvideó a főoldalra (opcionális)](#hattervideo)
 - [Ha valami nem működik](#ha-valami-nem-mukodik)
 - [Mi van kész és mi nincs](#mi-van-kesz)
 - [Négy dolog a rendszerről](#negy-dolog)
@@ -346,6 +350,28 @@ Most létrehozod a „fiókokat", ahová az adatok kerülnek.
 > Ha „NOTICE: policy ... does not exist, skipping" üzeneteket látsz, az
 > **nem hiba** — ezek csak tájékoztató üzenetek. Csak az „ERROR" számít.
 
+### 3.2/b — A másik két SQL fájl
+
+Ugyanezt a hét lépést **még kétszer** el kell végezned, a `migrations`
+mappa másik két fájljával, **ebben a sorrendben**:
+
+| Sorrend | Fájl | Mit csinál |
+|---|---|---|
+| 2. | `002_hirlevel.sql` | a hírlevél-feliratkozók táblája |
+| 3. | `003_arak_extrak_fizetes.sql` | a végleges árak, a hat extra és az utalásos fizetés |
+
+Mindhárom fájl **többször is futtatható**, tehát ha elbizonytalanodsz,
+nyugodtan futtasd le újra.
+
+✅ **Ellenőrzés a 003 után:** SQL Editor → New query → futtasd le ezt:
+
+```sql
+select slug, nev, max_fo, alap_ar, min_ejszaka from hazak order by slug;
+```
+
+Két sort kell kapnod: **Füge** és **Mandula**, mindkettő **2 fő**,
+**49 000 Ft**, **2 éjszaka** minimum.
+
 ### Ha hibát kapsz
 
 **`ERROR: 42710: type "foglalas_statusz" already exists`**
@@ -414,6 +440,35 @@ a kulcsokat. Minden sornál: a bal mezőbe a **Name**, a jobb mezőbe a
 | `SIMPLEPAY_SANDBOX` | `true` |
 | `NEXT_PUBLIC_OLDAL_URL` | `https://www.szelidliget.hu` |
 
+Ezek kellenek az induláshoz. A következő táblázat sorai **ráérnek később**
+is — az oldal nélkülük is elindul, csak az adott rész marad üresen.
+Bármikor hozzáadhatod őket a Vercelen (**Settings → Environment Variables**),
+utána **Redeploy**.
+
+| Name | Value | Mire kell |
+|---|---|---|
+| `NEXT_PUBLIC_ADOSZAM` | a Szekundum Kft. adószáma | lábléc, impresszum |
+| `NEXT_PUBLIC_SZEKHELY` | a cég székhelye | lábléc, impresszum |
+| `NEXT_PUBLIC_TELEFON` | pl. `+36 30 123 4567` | kapcsolat rovat |
+| `NEXT_PUBLIC_FACEBOOK` | a Facebook-oldal címe | közösségi linkek |
+| `NEXT_PUBLIC_INSTAGRAM` | az Instagram-oldal címe | közösségi linkek |
+| `NEXT_PUBLIC_TIKTOK` | a TikTok-oldal címe | közösségi linkek |
+| `UTALAS_KEDVEZMENYEZETT` | a számlatulajdonos neve | utalásos fizetés e-mailje |
+| `UTALAS_SZAMLASZAM` | a bankszámlaszám | utalásos fizetés e-mailje |
+| `UTALAS_IBAN` | az IBAN (külföldi vendégeknek) | utalásos fizetés e-mailje |
+| `UTALAS_HATARIDO_NAP` | pl. `3` — hány napja van utalni | utalásos fizetés e-mailje |
+| `CRON_SECRET` | egy általad kitalált hosszú jelszó | az érkezés előtti emlékeztető |
+| `ADMIN_JELSZO` | az admin felület jelszava | admin belépés |
+| `ADMIN_SESSION_TITOK` | egy másik hosszú, kitalált jelszó | az admin munkamenet aláírása |
+
+> **Az utalásos sorok nélkül** a vendég még tud utalásos fizetést
+> választani, de az e-mailben nem lesz számlaszám. Amint megvannak az
+> adatok, vidd fel őket, és onnantól automatikusan mennek.
+
+> **A `CRON_SECRET`, `ADMIN_SESSION_TITOK` és `ADMIN_JELSZO` értékét te találod ki.**
+> Legyen hosszú és kitalálhatatlan — pl. három-négy véletlen szó egybeírva,
+> számokkal megtűzdelve. Mentsd el őket a jegyzeteid közé.
+
 A SimplePay soroknál most a **nyilvános teszt-adatokat** vitted fel. Ezekkel
 próbálhatod ki a fizetést valódi pénz nélkül. Az éles adatokra a 9. lépésben
 váltasz.
@@ -455,10 +510,16 @@ Az üres lista azt jelenti: még nincs foglalás. Pontosan ez a helyes.
 <a name="5-lepes"></a>
 ## 5. lépés — Az árak felvitele
 
-**Mit csinálsz:** beállítod a szezonális árakat és az extrákat.
+**Mit csinálsz:** beállítod a szezonális árakat.
 **Mennyi idő:** 15 perc. Ez is teljesen böngészőből megy.
 
-Az adatbázisban jelenleg csak alapár van (Füge 42 000, Mandula 48 000).
+> **Ezt a lépést kihagyhatod, ha egyelőre egységes árral indulsz.**
+> A `003_arak_extrak_fizetes.sql` már beállította az alapárat
+> (mindkét ház **49 000 Ft/éj, 2 fő, min. 2 éjszaka**) és a hat extrát.
+> Ez a lépés csak akkor kell, ha **szezononként eltérő** árat szeretnél.
+
+Az alapár mindig érvényes, kivéve azokat az időszakokat, amikre itt külön
+árat adsz meg.
 
 1. Supabase → **SQL Editor** → **New query**.
 2. Másold be ezt, **átírva a saját dátumaidra és áraidra**:
@@ -501,32 +562,53 @@ prioritás), a szilveszter december végén (10-es). Ha egy ünnepi ár beleesne
 a főszezonba, a nagyobb prioritás miatt az ünnepi ár érvényesül — nem kell
 kettévágnod a főszezont.
 
-### Az extrák felvitele
+### Az extrák
 
-Új query, és futtasd le ezt is:
+Az extrák már benne vannak az adatbázisban a `003`-as SQL futtatása óta:
+
+| Extra | Ár |
+|---|---|
+| Lovaskocsikázás | 35 000 Ft |
+| Gourmet reggeli kosár | 19 900 Ft |
+| Sajttál borozáshoz | 11 900 Ft |
+| Születésnapi bekészítés | ár kérésre |
+| Házassági évforduló bekészítés | ár kérésre |
+| Leánykérés bekészítés | ár kérésre |
+
+Az „ár kérésre" azt jelenti, hogy az adatbázisban **0 Ft** szerepel. Az
+űrlapon ilyenkor nem összeg látszik, hanem az „Ár kérésre" felirat, és a
+végösszeghez nem ad hozzá semmit — a vendég megjelöli, ti pedig e-mailben
+egyeztettek róla.
+
+**Ha árat adnál egy ilyen extrának**, elég ennyi (SQL Editor → New query):
 
 ```sql
-insert into extrak (slug, ar, ejszakankent, aktiv) values
-  ('reggeli', 9000,  true,  true),
-  ('tuzifa',  6000,  false, true),
-  ('dezsa',   18000, false, true);
+update extrak set ar = 15000 where slug = 'szuletesnap';
+```
 
-insert into extrak_forditas (extra_id, nyelv, nev)
-select id, 'hu', 'Reggeli kosár' from extrak where slug = 'reggeli';
-insert into extrak_forditas (extra_id, nyelv, nev)
-select id, 'en', 'Breakfast basket' from extrak where slug = 'reggeli';
-insert into extrak_forditas (extra_id, nyelv, nev)
-select id, 'hu', 'Tűzifa csomag' from extrak where slug = 'tuzifa';
-insert into extrak_forditas (extra_id, nyelv, nev)
-select id, 'en', 'Firewood bundle' from extrak where slug = 'tuzifa';
-insert into extrak_forditas (extra_id, nyelv, nev)
-select id, 'hu', 'Dézsa befűtve érkezésre' from extrak where slug = 'dezsa';
-insert into extrak_forditas (extra_id, nyelv, nev)
-select id, 'en', 'Hot tub heated for arrival' from extrak where slug = 'dezsa';
+**Ha új extrát vennél fel**, a minta:
+
+```sql
+insert into extrak (slug, ar, ejszakankent, aktiv)
+values ('kenyezteto', 24000, false, true);
+
+insert into extrak_forditas (extra_id, nyelv, nev, leiras)
+select id, 'hu', 'Kényeztető csomag', 'Fürdőköntös, illóolajok, pezsgő.'
+from extrak where slug = 'kenyezteto';
+
+insert into extrak_forditas (extra_id, nyelv, nev, leiras)
+select id, 'en', 'Pamper package', 'Bathrobes, essential oils, sparkling wine.'
+from extrak where slug = 'kenyezteto';
 ```
 
 Az `ejszakankent` mező dönti el, hogy az ár éjszakánként szorzódik-e
-(reggeli: igen) vagy egyszer számít (tűzifa: nem).
+(`true`) vagy egyszer számít (`false`).
+
+**Ha el akarsz rejteni egy extrát** anélkül, hogy törölnéd:
+
+```sql
+update extrak set aktiv = false where slug = 'kenyezteto';
+```
 
 ✅ **Kész, ha:** a Table Editorban az `arazas` és `extrak` táblákban ott
 vannak a soraid.
@@ -590,6 +672,33 @@ mellett **„Verified"** felirat fog megjelenni, ha kész.
    **…** → **Redeploy**. Új kulcs csak újratelepítés után lép életbe.
 
 ✅ **Kész, ha:** a domain „Verified", és a két érték fent van a Verceln.
+
+---
+
+<a name="emlekezteto"></a>
+## 6.5 — Érkezés előtti emlékeztető
+
+**Mit csinálsz:** semmit — csak ellenőrzöd. **Mennyi idő:** 2 perc.
+
+A rendszer **naponta reggel 9-kor** megnézi, kinek van 3 nap múlva
+érkezése, és küld neki egy emlékeztető e-mailt (érkezési idő, cím,
+útvonal, házirend). Mindenki **csak egyszer** kapja meg.
+
+Ehhez nem kell beállítanod semmit: a projektben lévő `vercel.json` fájl
+mondja meg a Vercelnek, hogy ezt futtassa. Két dolog kell hozzá:
+
+1. a `CRON_SECRET` környezeti változó (a 4. lépésben vitted fel), és
+2. hogy a Resend már működjön (6. lépés).
+
+**Ellenőrzés:** Vercel → a projekted → **Settings** → **Cron Jobs**.
+Ott kell látnod egy sort: `/api/feladat/emlekezteto`, napi 9:00.
+
+> A Vercel ingyenes csomagja **napi egy** időzített futást enged
+> projektenként. Ez pontosan egy — tehát belefér.
+
+**Ha az időpontot át akarod írni**, a `vercel.json` fájlban a
+`"schedule": "0 9 * * *"` sor az. Az első szám a perc, a második az óra
+(UTC szerint). Például `"0 6 * * *"` = reggel 8 magyar idő szerint nyáron.
 
 ---
 
@@ -768,13 +877,28 @@ Mielőtt az első valódi vendég foglalna:
 
 ### Jogi dokumentumok
 
-- [ ] **ÁSZF** — a lemondási és visszatérítési szabályokkal
-- [ ] **Adatvédelmi tájékoztató** (GDPR) — mert vendégadatot kezelsz
-- [ ] **SimplePay adattovábbítási nyilatkozat** — ezt ők írják elő,
-      a szövegét ők adják meg
+Négy jogi oldal **már fent van** az oldalon, magyarul és angolul is
+(a lábléc linkjei):
 
-Ezeket érdemes ügyvéddel átnézetni. Van hozzájuk sablon, de a te
-lemondási szabályaidat neked kell eldöntened.
+| Oldal | Cím | Állapot |
+|---|---|---|
+| ÁSZF | `/aszf` | **vázlat** |
+| Adatvédelmi tájékoztató | `/adatvedelem` | **vázlat** |
+| Házirend | `/hazirend` | **vázlat** |
+| Impresszum | `/impresszum` | vázlat, a cégadatokat a környezeti változókból veszi |
+
+> ⚠ **Ezek vázlatok, nem ügyvédi munka.** A saját adataitokkal,
+> a megbeszélt lemondási szabályokkal és a SimplePay által előírt
+> adattovábbítási nyilatkozattal készültek — de **élesítés előtt
+> nézesd át őket ügyvéddel**. Különösen a lemondási és visszatérítési
+> feltételeket, mert azok pénzügyi kötelezettséget jelentenek.
+
+A szövegük a `lib/jogi.ts` fájlban van, és a 8. lépés (Codespaces)
+szerint bármikor átírható.
+
+- [ ] Ügyvédi átnézés megtörtént
+- [ ] A cégadatok (adószám, székhely) fel vannak véve a Vercelen
+- [ ] A lemondási szabály a valós gyakorlatotokat írja le
 
 ### Szakmai átnézés
 
@@ -886,15 +1010,24 @@ szerkesztéshez kell, az oldal futásához nem.
 - **Működő foglalóűrlap** élő árszámítással
 - **Fizetés utáni oldalak** (siker, hiba, megszakítva, lejárt)
 - Oldaltérkép és robots.txt a keresőknek
+- **Admin felület** jelszóval: foglaláslista, naptár, státuszkezelés
+- **Hírlevél-hozzájárulás** GDPR-helyesen, külön listával
+- **Banki átutalásos fizetés** a bankkártya mellett
+- **Számlázási adatok** bekérése a foglalásnál
+- **Érkezés előtti emlékeztető** e-mail, naponta automatikusan
+- **Google Maps térkép** kattintásra töltődő módon (nem kell sütibanner)
+- **Jogi oldalak** (ÁSZF, adatvédelem, házirend, impresszum) — vázlat szinten
+- **Környék rovat** 12 programajánlóval, két nyelven
 
 **Még hátravan:**
-- Admin felület a foglalások kezelésére
-- Számlázz.hu integráció
+- **Számlázz.hu integráció** — a számla most kézzel készül. A beépítéshez
+  Számlázz.hu Agent-kulcs kell; ez egy külön, nagyjából egynapos munka,
+  amit a kulcs megérkezése után tudunk megcsinálni.
 - Booking.com / Szallas.hu szinkron
-- Érkezés előtti automatikus e-mail
 - Lejárt, kifizetetlen foglalások automatikus felszabadítása
-- Valódi fotók a faházakról (most növénymotívumok állnak a helyükön)
-- ÁSZF, adatvédelmi tájékoztató, impresszum (a lábléc hivatkozásai üresek)
+- **Valódi fotók a faházakról** — most növénymotívumok állnak a helyükön.
+  Amint megvannak a képek, a `public/kepek` mappába kerülnek.
+- **A jogi szövegek ügyvédi átnézése** (lásd a 11. lépést)
 
 ---
 
@@ -923,6 +1056,175 @@ látogatói semmilyen módon nem érhetnek el.
 
 ---
 
+---
+
+---
+
+<a name="admin"></a>
+## Admin felület
+
+A foglalásokat a `www.szelidliget.hu/admin` címen kezeled, jelszóval védve.
+
+### Beállítás (egyszer)
+
+**1. Futtasd le a hírlevél-táblát** (ha még nem tetted): Supabase →
+SQL Editor → New query → másold be a
+`supabase/migrations/002_hirlevel.sql` tartalmát → **Run**.
+
+**2. Vegyél fel két beállítást a Vercelen** (Settings → Environment
+Variables):
+
+| Name | Value |
+|---|---|
+| `ADMIN_JELSZO` | egy hosszú, erős jelszó (legalább 12 karakter) |
+| `ADMIN_SESSION_TITOK` | egy másik hosszú, véletlen karaktersor (legalább 24) |
+
+> ⚠ **Ez a jelszó védi az összes vendégadatot.** Ne olyat használj, amit
+> máshol is. Jelszókezelővel generálj egyet, és ott is tárold.
+> Ha nem adsz meg jelszót, az admin felületre **senki** nem tud belépni.
+>
+> A `ADMIN_SESSION_TITOK` a munkamenet aláírásához kell. Ha megváltoztatod,
+> mindenki kiléptetve lesz — ez a leggyorsabb módja annak, hogy kizárj
+> valakit, ha a jelszó kiszivárgott.
+
+**3. Deployments → … → Redeploy**, majd nyisd meg a `/admin` címet.
+
+### Mit tudsz vele
+
+| Oldal | Mire jó |
+|---|---|
+| **Foglalások** | Lista szűrőkkel (közelgő, fizetésre vár, lemondott, összes), keresés név, e-mail, telefon vagy azonosító szerint. Felül: hány közelgő foglalás van, hány vár fizetésre, hány érkezik ma, és az idei bevétel. |
+| **Egy foglalás** | Vendégadatok, tételes összeg, fizetési kísérletek, kiküldött e-mailek naplója, státusz módosítása, belső megjegyzés. |
+| **Naptár** | Havi nézet mindkét házra. Zölddel a kifizetett, sárgával a fizetésre váró foglalás, szürkével a lezárt időszak. Egy napra kattintva a foglalás részleteihez jutsz. Innen zárhatsz le időszakot karbantartásra vagy saját használatra. |
+| **Hírlevél** | A feliratkozók listája (lásd lent). |
+
+### Fontos tudnivalók
+
+- **A lemondás felszabadítja az időszakot**, és a weboldal naptárában újra
+  foglalhatóvá teszi. Pénzt nem térít vissza — azt a SimplePay felületén
+  kell elindítani.
+- **A belső megjegyzést a vendég nem látja.** Csak neked szól.
+- **A munkamenet 12 óra után lejár**, utána újra be kell lépni.
+- Az admin oldalak `robots.txt`-ben tiltva vannak, tehát nem kerülnek
+  keresőbe.
+
+---
+
+<a name="hirlevel"></a>
+## Hírlevél
+
+### A legfontosabb szabály
+
+**A foglalók listája nem hírlevéllista.** Aki lefoglalt egy házat, a
+*szolgáltatáshoz* adta meg az e-mail címét (visszaigazolás, számla,
+érkezési tájékoztató). Marketinghez a GDPR külön, önkéntes és
+bizonyítható hozzájárulást kíván. Ha a foglalók listájára küldesz
+hírlevelet, az jogsértés.
+
+### Hogyan oldja meg a rendszer
+
+A foglalóűrlapon van egy **külön, alapból üres jelölőnégyzet**. Csak aki
+ezt bepipálja, kerül a hírlevéllistára — és a rendszer eltárolja, mikor
+és honnan adta a hozzájárulást. Ez a bizonyíték, ha valaha kérdés merül fel.
+
+A feliratkozókat az **Admin → Hírlevél** oldalon látod.
+
+### A kiküldés
+
+A Resend **Audiences** és **Broadcasts** funkciója erre való: a
+leiratkozást automatikusan kezeli, és minden levélbe leiratkozó linket
+tesz. Külön szolgáltatóra nincs szükség.
+
+1. Resend → **Audiences** → hozz létre egy közönséget (pl. „Szelid Liget")
+2. Az admin felület listájából másold át a címeket (vagy exportáld a
+   Supabase-ből CSV-be és importáld)
+3. Resend → **Broadcasts** → írd meg a levelet, és küldd ki
+
+> **Tipp:** évente néhány levél bőven elég egy szálláshelynél — szabad
+> időpontok a szezon előtt, esetleg egy téli ajánlat. A túl gyakori
+> levél leiratkozáshoz vezet.
+
+<a name="hattervideo"></a>
+## Háttérvideó a főoldalra (opcionális)
+
+A nyitóképernyőn a nagy logó mögé tehető egy néma, végtelenített videó.
+A kód készen áll rá, **alapból kikapcsolva** — addig a letisztult,
+krémszínű változat látszik.
+
+### Miért ne YouTube-beágyazás?
+
+Kérdés szokott lenni, hogy YouTube-videót lehet-e háttérnek. Technikailag
+igen, de itt nem javaslom:
+
+- **Süti és GDPR.** A YouTube beágyazás sütiket helyez el, ezért
+  süti-hozzájárulás kellene hozzá — vagy a látogató először egy
+  „fogadd el" ablakot lát a főoldalon, nem a ligetet.
+- **Márka és kezelőszervek.** Nehezen tüntethető el a YouTube logója,
+  a felugró ajánlott videók és a lejátszósáv.
+- **Lassabb.** Egy egész lejátszót tölt be egy háttérvideóhoz.
+
+Helyette egy rövid, saját videófájl a jó megoldás: nincs süti, nincs
+idegen márka, és gyorsabb is.
+
+### Milyen videó kell?
+
+| Tulajdonság | Ajánlás | Miért |
+|---|---|---|
+| Hossz | 6–12 másodperc | Észrevétlenül ismétlődik |
+| Felbontás | 1920×1080 | Ennél nagyobb felesleges |
+| Fájlméret | **5 MB alatt** | Mobilneten is gyorsan induljon |
+| Hang | **nincs** | A böngésző csak néma videót indít el magától |
+| Tartalom | lassú mozgás (víz, lombok, füst a dézsából) | Gyors vágás a szöveg olvasását zavarja |
+
+A videót bármely videószerkesztőben rövidre lehet vágni és tömöríteni
+(pl. a HandBrake nevű ingyenes programmal, „Web" előbeállítással).
+
+### Bekapcsolás, három lépés
+
+1. **Tedd be a fájlokat** a Codespace-ben a `public` mappába, pontosan
+   ezekkel a nevekkel:
+   - `hero.mp4` — maga a videó
+   - `hero-poster.jpg` — egy állókép a videóból (ez látszik, amíg a
+     videó töltődik, és ez marad annak, aki kikapcsolta a mozgást a
+     rendszerében)
+
+   Állóképet a videó első kockájából így készíthetsz a Codespace
+   termináljában:
+
+   ```bash
+   ffmpeg -i public/hero.mp4 -vframes 1 -q:v 4 public/hero-poster.jpg
+   ```
+
+2. **Mentsd és töltsd fel:**
+
+   ```bash
+   git add -A
+   git commit -m "Hattervideo"
+   git push
+   ```
+
+3. **Kapcsold be a Vercelen:** Settings → Environment Variables → **Add**
+
+   | Name | Value |
+   |---|---|
+   | `NEXT_PUBLIC_HERO_VIDEO` | `1` |
+
+   Majd Deployments → **…** → **Redeploy**.
+
+Kikapcsolni ugyanitt lehet: állítsd az értéket `0`-ra (vagy töröld), és
+Redeploy.
+
+### Amiről a kód gondoskodik
+
+- A videó **néma és végtelenített**, ezért a böngészők engedik magától elindulni.
+- Telefonon nem nyílik teljes képernyőre (`playsInline`).
+- A videó fölé sötét fátyol kerül, és a logó világos változatára vált —
+  enélkül a jel vékony vonalai elvesznének a mozgó képen.
+- Aki a rendszerében **kikapcsolta a mozgást** (akadálymentesítési
+  beállítás), annak csak az állókép jelenik meg.
+- Ha a `NEXT_PUBLIC_HERO_VIDEO` nincs bekapcsolva, a videó **le sem
+  töltődik** — nem fogyaszt adatot feleslegesen.
+
 <a name="arculat"></a>
 ## Arculat és logófájlok
 
@@ -944,6 +1246,7 @@ Logófájlok a `public/` mappában:
 - `logo-transparent.png` — teljes embléma, átlátszó háttérrel (ez megy az e-mailekbe)
 - `logo-mark.png` — csak a jel, felirat nélkül (fejléc)
 - `logo-mark-light.png` — világos változat sötét háttérhez (lábléc)
+- `logo-light.png` — a teljes embléma világos változata (háttérvideó fölé)
 
 A `demo/szelidliget-demo.html` egyetlen önálló fájl: a logók bele vannak
 ágyazva, tehát bárhol megnyitható, tárhely és telepítés nélkül is. Ezt

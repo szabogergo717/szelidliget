@@ -1,7 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { T, type Nyelv, masikNyelvUt, utvonal } from '@/lib/tartalom';
+import {
+  T, CEG, SOCIAL, KORNYEK, lista, type Nyelv, utvonal,
+} from '@/lib/tartalom';
 import FoglaloUrlap, { type HazAdat, type ExtraAdat } from './FoglaloUrlap';
+import Terkep from './Terkep';
+import HirlevelDoboz from './HirlevelDoboz';
 
 /**
  * A teljes főoldal, nyelvtől függetlenül. A magyar és az angol változat
@@ -9,7 +13,7 @@ import FoglaloUrlap, { type HazAdat, type ExtraAdat } from './FoglaloUrlap';
  * tud szétcsúszni a kettő.
  *
  * Ez szerveroldali komponens: a Google kész HTML-t kap, nem üres vázat.
- * Csak a foglalóűrlap fut a böngészőben.
+ * Csak a foglalóűrlap, a térkép és a hírlevél-doboz fut a böngészőben.
  */
 
 function ft(n: number, nyelv: Nyelv): string {
@@ -26,9 +30,10 @@ function Fejlec({ nyelv }: { nyelv: Nyelv }) {
         </Link>
         <nav className="nav-links">
           <Link href="#hazak">{T.menuHazak[nyelv]}</Link>
+          <Link href="#szolgaltatasok">{T.menuSzolgaltatasok[nyelv]}</Link>
           <Link href="#foglalas">{T.menuFoglalas[nyelv]}</Link>
           <Link href="#kornyek">{T.menuKornyek[nyelv]}</Link>
-          <Link href="#gyik">{T.menuGyik[nyelv]}</Link>
+          <Link href="#rolunk">{T.menuRolunk[nyelv]}</Link>
           <Link href="#kapcsolat">{T.menuKapcsolat[nyelv]}</Link>
         </nav>
         <div className="nav-right">
@@ -43,20 +48,52 @@ function Fejlec({ nyelv }: { nyelv: Nyelv }) {
   );
 }
 
+function SocialLinkek() {
+  const elemek = [
+    { kulcs: 'facebook', url: SOCIAL.facebook, nev: 'Facebook' },
+    { kulcs: 'instagram', url: SOCIAL.instagram, nev: 'Instagram' },
+    { kulcs: 'tiktok', url: SOCIAL.tiktok, nev: 'TikTok' },
+  ].filter((e) => e.url);
+
+  if (elemek.length === 0) return null;
+
+  return (
+    <div className="social">
+      {elemek.map((e) => (
+        <a key={e.kulcs} href={e.url} target="_blank" rel="noreferrer" className="social-link">
+          {e.nev}
+        </a>
+      ))}
+    </div>
+  );
+}
+
 function Lablec({ nyelv }: { nyelv: Nyelv }) {
   return (
     <footer className="site-footer">
       <div className="wrap foot">
-        <Link className="brand foot-brand" href={utvonal(nyelv)}>
-          <Image src="/logo-mark-light.png" alt="" width={110} height={63} />
-          <span>SZELID LIGET</span>
-        </Link>
-        <ul>
-          <li><Link href="#">{T.lablecAszf[nyelv]}</Link></li>
-          <li><Link href="#">{T.lablecAdatvedelem[nyelv]}</Link></li>
-          <li><Link href="#">{T.lablecImpresszum[nyelv]}</Link></li>
+        <div className="foot-bal">
+          <Link className="brand foot-brand" href={utvonal(nyelv)}>
+            <Image src="/logo-mark-light.png" alt="" width={110} height={63} />
+            <span>SZELID LIGET</span>
+          </Link>
+          <p className="foot-ceg">
+            {CEG.nev}
+            {CEG.adoszam && <><br />Adószám: {CEG.adoszam}</>}
+            {CEG.szekhely && <><br />Székhely: {CEG.szekhely}</>}
+            <br />{CEG.cim}
+          </p>
+        </div>
+        <ul className="foot-linkek">
+          <li><Link href={utvonal(nyelv, '/aszf')}>{T.lablecAszf[nyelv]}</Link></li>
+          <li><Link href={utvonal(nyelv, '/adatvedelem')}>{T.lablecAdatvedelem[nyelv]}</Link></li>
+          <li><Link href={utvonal(nyelv, '/hazirend')}>{T.lablecHazirend[nyelv]}</Link></li>
+          <li><Link href={utvonal(nyelv, '/impresszum')}>{T.lablecImpresszum[nyelv]}</Link></li>
         </ul>
-        <div>© {new Date().getFullYear()} Szelid Liget</div>
+        <div className="foot-jobb">
+          <SocialLinkek />
+          <div className="foot-copy">© {new Date().getFullYear()} {CEG.nev}</div>
+        </div>
       </div>
     </footer>
   );
@@ -112,6 +149,8 @@ function Hazkartya({
       <div className="cabin-art">
         <span className="cabin-badge">{cimke}</span>
         {abra}
+        {/* A valódi fotók helye. Amint megvannak, ide kerülnek. */}
+        <span className="kep-helye">{T.kepekHelye[nyelv]}</span>
       </div>
       <div className="cabin-body">
         <h3>{haz.nev}</h3>
@@ -121,7 +160,7 @@ function Hazkartya({
           <tbody>
             <tr>
               <td>{T.specVendegek[nyelv]}</td>
-              <td>2–{haz.max_fo} {T.fo[nyelv]}</td>
+              <td>{haz.max_fo} {T.fo[nyelv]}</td>
             </tr>
             <tr><td>{T.specHalo[nyelv]}</td><td>{halo}</td></tr>
             <tr><td>{T.specFelszereltseg[nyelv]}</td><td>{felszereltseg}</td></tr>
@@ -143,24 +182,46 @@ function Hazkartya({
   );
 }
 
+function SzolgOszlop({ cim, elemek }: { cim: string; elemek: string[] }) {
+  return (
+    <div className="szolg-oszlop">
+      <h3>{cim}</h3>
+      <ul>
+        {elemek.map((e) => <li key={e}>{e}</li>)}
+      </ul>
+    </div>
+  );
+}
+
 export default function Oldal({
   nyelv, hazak, extrak,
 }: {
   nyelv: Nyelv; hazak: HazAdat[]; extrak: ExtraAdat[];
 }) {
+  const videoVan = process.env.NEXT_PUBLIC_HERO_VIDEO === '1';
+
   const fuge = hazak.find((h) => h.slug === 'fuge');
   const mandula = hazak.find((h) => h.slug === 'mandula');
   const maxFo = Math.max(...hazak.map((h) => h.max_fo), 0);
-  const minFo = Math.min(...hazak.map((h) => h.max_fo), maxFo);
 
   return (
     <>
       <Fejlec nyelv={nyelv} />
 
-      <section className="hero" id="top">
+      <section className={`hero${videoVan ? ' hero-video' : ''}`} id="top">
+        {videoVan && (
+          <div className="hero-media" aria-hidden="true">
+            <video autoPlay muted loop playsInline preload="metadata" poster="/hero-poster.jpg">
+              <source src="/hero.mp4" type="video/mp4" />
+            </video>
+            <div className="hero-fatyol" />
+          </div>
+        )}
+
         <div className="wrap">
           <Image
-            className="hero-logo" src="/logo-transparent.png"
+            className="hero-logo"
+            src={videoVan ? '/logo-light.png' : '/logo-transparent.png'}
             alt="Szelid Liget" width={760} height={452} priority
           />
           <h1>{T.heroCim[nyelv]}</h1>
@@ -179,12 +240,13 @@ export default function Oldal({
 
         <div className="facts">
           <div className="fact"><strong>{hazak.length}</strong><span>{T.tenyHazak[nyelv]}</span></div>
-          <div className="fact"><strong>{minFo}–{maxFo}</strong><span>{T.tenyFo[nyelv]}</span></div>
-          <div className="fact"><strong>2</strong><span>{T.tenyViz[nyelv]}</span></div>
-          <div className="fact"><strong>24ó</strong><span>{T.tenyVisszaigazolas[nyelv]}</span></div>
+          <div className="fact"><strong>{maxFo}</strong><span>{T.tenyFo[nyelv]}</span></div>
+          <div className="fact"><strong>5</strong><span>{T.tenyViz[nyelv]}</span></div>
+          <div className="fact"><strong>24</strong><span>{T.tenyVisszaigazolas[nyelv]}</span></div>
         </div>
       </section>
 
+      {/* ---------- Faházak ---------- */}
       <section className="cabins" id="hazak">
         <div className="wrap">
           <div className="head">
@@ -212,7 +274,24 @@ export default function Oldal({
         </div>
       </section>
 
-      <section id="foglalas">
+      {/* ---------- Szolgáltatások ---------- */}
+      <section id="szolgaltatasok">
+        <div className="wrap">
+          <div className="head">
+            <div className="label">{T.szolgCimke[nyelv]}</div>
+            <h2>{T.szolgCim[nyelv]}</h2>
+            <p>{T.szolgBevezeto[nyelv]}</p>
+          </div>
+          <div className="szolg-racs">
+            <SzolgOszlop cim={T.szolgKiemeltCim[nyelv]} elemek={lista(T.szolgKiemelt[nyelv])} />
+            <SzolgOszlop cim={T.szolgLakterCim[nyelv]} elemek={lista(T.szolgLakter[nyelv])} />
+            <SzolgOszlop cim={T.szolgKonyhaCim[nyelv]} elemek={lista(T.szolgKonyha[nyelv])} />
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Foglalás ---------- */}
+      <section className="band" id="foglalas">
         <div className="wrap">
           <div className="head">
             <div className="label">{T.foglalasCimke[nyelv]}</div>
@@ -223,45 +302,61 @@ export default function Oldal({
         </div>
       </section>
 
-      <section className="band">
-        <div className="wrap">
-          <div className="head">
-            <div className="label">{T.folyamatCimke[nyelv]}</div>
-            <h2>{T.folyamatCim[nyelv]}</h2>
-            <p>{T.folyamatBevezeto[nyelv]}</p>
-          </div>
-          <div className="steps">
-            {([
-              ['01', T.lepes1Cim[nyelv], T.lepes1[nyelv]],
-              ['02', T.lepes2Cim[nyelv], T.lepes2[nyelv]],
-              ['03', T.lepes3Cim[nyelv], T.lepes3[nyelv]],
-              ['04', T.lepes4Cim[nyelv], T.lepes4[nyelv]],
-            ] as const).map(([n, cim, szoveg]) => (
-              <div className="step" key={n}>
-                <div className="n">{n}</div>
-                <h3>{cim}</h3>
-                <p>{szoveg}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      {/* ---------- Környék ---------- */}
       <section id="kornyek">
         <div className="wrap">
           <div className="head">
             <div className="label">{T.kornyekCimke[nyelv]}</div>
             <h2>{T.kornyekCim[nyelv]}</h2>
+            <p>{T.kornyekBevezeto[nyelv]}</p>
           </div>
-          <div className="steps">
+          <div className="kornyek-racs">
+            {KORNYEK.map((k) => (
+              <article className="kornyek-elem" key={k.cim.hu}>
+                <div className="n">{k.cimke[nyelv]}</div>
+                <h3>{k.cim[nyelv]}</h3>
+                <p>{k.szoveg[nyelv]}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Rólunk ---------- */}
+      <section className="rolunk band" id="rolunk">
+        <div className="wrap">
+          <div className="rolunk-racs">
+            <div>
+              <div className="label">{T.rolunkCimke[nyelv]}</div>
+              <h2>{T.rolunkCim[nyelv]}</h2>
+            </div>
+            <div className="rolunk-szoveg">
+              <p>{T.rolunk1[nyelv]}</p>
+              <p>{T.rolunk2[nyelv]}</p>
+              <p>{T.rolunk3[nyelv]}</p>
+              <p>{T.rolunk4[nyelv]}</p>
+              <p className="rolunk-kiemeles">{T.rolunkKiemeles[nyelv]}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Házirend ---------- */}
+      <section id="hazirend">
+        <div className="wrap">
+          <div className="head">
+            <div className="label">{T.hazirendCimke[nyelv]}</div>
+            <h2>{T.hazirendCim[nyelv]}</h2>
+            <p>{T.hazirendBevezeto[nyelv]}</p>
+          </div>
+          <div className="hazirend-racs">
             {([
-              [T.kornyek1Cimke[nyelv], T.kornyek1Cim[nyelv], T.kornyek1[nyelv]],
-              [T.kornyek2Cimke[nyelv], T.kornyek2Cim[nyelv], T.kornyek2[nyelv]],
-              [T.kornyek3Cimke[nyelv], T.kornyek3Cim[nyelv], T.kornyek3[nyelv]],
-              [T.kornyek4Cimke[nyelv], T.kornyek4Cim[nyelv], T.kornyek4[nyelv]],
-            ] as const).map(([cimke, cim, szoveg]) => (
-              <div className="step" key={cimke}>
-                <div className="n">{cimke}</div>
+              [T.hazirend1Cim[nyelv], T.hazirend1[nyelv]],
+              [T.hazirend2Cim[nyelv], T.hazirend2[nyelv]],
+              [T.hazirend3Cim[nyelv], T.hazirend3[nyelv]],
+              [T.hazirend4Cim[nyelv], T.hazirend4[nyelv]],
+            ] as const).map(([cim, szoveg]) => (
+              <div className="hazirend-elem" key={cim}>
                 <h3>{cim}</h3>
                 <p>{szoveg}</p>
               </div>
@@ -270,6 +365,7 @@ export default function Oldal({
         </div>
       </section>
 
+      {/* ---------- GyIK ---------- */}
       <section className="band" id="gyik">
         <div className="wrap">
           <div className="head">
@@ -282,6 +378,8 @@ export default function Oldal({
               [T.gyik2K[nyelv], T.gyik2V[nyelv], false],
               [T.gyik3K[nyelv], T.gyik3V[nyelv], false],
               [T.gyik4K[nyelv], T.gyik4V[nyelv], false],
+              [T.gyik5K[nyelv], T.gyik5V[nyelv], false],
+              [T.gyik6K[nyelv], T.gyik6V[nyelv], false],
             ] as const).map(([k, v, nyitva]) => (
               <details key={k} open={nyitva}>
                 <summary><span>{k}</span><span className="pm">+</span></summary>
@@ -292,6 +390,14 @@ export default function Oldal({
         </div>
       </section>
 
+      {/* ---------- Hírlevél ---------- */}
+      <section id="hirlevel">
+        <div className="wrap">
+          <HirlevelDoboz nyelv={nyelv} />
+        </div>
+      </section>
+
+      {/* ---------- Kapcsolat és térkép ---------- */}
       <section className="contact" id="kapcsolat">
         <div className="wrap">
           <div className="contact-grid">
@@ -299,20 +405,39 @@ export default function Oldal({
               <div className="label">{T.kapcsolatCimke[nyelv]}</div>
               <h2>{T.kapcsolatCim[nyelv]}</h2>
               <p className="lead">{T.kapcsolatBevezeto[nyelv]}</p>
+
               <div className="cd">
                 <span className="k">{T.kapcsEmail[nyelv]}</span>
-                <span>foglalas@szelidliget.hu</span>
+                <span><a href={`mailto:${CEG.email}`}>{CEG.email}</a></span>
               </div>
+              {CEG.telefon && (
+                <div className="cd">
+                  <span className="k">{T.kapcsTelefon[nyelv]}</span>
+                  <span><a href={`tel:${CEG.telefon.replace(/\s/g, '')}`}>{CEG.telefon}</a></span>
+                </div>
+              )}
               <div className="cd">
-                <span className="k">WEB</span>
-                <span>www.szelidliget.hu</span>
+                <span className="k">{T.kapcsCim[nyelv]}</span>
+                <span>{CEG.cim}</span>
               </div>
               <div className="cd">
                 <span className="k">{T.kapcsErkezes[nyelv]}</span>
                 <span>{T.kapcsErkezesErtek[nyelv]}</span>
               </div>
+              <div className="cd">
+                <span className="k">{T.kapcsTavozas[nyelv]}</span>
+                <span>{T.kapcsTavozasErtek[nyelv]}</span>
+              </div>
+
+              {(SOCIAL.facebook || SOCIAL.instagram || SOCIAL.tiktok) && (
+                <div className="cd" style={{ alignItems: 'center' }}>
+                  <span className="k">{T.socialCim[nyelv].toUpperCase()}</span>
+                  <SocialLinkek />
+                </div>
+              )}
             </div>
-            <div className="map"><span>{T.terkepHelye[nyelv]}</span></div>
+
+            <Terkep nyelv={nyelv} />
           </div>
         </div>
       </section>
