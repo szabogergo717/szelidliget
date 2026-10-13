@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
   const { data: haz } = await db
     .from('hazak')
-    .select('id, slug, nev, max_fo, alap_ar, min_ejszaka')
+    .select('id, slug, nev, max_fo, alap_ar, min_ejszaka, hetvegi_felar')
     .eq('slug', k.haz_slug)
     .eq('aktiv', true)
     .maybeSingle();
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
 
   const { data: arazasok } = await db
     .from('arazas')
-    .select('kezdet, veg, ar, min_ejszaka, prioritas, megnevezes')
+    .select('kezdet, veg, ar, min_ejszaka, prioritas, megnevezes, hetvegi_felar')
     .eq('haz_id', haz.id);
 
   const { data: extrak } = await db
@@ -100,6 +100,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({
     ejszakak: ajanlat.ejszakak,
     szallasdij: ajanlat.szallasdij,
+    hetvegi_felar: ajanlat.hetvegi_felar,
     extrak_dij: ajanlat.extrak_dij,
     vegosszeg: ajanlat.vegosszeg,
     min_ejszaka: ajanlat.min_ejszaka,

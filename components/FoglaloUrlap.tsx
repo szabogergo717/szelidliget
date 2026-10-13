@@ -31,6 +31,7 @@ export type ExtraAdat = {
 type Arvalasz = {
   ejszakak: number;
   szallasdij: number;
+  hetvegi_felar?: number;
   extrak_dij: number;
   vegosszeg: number;
   min_ejszaka: number;
@@ -505,6 +506,14 @@ export default function FoglaloUrlap({
           <span>{T.osszSzallas[nyelv]}</span>
           <span>{ft(ar?.szallasdij ?? 0, nyelv)}</span>
         </div>
+        {/* A hétvégi felár a szállásdíjban már benne van — itt csak
+            megmutatjuk, mennyi volt belőle, hogy az összeg érthető legyen. */}
+        {Boolean(ar?.hetvegi_felar) && (
+          <div className="sum reszletezo">
+            <span>{T.osszHetvegiFelar[nyelv]}</span>
+            <span>{ft(ar?.hetvegi_felar ?? 0, nyelv)}</span>
+          </div>
+        )}
         <div className="sum">
           <span>{T.osszExtrak[nyelv]}</span>
           <span>{ft(ar?.extrak_dij ?? 0, nyelv)}</span>

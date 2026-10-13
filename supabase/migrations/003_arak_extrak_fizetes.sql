@@ -49,13 +49,13 @@ on conflict (slug) do update set
 -- Fordítások
 insert into extrak_forditas (extra_id, nyelv, nev, leiras)
 select id, 'hu', 'Gourmet reggeli kosár',
-  'Környékbeli gazdák tejtermékei, sajtok, kolbászok, szalámik, töpörtyű, friss kenyér, házi lekvárok, méz, gyümölcslé, zöldségek. Két reggelire, két főnek elegendő.'
+  'Környékbeli gazdák tejtermékei, sajtok, kolbászok, szalámik, töpörtyű, friss kenyér, házi lekvárok, méz, gyümölcslé, zöldségek. Két reggelire, két főnek bőséges.'
 from extrak where slug = 'gourmet_reggeli'
 on conflict (extra_id, nyelv) do update set nev = excluded.nev, leiras = excluded.leiras;
 
 insert into extrak_forditas (extra_id, nyelv, nev, leiras)
 select id, 'en', 'Gourmet breakfast basket',
-  'Dairy, cheeses, sausages, salami, crackling, fresh bread, homemade jams, honey, juice and vegetables from local farmers. Enough for two breakfasts for two people.'
+  'Dairy, cheeses, sausages, salami, crackling, fresh bread, homemade jams, honey, juice and vegetables from local farmers. Generous enough for two breakfasts for two people.'
 from extrak where slug = 'gourmet_reggeli'
 on conflict (extra_id, nyelv) do update set nev = excluded.nev, leiras = excluded.leiras;
 

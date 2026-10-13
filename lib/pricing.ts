@@ -17,6 +17,12 @@ export type Arazas = {
   ar: number;
   min_ejszaka: number | null;
   prioritas: number;
+  /**
+   * Hétvégi felár erre az időszakra. Ha null, a ház beállítása érvényes.
+   * 0-t megadva kikapcsolható (pl. ünnepi áraknál, ahol a felár már
+   * benne van az árban).
+   */
+  hetvegi_felar?: number | null;
 };
 
 export type Haz = {
@@ -26,6 +32,8 @@ export type Haz = {
   max_fo: number;
   alap_ar: number;
   min_ejszaka: number;
+  /** Péntek és szombat éjszakára járó felár, forintban. 0 = nincs. */
+  hetvegi_felar?: number;
 };
 
 export type Extra = {
@@ -37,12 +45,22 @@ export type Extra = {
 
 export type ExtraValasztas = { extra_id: string; mennyiseg: number };
 
-export type ArTetel = { datum: string; ar: number; megnevezes?: string };
+export type ArTetel = {
+  datum: string;
+  /** A fizetendő ár erre az éjszakára — a hétvégi felárral együtt. */
+  ar: number;
+  /** Ebből mennyi a hétvégi felár. 0, ha hétköznapi éjszaka. */
+  felar: number;
+  megnevezes?: string;
+  hetvege: boolean;
+};
 
 export type Arajanlat = {
   ejszakak: number;
   naponta: ArTetel[];
   szallasdij: number;
+  /** A szállásdíjból mennyi a hétvégi felár — hogy ki lehessen mutatni. */
+  hetvegi_felar: number;
   extrak_dij: number;
   extra_tetelek: { extra_id: string; slug: string; mennyiseg: number; egysegar: number; osszeg: number }[];
   vegosszeg: number;
@@ -86,15 +104,37 @@ export function tartozkodasNapjai(erkezes: string, tavozas: string): string[] {
 }
 
 /**
+ * Hétvégi éjszaka-e. Egy éjszaka a KEZDŐ napjához tartozik: a péntekről
+ * szombatra virradó éjszaka a péntek, a szombatról vasárnapra virradó
+ * a szombat. Felár tehát a péntek és a szombat éjszakára jár.
+ *
+ * A vasárnapról hétfőre virradó éjszaka már hétköznapi.
+ */
+export function hetvegiEjszaka(datum: string): boolean {
+  const nap = parseDatum(datum).getUTCDay(); // 0 = vasárnap … 6 = szombat
+  return nap === 5 || nap === 6;
+}
+
+/**
  * Egy adott napra érvényes ár. Több átfedő szabály esetén a nagyobb
  * prioritású nyer — így a "Szilveszter" felülírhatja a "Főszezon"-t
  * anélkül, hogy a főszezont kettévágnánk.
+ *
+ * A visszaadott `ar` már tartalmazza a hétvégi felárat; a `felar` mezőből
+ * látszik, mennyi volt belőle a felár.
  */
 export function naptAr(
   datum: string,
   haz: Haz,
   arazasok: Arazas[]
-): { ar: number; min_ejszaka: number; megnevezes?: string } {
+): {
+  ar: number;
+  alapar: number;
+  felar: number;
+  hetvege: boolean;
+  min_ejszaka: number;
+  megnevezes?: string;
+} {
   let nyertes: Arazas | null = null;
 
   for (const a of arazasok) {
@@ -103,13 +143,29 @@ export function naptAr(
     }
   }
 
-  if (!nyertes) {
-    return { ar: haz.alap_ar, min_ejszaka: haz.min_ejszaka };
-  }
+  const hetvege = hetvegiEjszaka(datum);
+
+  // Az időszak saját felára felülírja a házét. A `null` azt jelenti:
+  // "nincs külön szabály", ilyenkor a ház beállítása érvényes.
+  const hazFelar = Math.max(0, Math.round(haz.hetvegi_felar ?? 0));
+  const idoszakFelar =
+    nyertes?.hetvegi_felar === null || nyertes?.hetvegi_felar === undefined
+      ? null
+      : Math.max(0, Math.round(nyertes.hetvegi_felar));
+  const felarMerteke = idoszakFelar ?? hazFelar;
+  const felar = hetvege ? felarMerteke : 0;
+
+  const alapar = nyertes ? nyertes.ar : haz.alap_ar;
+
   return {
-    ar: nyertes.ar,
-    min_ejszaka: nyertes.min_ejszaka ?? haz.min_ejszaka,
-    megnevezes: (nyertes as Arazas & { megnevezes?: string }).megnevezes,
+    ar: alapar + felar,
+    alapar,
+    felar,
+    hetvege,
+    min_ejszaka: nyertes ? (nyertes.min_ejszaka ?? haz.min_ejszaka) : haz.min_ejszaka,
+    megnevezes: nyertes
+      ? (nyertes as Arazas & { megnevezes?: string }).megnevezes
+      : undefined,
   };
 }
 
@@ -132,13 +188,15 @@ export function arajanlat(params: {
 
   const naponta: ArTetel[] = [];
   let szallasdij = 0;
+  let hetvegi_felar = 0;
   // A tartózkodás alatt előforduló legszigorúbb minimum érvényes.
   let min_ejszaka = haz.min_ejszaka;
 
   for (const nap of napok) {
-    const { ar, min_ejszaka: mn, megnevezes } = naptAr(nap, haz, arazasok);
-    naponta.push({ datum: nap, ar, megnevezes });
+    const { ar, felar, hetvege, min_ejszaka: mn, megnevezes } = naptAr(nap, haz, arazasok);
+    naponta.push({ datum: nap, ar, felar, hetvege, megnevezes });
     szallasdij += ar;
+    hetvegi_felar += felar;
     if (mn > min_ejszaka) min_ejszaka = mn;
   }
 
@@ -166,6 +224,7 @@ export function arajanlat(params: {
     ejszakak,
     naponta,
     szallasdij,
+    hetvegi_felar,
     extrak_dij,
     extra_tetelek,
     vegosszeg: szallasdij + extrak_dij,

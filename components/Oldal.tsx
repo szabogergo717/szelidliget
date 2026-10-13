@@ -168,6 +168,10 @@ function Hazkartya({
               <td>{T.specMinimum[nyelv]}</td>
               <td>{haz.min_ejszaka} {T.ejszakaTol[nyelv]}</td>
             </tr>
+            <tr>
+              <td>{T.specAjandek[nyelv]}</td>
+              <td>{T.specAjandekErtek[nyelv]}</td>
+            </tr>
           </tbody>
         </table>
         <div className="cabin-foot">
@@ -290,6 +294,10 @@ export default function Oldal({
             <SzolgOszlop cim={T.szolgKiemeltCim[nyelv]} elemek={lista(T.szolgKiemelt[nyelv])} />
             <SzolgOszlop cim={T.szolgLakterCim[nyelv]} elemek={lista(T.szolgLakter[nyelv])} />
             <SzolgOszlop cim={T.szolgKonyhaCim[nyelv]} elemek={lista(T.szolgKonyha[nyelv])} />
+            <SzolgOszlop
+              cim={T.szolgBiztositunkCim[nyelv]}
+              elemek={lista(T.szolgBiztositunk[nyelv])}
+            />
           </div>
         </div>
       </section>
@@ -320,6 +328,17 @@ export default function Oldal({
                 <div className="n">{k.cimke[nyelv]}</div>
                 <h3>{k.cim[nyelv]}</h3>
                 <p>{k.szoveg[nyelv]}</p>
+                {k.linkek && (
+                  <ul className="kornyek-linkek">
+                    {k.linkek.map((l) => (
+                      <li key={l.url}>
+                        <a href={l.url} target="_blank" rel="noopener noreferrer">
+                          {l.cim}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </article>
             ))}
           </div>
@@ -353,6 +372,7 @@ export default function Oldal({
             <h2>{T.hazirendCim[nyelv]}</h2>
             <p>{T.hazirendBevezeto[nyelv]}</p>
           </div>
+          <p className="hazirend-kiemeles">{T.hazirendKiemeles[nyelv]}</p>
           <div className="hazirend-racs">
             {([
               [T.hazirend1Cim[nyelv], T.hazirend1[nyelv]],

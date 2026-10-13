@@ -360,6 +360,7 @@ mappa másik két fájljával, **ebben a sorrendben**:
 | 2. | `002_hirlevel.sql` | a hírlevél-feliratkozók táblája |
 | 3. | `003_arak_extrak_fizetes.sql` | a végleges árak, a hat extra, az utalásos fizetés, és a régi faházak kitakarítása |
 | 4. | `004_szamlazasi_cim.sql` | a számlázási cím mezői (irányítószám, város, ország) |
+| 5. | `005_hetvegi_felar.sql` | a hétvégi felár lehetősége (alapból kikapcsolva) |
 
 Mindhárom fájl **többször is futtatható**, tehát ha elbizonytalanodsz,
 nyugodtan futtasd le újra.
@@ -618,6 +619,53 @@ update extrak set aktiv = false where slug = 'kenyezteto';
 
 ✅ **Kész, ha:** a Table Editorban az `arazas` és `extrak` táblákban ott
 vannak a soraid.
+
+---
+
+### Hétvégi felár
+
+Péntek és szombat éjszakára felárat lehet kérni. **Alapból ki van
+kapcsolva** — a `005`-ös SQL futtatása önmagában egyetlen árat sem
+változtat meg.
+
+Bekapcsolni egyetlen sorral lehet (Supabase → SQL Editor → New query),
+a 12 000 helyére a saját összegeteket írva:
+
+```sql
+update hazak set hetvegi_felar = 12000 where slug in ('fuge', 'mandula');
+```
+
+Kikapcsolni ugyanígy, 0-val:
+
+```sql
+update hazak set hetvegi_felar = 0 where slug in ('fuge', 'mandula');
+```
+
+**Mit jelent pontosan.** Egy éjszaka ahhoz a naphoz tartozik, amelyiken
+elkezdődik. A felár tehát arra a két éjszakára jár:
+
+| Éjszaka | Felár |
+|---|---|
+| péntekről szombatra | **igen** |
+| szombatról vasárnapra | **igen** |
+| vasárnapról hétfőre | nem |
+| a hét többi éjszakája | nem |
+
+Példa 49 000 Ft-os alapárral és 12 000 Ft felárral: egy péntek–vasárnap
+(két éjszaka) 2 × 61 000 = **122 000 Ft**, míg egy kedd–csütörtök
+(két éjszaka) 2 × 49 000 = **98 000 Ft**.
+
+A vendég az összesítőben külön sorban látja, mennyi volt a felár —
+nem meglepetésként jelenik meg a végösszegben.
+
+**Ha egy szezonális árnál nem kell a felár** (mert az ár már tartalmazza),
+az `arazas` sorban adj meg 0-t:
+
+```sql
+update arazas set hetvegi_felar = 0 where megnevezes = 'Szilveszter';
+```
+
+A `NULL` azt jelenti: nincs külön szabály, a ház beállítása érvényes.
 
 ---
 
@@ -1027,6 +1075,7 @@ szerkesztéshez kell, az oldal futásához nem.
 - **Vizuális foglaltsági naptár** — zöld/piros napokkal, a fél napok
   (érkezés- és távozásnap) átlósan kettéosztva
 - **Kötelező számlázási cím** — számlát cím nélkül nem lehet kiállítani
+- **Hétvégi felár** péntek és szombat éjszakára, kapcsolhatóan
 
 **Még hátravan:**
 - **Számlázz.hu integráció** — a számla most kézzel készül. A beépítéshez

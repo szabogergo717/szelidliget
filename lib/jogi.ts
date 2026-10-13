@@ -346,19 +346,19 @@ export function hazirend(nyelv: Nyelv): JogiOldal {
         {
           cim: 'No smoking',
           szoveg: [
-            'Smoking is not permitted inside the cabins or on the covered terrace. The smell cannot be removed from wood and textiles.',
+            'Smoking is not permitted inside the cabins or on the covered terrace. If you smoke, please do so well away from the cabins and put the stub out carefully — by the forest, a single ember is enough to cause harm.',
           ],
         },
         {
           cim: 'No open fire',
           szoveg: [
-            'We are right by the forest, so open fires — including barbecues and campfires — are not permitted anywhere on the property.',
+            'A fire ban is in force on the property all year round. We are right by the forest, so open fires — including barbecues and campfires — are not permitted anywhere on the property.',
           ],
         },
         {
           cim: 'Quiet hours',
           szoveg: [
-            'Between 10:00 pm and 7:00 am please keep noise down, out of consideration for guests in the neighbouring cabin.',
+            'Between 10:00 pm and 7:00 am please keep noise down. The quiet of the grove is what our guests come here for.',
           ],
         },
         {
@@ -399,19 +399,19 @@ export function hazirend(nyelv: Nyelv): JogiOldal {
       {
         cim: 'A dohányzás tilos',
         szoveg: [
-          'A faházakban és a fedett teraszon egyaránt tilos a dohányzás. A szag a fából és a textíliából nem távolítható el.',
+          'A faházakban és a fedett teraszon egyaránt tilos a dohányzás. Ha dohányzol, kérjük, tedd a házaktól távolabb, és a csikket gondosan oltsd el — erdőszéli környezetben egy parázs is elég a bajhoz.',
         ],
       },
       {
         cim: 'Nyílt tűz nem gyújtható',
         szoveg: [
-          'Erdőszéli környezetben vagyunk, ezért a birtok egész területén tilos a nyílt tűz gyújtása — ideértve a grillezést és a tűzrakást is.',
+          'A területen egész évben tűzgyújtási tilalom van érvényben. Erdőszéli környezetben vagyunk, ezért a birtok egész területén tilos a nyílt tűz gyújtása — ideértve a grillezést és a tűzrakást is.',
         ],
       },
       {
         cim: 'Csendes pihenő',
         szoveg: [
-          'Este 22:00 és reggel 7:00 között kérjük a csend megőrzését, a szomszédos ház vendégeire tekintettel.',
+          'Este 22:00 és reggel 7:00 között kérjük a csend megőrzését. A liget nyugalma az, amiért a vendégeink idejönnek.',
         ],
       },
       {

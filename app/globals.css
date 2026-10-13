@@ -434,7 +434,7 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
 }
 
 /* ---------- szolgáltatások ---------- */
-.szolg-racs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.szolg-racs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; }
 .szolg-oszlop h3 {
   font-size: 17px; margin-bottom: 14px; padding-bottom: 10px;
   border-bottom: 2px solid var(--ochre-light);
@@ -448,7 +448,8 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
   content: ""; position: absolute; left: 0; top: 15px;
   width: 8px; height: 1px; background: var(--ochre);
 }
-@media (max-width: 860px) { .szolg-racs { grid-template-columns: 1fr; gap: 24px; } }
+@media (max-width: 1040px) { .szolg-racs { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px) { .szolg-racs { grid-template-columns: 1fr; gap: 24px; } }
 
 /* ---------- környék ---------- */
 .kornyek-racs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
@@ -685,4 +686,38 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
 .naptar-sugo {
   margin-top: 8px; font-size: 13px; color: var(--slate-soft);
   font-family: var(--betu-cim), system-ui, sans-serif;
+}
+
+/* Az összesítő magyarázó sora — a fölötte lévő összeg bontása. */
+.sum.reszletezo {
+  font-size: 13.5px;
+  color: var(--slate-soft);
+  padding-top: 0;
+  margin-top: -6px;
+  border-top: none;
+}
+
+/* Külső hivatkozások a környék rovatban. */
+.kornyek-linkek { list-style: none; margin: 10px 0 0; padding: 0; }
+.kornyek-linkek li { margin-top: 4px; }
+.kornyek-linkek a {
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 13px;
+  color: var(--water);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(59, 126, 160, 0.35);
+}
+.kornyek-linkek a:hover { border-bottom-color: var(--water); }
+
+/* A tűzgyújtási tilalom — ez nem kérés, hanem szabály, ezért kiemelve. */
+.hazirend-kiemeles {
+  max-width: 640px;
+  margin: 0 auto 28px;
+  padding: 12px 18px;
+  border-left: 3px solid var(--piros);
+  background: rgba(168, 69, 47, 0.07);
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 15px;
+  color: var(--slate);
+  text-align: left;
 }

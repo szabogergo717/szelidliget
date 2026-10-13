@@ -97,8 +97,8 @@ export const T = {
     'Füge sits on the quieter, calmer side of the grove, where closeness to nature and undisturbed rest come first. Its elegant interior combines gold, black and beige tones into a refined, homely atmosphere. Air conditioning, a feature fireplace and a high-quality mattress keep it comfortable all year, while light therapy deepens the sense of relaxation. On the southwest-facing terrace the late afternoon sun stays with you for hours — the perfect place to close a quiet day. Füge is bookable all year round, so you have your own small retreat in nature in any season.'
   ),
   fugeFelszereltseg: S(
-    'Jakuzzi 24 m²-es fedett teraszon, kerti bútorok, franciaágy 30 cm-es matraccal, TV (Netflix), gépesített konyha, Tchibo kapszulás kávéfőző',
-    'Hot tub on a 24 m² covered terrace, garden furniture, double bed with 30 cm mattress, TV (Netflix), fitted kitchen, Tchibo capsule coffee machine'
+    'Jakuzzi 24 m²-es fedett teraszon, kerti bútorok, franciaágy 30 cm-es matraccal, Smart TV, gépesített konyha, Tchibo kapszulás kávéfőző',
+    'Hot tub on a 24 m² covered terrace, garden furniture, double bed with 30 cm mattress, Smart TV, fitted kitchen, Tchibo capsule coffee machine'
   ),
   fugeHalo: S('Stúdió jellegű elrendezés', 'Studio layout'),
 
@@ -112,8 +112,8 @@ export const T = {
     'Enjoy the calm of nature in a striking luxury cabin at the forest edge, where modern comfort and closeness to nature meet in perfect harmony. The 28 m², west-facing terrace is made for resting, while the private hot tub takes care of switching off completely. From the comfortable garden furniture you can watch the sunset and the quiet of the forest. A private little retreat where you can step out of everyday life and truly give yourself over to rest. The cabin\'s elegant, modern interior is made distinctive by a harmonious combination of blue, silver and black.'
   ),
   mandulaFelszereltseg: S(
-    'Jakuzzi 28 m²-es fedett teraszon, kerti bútorok, franciaágy 30 cm-es matraccal, TV (Netflix), gépesített konyha, Tchibo kapszulás kávéfőző (ingyen kapszula)',
-    'Hot tub on a 28 m² covered terrace, garden furniture, double bed with 30 cm mattress, TV (Netflix), fitted kitchen, Tchibo capsule coffee machine (capsules included)'
+    'Jakuzzi 28 m²-es fedett teraszon, kerti bútorok, franciaágy 30 cm-es matraccal, Smart TV, gépesített konyha, Tchibo kapszulás kávéfőző',
+    'Hot tub on a 28 m² covered terrace, garden furniture, double bed with 30 cm mattress, Smart TV, fitted kitchen, Tchibo capsule coffee machine'
   ),
   mandulaHalo: S('Stúdió jellegű elrendezés', 'Studio layout'),
 
@@ -121,6 +121,8 @@ export const T = {
   specHalo: S('Hálótér', 'Sleeping area'),
   specFelszereltseg: S('Felszereltség', 'Amenities'),
   specMinimum: S('Minimum', 'Minimum stay'),
+  specAjandek: S('Ajándék', 'Welcome gift'),
+  specAjandekErtek: S('Ajándék pezsgő', 'Complimentary sparkling wine'),
   fo: S('fő', 'guests'),
   ejszakaTol: S('éjszakától', 'nights or more'),
   arEttol: S('Éjszakánként, 2 főre', 'Per night, for 2 guests'),
@@ -131,8 +133,8 @@ export const T = {
   szolgCimke: S('SZOLGÁLTATÁSOK', 'AMENITIES'),
   szolgCim: S('Ami a házakban vár', "What's waiting in the cabins"),
   szolgBevezeto: S(
-    'Mindkét ház teljesen felszerelt — a törülközőtől a kávékapszuláig mindent megtalálsz.',
-    'Both cabins are fully equipped — from towels to coffee capsules, everything is there.'
+    'Mindkét ház teljesen felszerelt — a törülközőtől és a fürdőköntöstől a kávékapszuláig mindent megtalálsz.',
+    'Both cabins are fully equipped — from towels and bathrobes to coffee capsules, everything is there.'
   ),
 
   szolgKiemeltCim: S('Kiemelt szolgáltatások', 'Highlights'),
@@ -142,13 +144,18 @@ export const T = {
   ),
   szolgLakterCim: S('Lakótér', 'Living space'),
   szolgLakter: S(
-    'Franciaágy 160×200 cm|Látványkandalló|Légkondicionáló|Kerti pihenő|Köntös|Hajszárító|Ágynemű és törülközők',
-    'Double bed 160×200 cm|Feature fireplace|Air conditioning|Garden seating|Bathrobes|Hairdryer|Bed linen and towels'
+    'Franciaágy 160×200 cm|Látványkandalló|Légkondicionáló|Kerti pihenő|Hajszárító|Ágynemű, törülközők és fürdőköntös',
+    'Double bed 160×200 cm|Feature fireplace|Air conditioning|Garden seating|Hairdryer|Bed linen, towels and bathrobes'
+  ),
+  szolgBiztositunkCim: S('Amit biztosítunk neked', 'Included for you'),
+  szolgBiztositunk: S(
+    'Tchibo kapszulás kávé|Teaválogatás|Szénsavmentes ásványvíz',
+    'Tchibo capsule coffee|Selection of teas|Still mineral water'
   ),
   szolgKonyhaCim: S('Konyha', 'Kitchen'),
   szolgKonyha: S(
-    'Indukciós főzőlap|Hűtő fagyasztóval|Mosogatógép|Beépített mikrohullámú sütő|Kenyérpirító|Vízforraló|Tchibo kávéfőző és kapszulák|Tea és fűszerek|Palackozott ásványvíz|Tisztítószerek',
-    'Induction hob|Fridge with freezer|Dishwasher|Built-in microwave|Toaster|Kettle|Tchibo coffee machine and capsules|Tea and spices|Bottled mineral water|Cleaning supplies'
+    'Hűtő fagyasztóval|Mosogatógép|Beépített mikrohullámú sütő|Kenyérpirító|Vízforraló|Tchibo kávéfőző és kapszulák|Tea és fűszerek|Tisztítószerek',
+    'Fridge with freezer|Dishwasher|Built-in microwave|Toaster|Kettle|Tchibo coffee machine and capsules|Tea and spices|Cleaning supplies'
   ),
 
   // ---------- foglalás ----------
@@ -234,6 +241,8 @@ export const T = {
   ),
   ejszaka: S('éjszaka', 'nights'),
 
+  osszHetvegiFelar: S('ebből hétvégi felár', 'incl. weekend surcharge'),
+
   fizetesCim: S('Fizetési mód', 'Payment method'),
   fizetesKartya: S('Bankkártya', 'Card payment'),
   fizetesKartyaLeiras: S(
@@ -280,7 +289,7 @@ export const T = {
   kornyekCimke: S('A KÖRNYÉK', 'NEARBY'),
   kornyekCim: S('Mit érdemes csinálni', "What's worth doing"),
   kornyekBevezeto: S(
-    'A Szelidi-tó környéke tele van olyan helyekkel, amikért érdemes kimozdulni a teraszról.',
+    'A Szelidi-tó környékén sok olyan hely akad, amiért érdemes kimozdulni a teraszról.',
     'The area around Lake Szelid is full of places worth leaving the terrace for.'
   ),
 
@@ -288,16 +297,16 @@ export const T = {
   rolunkCimke: S('RÓLUNK', 'ABOUT US'),
   rolunkCim: S('Több mint 30 év vendéglátás', 'Over 30 years of hosting'),
   rolunk1: S(
-    'Már több mint 30 éve foglalkozunk üdültetéssel, és ez idő alatt rengeteg vendéget, történetet, mosolyt és élményt kaptunk. Megtanultuk, hogy egy igazán jó pihenés nem csupán egy szép szállásról szól, hanem arról az érzésről is, amikor az ember végre megérkezik, lelassul, és egy kicsit kiszakad a mindennapokból.',
-    'We have been in the holiday business for over 30 years, and in that time we have been given countless guests, stories, smiles and experiences. We learned that a truly good break is not only about beautiful accommodation, but about the feeling of finally arriving, slowing down, and stepping out of everyday life for a while.'
+    'Már több mint 30 éve foglalkozunk üdültetéssel, és ez idő alatt sok-sok vendéget fogadtunk, sok történetet és mosolyt kaptunk tőlük. Megtanultuk, hogy egy igazán jó pihenés nem csak a szép szállásról szól, hanem arról az érzésről is, amikor az ember végre megérkezik, megpihen, és kiszakad kicsit a mindennapokból.',
+    'We have been in the holiday business for over 30 years, and in that time we have welcomed a great many guests, and been given a great many stories and smiles in return. We learned that a truly good break is not only about beautiful accommodation, but about the feeling of finally arriving, coming to rest, and stepping out of everyday life for a while.'
   ),
   rolunk2: S(
-    'Sokat utaztunk, sok különleges helyen jártunk, és közben számtalan olyan szálláshelyet láttunk, amely megihletett bennünket. Egy idő után megszületett bennünk a gondolat: miért ne valósíthatnánk meg mi is azt a világot, amelyben mi magunk is szívesen töltenénk el néhány napot?',
-    'We travelled a lot, visited many special places, and saw countless properties that inspired us. In time an idea took shape: why should we not create the kind of world we would gladly spend a few days in ourselves?'
+    'Sokat utaztunk, és közben számtalan olyan szálláshelyet láttunk, amely megihletett bennünket. Egy idő után megszületett a gondolat: miért ne valósíthatnánk meg mi is azt a világot, amelyben mi magunk is szívesen töltenénk el néhány napot?',
+    'We travelled a lot, and along the way we saw countless places that inspired us. In time the thought took shape: why should we not create the kind of world we would gladly spend a few days in ourselves?'
   ),
   rolunk3: S(
-    'Így születtek meg vadonatúj, prémium minőségű faházaink a Szelidi-tónál. Egy olyan helyet álmodtunk meg, ahol a luxus és a természet nem egymás ellentéte, hanem tökéletesen kiegészíti egymást. A házak az erdő közvetlen közelében, természetközeli környezetben várnak, miközben a kényelmet olyan részletek teszik teljessé, mint a privát jakuzzi, a minőségi berendezés és az otthonos, közvetlen hangulat.',
-    'This is how our brand new, premium quality cabins at Lake Szelid came about. We dreamed up a place where luxury and nature are not opposites but complete each other. The cabins wait for you right by the forest, in a natural setting, while details like the private hot tub, the quality furnishings and the homely, direct atmosphere make the comfort complete.'
+    'Így születtek meg vadonatúj, prémium minőségű faházaink a Szelidi-tónál. Olyan helyet álmodtunk meg, ahol a luxus és a természet nem egymás ellentéte, hanem kiegészíti egymást. A két ház az erdő közvetlen közelében áll, a kényelmet pedig olyan részletek teszik teljessé, mint a privát jakuzzi, a minőségi berendezés és az extra kényelem minden apróságban.',
+    'This is how our brand new, premium cabins at Lake Szelid came about. We dreamed up a place where luxury and nature are not opposites but complete each other. The two cabins stand right by the forest, and details like the private hot tub, the quality furnishings and the extra comfort in every small thing make the stay complete.'
   ),
   rolunk4: S(
     'Hiszünk abban, hogy a Szelidi-tó különleges hely. Mi ezt szeretnénk megmutatni egy olyan színvonalon, amelyhez hasonlót itt még nem találhattál. Szeretettel várunk, hogy egyszer ne csak elképzeld, milyen itt lenni, hanem át is éld.',
@@ -349,6 +358,10 @@ export const T = {
     'Hogy minden vendégünk ugyanolyan állapotban találja a házat, mint te.',
     'So that every guest finds the cabin in the same condition you did.'
   ),
+  hazirendKiemeles: S(
+    'A területen egész évben tűzgyújtási tilalom van érvényben.',
+    'A fire ban is in force on the property all year round.'
+  ),
   hazirend1Cim: S('Háziállat nem hozható', 'No pets'),
   hazirend1: S(
     'Egyik faházba sem tudunk háziállatot fogadni — a berendezés, a textíliák és allergiás vendégeink védelmében.',
@@ -356,8 +369,8 @@ export const T = {
   ),
   hazirend2Cim: S('A dohányzás tilos', 'No smoking'),
   hazirend2: S(
-    'A faházakban és a fedett teraszon egyaránt tilos a dohányzás. A szag a fából és a textíliából nem távolítható el.',
-    'Smoking is not allowed in the cabins or on the covered terrace. The smell cannot be removed from wood and textiles.'
+    'A faházakban és a fedett teraszon egyaránt tilos a dohányzás. Ha dohányzol, kérjük, tedd a házaktól távolabb, és a csikket gondosan oltsd el — erdőszéli környezetben egy parázs is elég a bajhoz.',
+    'Smoking is not allowed in the cabins or on the covered terrace. If you smoke, please do so well away from the cabins and put the stub out carefully — by the forest, a single ember is enough to cause harm.'
   ),
   hazirend3Cim: S('Nyílt tűz nem gyújtható', 'No open fire'),
   hazirend3: S(
@@ -366,8 +379,8 @@ export const T = {
   ),
   hazirend4Cim: S('Csendes pihenő', 'Quiet hours'),
   hazirend4: S(
-    'Este 22:00 és reggel 7:00 között kérjük a csend megőrzését, a szomszédos ház vendégeire tekintettel.',
-    'Between 10:00 pm and 7:00 am please keep noise down, out of consideration for guests in the neighbouring cabin.'
+    'Este 22:00 és reggel 7:00 között kérjük a csend megőrzését. A liget nyugalma az, amiért a vendégeink idejönnek.',
+    'Between 10:00 pm and 7:00 am please keep noise down. The quiet of the grove is what our guests come here for.'
   ),
 
   // ---------- hírlevél ----------
@@ -478,13 +491,21 @@ export function lista(szoveg: string): string[] {
 }
 
 /** A környék programjai — kép nélkül, rövid leírással. */
-export const KORNYEK: { cimke: Szoveg; cim: Szoveg; szoveg: Szoveg }[] = [
+export type KornyekLink = { cim: string; url: string };
+
+export const KORNYEK: {
+  cimke: Szoveg;
+  cim: Szoveg;
+  szoveg: Szoveg;
+  /** Hivatalos oldalak, ahol a vendég utánanézhet. */
+  linkek?: KornyekLink[];
+}[] = [
   {
     cimke: S('A TÓN', 'ON THE LAKE'),
     cim: S('Csónakázás a Szelidi-tavon', 'Boating on Lake Szelid'),
     szoveg: S(
-      'Májustól szeptemberig, kísérővel, elektromos meghajtású csónakkal. A tó természetvédelmi terület, ezért horgászni nem lehet — cserébe olyan csend van, amilyet motoros vizeken sosem találsz.',
-      'From May to September, with a guide, in an electric boat. The lake is a nature reserve, so fishing is not allowed — in exchange you get a quiet you will never find on motorised waters.'
+      'Májustól szeptemberig, kísérővel, elektromos meghajtású csónakkal. Robbanómotoros hajó nem járhat a tavon, ezért olyan csend van, amilyet máshol nem találsz. Horgászni lehet — a területi engedélyt a Dunapataji Horgászegyesületnél vagy a helyi horgászboltokban lehet megváltani.',
+      'From May to September, with a guide, in an electric boat. Combustion engines are not allowed on the lake, so it is quieter here than anywhere else nearby. Fishing is permitted — permits are available from the Dunapataj angling association or the local tackle shops.'
     ),
   },
   {
@@ -510,6 +531,14 @@ export const KORNYEK: { cimke: Szoveg; cim: Szoveg; szoveg: Szoveg }[] = [
       'Paprika múzeum, Érseki palota, Érsekkert, az Érseki könyvtár, a Nagyboldogasszony-székesegyház és a Fazekas alkotóház — egy teljes nap program, autóval húsz percre.',
       'The Paprika Museum, the Archbishop\'s Palace and garden, the Archiepiscopal Library, the Assumption Cathedral and the potters\' workshop — a full day out, twenty minutes by car.'
     ),
+    linkek: [
+      { cim: 'Kalocsai Főszékesegyházi Könyvtár', url: 'https://konyvtar.asztrik.hu/' },
+      {
+        cim: 'Érseki Látogató Központ',
+        url: 'https://www.kalocsa.hu/kulturalis-elet/erseki-latogato-kozpont/',
+      },
+      { cim: 'Érseki palota', url: 'https://kalocsaiertektar.hu/national_values/48' },
+    ],
   },
   {
     cimke: S('LOVAK', 'HORSES'),
@@ -547,32 +576,51 @@ export const KORNYEK: { cimke: Szoveg; cim: Szoveg; szoveg: Szoveg }[] = [
     cimke: S('ASZTAL', 'TABLE'),
     cim: S('Éttermek a közelben', 'Restaurants nearby'),
     szoveg: S(
-      'A Family étterem a tónál finom ebédet és vacsorát ad, a Pataji tanyacsárda pedig országos hírű pacalkínálatáról ismert.',
-      'The Family restaurant by the lake serves good lunches and dinners, while the Pataji tanyacsárda is known nationwide for its tripe dishes.'
+      'A Family étterem a tónál finom ebédet és vacsorát ad, a Pataji tanya bisztró pedig országos hírű pacalkínálatáról ismert.',
+      'The Family restaurant by the lake serves good lunches and dinners, while the Pataji tanya bisztró is known nationwide for its tripe dishes.'
     ),
   },
   {
     cimke: S('KERÉKPÁR', 'CYCLING'),
     cim: S('Tóparti kerékpártúra és séta', 'Cycling and walking by the lake'),
     szoveg: S(
-      'A tavat körbe lehet kerekezni és sétálni. Bicikli a helyszínen bérelhető.',
-      'The lake can be circled by bike or on foot. Bicycles can be rented on site.'
+      'A tavat körbe lehet kerekezni és sétálni, kisebb-nagyobb útvonalakon, akár 5–10 kilométeres távon. Bicikli a helyszínen bérelhető.',
+      'You can cycle or walk around the lake on shorter or longer routes, anywhere from five to ten kilometres. Bicycles can be rented on site.'
     ),
   },
   {
     cimke: S('DUNA', 'DANUBE'),
     cim: S('Hartai Duna-parti séta', 'Danube walk at Harta'),
     szoveg: S(
-      'Az ország egyik legszebb Duna-partja, néhány percre autóval. Nyugodt, tágas, szinte mindig üres.',
-      'One of the most beautiful stretches of the Danube in the country, a few minutes by car. Calm, open, and almost always empty.'
+      'Az ország egyik legszebb Duna-partja, néhány percre autóval. Széles, árnyas part, ahol jólesik végigsétálni a víz mellett, leülni egy padra, és nézni, ahogy a folyó megy a dolgára.',
+      'One of the loveliest stretches of the Danube in the country, a few minutes by car. A wide, shaded bank where it feels good to walk along the water, sit down on a bench, and watch the river go about its business.'
     ),
   },
   {
     cimke: S('ESTE', 'EVENING'),
     cim: S('Naplemente a tóparton', 'Sunset by the lake'),
     szoveg: S(
-      'A legegyszerűbb és talán a legjobb program. A nyugati fekvésű teraszokról is látszik, de a partról különösen szép.',
-      'The simplest and perhaps the best thing to do. Visible from the west-facing terraces too, but especially beautiful from the shore.'
+      'A legegyszerűbb és talán a legjobb program. Néhány perc séta a tópartig, és onnan nézve ér igazán véget a nap.',
+      'The simplest and perhaps the best thing to do. A few minutes on foot to the shore, and that is where the day properly ends.'
     ),
+  },
+  {
+    cimke: S('VÍZI PROGRAMOK', 'ON THE WATER'),
+    cim: S('Strand és vízi kalandpark', 'Beach and water park'),
+    szoveg: S(
+      'A tó strandján homokos part, játszóterek, büfék és éttermek várnak, a vízen pedig vízi kalandpark — ugrálóvárakkal, mászófalakkal, csúszdákkal. SUP-ot, vízibiciklit és csónakot a helyszínen lehet bérelni, és élménycsónakázásra is be lehet ülni. Egy egész napot el lehet tölteni úgy, hogy közben el sem hagyod a tópartot.',
+      'The lakeside beach has sand, playgrounds, snack bars and restaurants, and out on the water there is an inflatable adventure park with climbing walls and slides. Paddleboards, pedalos and boats can be rented on site, and guided boat trips run too. You can fill a whole day without ever leaving the shore.'
+    ),
+  },
+  {
+    cimke: S('FOTÓZÁS', 'PHOTOGRAPHY'),
+    cim: S('Érintetlen természet, fényképezőgéppel', 'Untouched nature, with a camera'),
+    szoveg: S(
+      'A Szelidi-tó a Kiskunsági Nemzeti Park része és természetvédelmi terület, ezért olyan tájat lehet itt fényképezni, amit máshol már nem. A nádas élete hajnalban és alkonyatkor a legmozgalmasabb: a szikes tó madárvilága, a vízi növények és a parti erdő együtt olyan képeket adnak, amiért a fotósok külön utat tesznek meg. Őzek gyakran jönnek elő az erdőszélen — jó eséllyel a teraszról is látsz belőlük, anélkül hogy elmozdulnál.',
+      'Lake Szelid is part of the Kiskunság National Park and a protected area, so you can photograph a landscape here that has disappeared elsewhere. The reed beds are busiest at dawn and dusk: the birdlife of an alkaline lake, the water plants and the shoreline woods together make the kind of pictures photographers travel for. Roe deer often step out at the edge of the woods — there is a good chance you will see some from your own terrace.'
+    ),
+    linkek: [
+      { cim: 'Szelidi-tó — Kiskunsági Nemzeti Park', url: 'https://www.knp.hu/hu/szelidi-to' },
+    ],
   },
 ];
