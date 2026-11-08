@@ -50,13 +50,38 @@ try {
 
 /**
  * A méretek, amiket előállítunk. A böngésző ezek közül választ.
- * A 2000 a nyitóképernyő és a nagyított nézet miatt kell: ott a kép
- * a teljes képernyőt kitölti.
+ *
+ * A nyitóképernyő a teljes képernyő szélességét kitölti, ezért ott
+ * nagyobb változatok is kellenek — egy mai laptop kijelzője kétszeres
+ * felbontású, tehát egy 1440 pontos ablakhoz 2880 pontos kép tartozik.
+ * A többi helyen a kép legfeljebb fél képernyő széles, ott fölösleges
+ * lenne ekkora fájlokat tárolni.
  */
-const MERETEK = [480, 960, 1600, 2000];
+const MERETEK_NAGY = [640, 1280, 1920, 2560];
+const MERETEK = [480, 960, 1600];
 
-/** WebP tömörítés. 78 körül már nem látszik a veszteség fotóknál. */
-const MINOSEG = 78;
+/** Ezek a csoportok kapják a nagy változatokat. */
+const NAGY_CSOPORTOK = ['hero'];
+
+/**
+ * WebP tömörítés. A 82 észrevehetően élesebb a 78-nál, és alig
+ * nagyobb fájl — fotóknál ez jó egyensúly.
+ */
+const MINOSEG = 82;
+
+/**
+ * Kicsinyítés után minden kép kap egy finom élesítést. Ez nem varázslat:
+ * a kicsinyítés természetéből adódó lágyulást hozza helyre, nem tesz
+ * bele részletet, ami az eredetiben nincs.
+ */
+const ELESITES = { sigma: 0.7, m1: 0.4, m2: 0.6 };
+
+/**
+ * Ekkora szélesség alatt szólunk, hogy a forrásfotó kicsi. A nyitóképhez
+ * 2000 fölött érdemes maradni, a többi helyen 1600 is elég.
+ */
+const AJANLOTT_SZELESSEG = 1600;
+const AJANLOTT_SZELESSEG_NAGY = 2000;
 
 /**
  * A csoportok megnevezése. Csak azoknak kell ide sor, amelyeknek a
@@ -188,6 +213,11 @@ async function csoportFeldolgozas({ kulcs, mappa, fajlok }) {
   const kimenetiMappa = path.join(KIMENET, kulcs);
   await mkdir(kimenetiMappa, { recursive: true });
 
+  const nagy = NAGY_CSOPORTOK.includes(kulcs);
+  const meretek = nagy ? MERETEK_NAGY : MERETEK;
+  const ajanlott = nagy ? AJANLOTT_SZELESSEG_NAGY : AJANLOTT_SZELESSEG;
+  const kicsik = [];
+
   const kepek = [];
   let eredetiMeret = 0;
   let ujMeret = 0;
@@ -228,18 +258,45 @@ async function csoportFeldolgozas({ kulcs, mappa, fajlok }) {
       /* a méret csak tájékoztató adat, nem állítjuk meg miatta a futást */
     }
 
+    if (szeles < ajanlott) kicsik.push({ fajl, szeles, magas });
+
     const valtozatok = [];
-    for (const meret of MERETEK) {
+    for (const meret of meretek) {
       // Fölnagyítani nincs értelme: a kicsi képből nem lesz nagyobb részlet.
       if (meret > szeles) continue;
       const kimeneti = path.join(kimenetiMappa, `${nev}-${meret}.webp`);
       const eredmeny = await sharp(utvonal, { failOn: 'none' })
         .rotate()
         .resize({ width: meret, withoutEnlargement: true })
+        .sharpen(ELESITES)
         .webp({ quality: MINOSEG })
         .toFile(kimeneti);
       ujMeret += eredmeny.size;
       valtozatok.push({ szelesseg: meret, fajl: `/kepek/${kulcs}/${nev}-${meret}.webp` });
+    }
+
+    /**
+     * Ha a forráskép a listánk két mérete közé esik (pl. 1200 pont,
+     * amikor a következő lépcső 1280), a saját méretén is kiadjuk —
+     * különben a 640-es változatra esnénk vissza, és eldobnánk a
+     * meglévő élességet.
+     */
+    const legnagyobbKesz = valtozatok.length
+      ? valtozatok[valtozatok.length - 1].szelesseg
+      : 0;
+    const legnagyobbLepcso = meretek[meretek.length - 1];
+    // Csak akkor, ha a kép a lépcsők KÖZÉ esik. Egy nagyon nagy fotóból
+    // nem adunk ki teljes méretű változatot: azt senki nem nézi,
+    // viszont megfeküdné a tárolót és a sávszélességet.
+    if (valtozatok.length && legnagyobbKesz < szeles && szeles < legnagyobbLepcso) {
+      const kimeneti = path.join(kimenetiMappa, `${nev}-${szeles}.webp`);
+      const eredmeny = await sharp(utvonal, { failOn: 'none' })
+        .rotate()
+        .sharpen(ELESITES)
+        .webp({ quality: MINOSEG })
+        .toFile(kimeneti);
+      ujMeret += eredmeny.size;
+      valtozatok.push({ szelesseg: szeles, fajl: `/kepek/${kulcs}/${nev}-${szeles}.webp` });
     }
 
     // Ha a kép minden méretnél kisebb volt, legalább egy változat kell.
@@ -247,6 +304,7 @@ async function csoportFeldolgozas({ kulcs, mappa, fajlok }) {
       const kimeneti = path.join(kimenetiMappa, `${nev}-${szeles}.webp`);
       const eredmeny = await sharp(utvonal, { failOn: 'none' })
         .rotate()
+        .sharpen(ELESITES)
         .webp({ quality: MINOSEG })
         .toFile(kimeneti);
       ujMeret += eredmeny.size;
@@ -262,7 +320,7 @@ async function csoportFeldolgozas({ kulcs, mappa, fajlok }) {
     });
   }
 
-  return { kepek, eredetiMeret, ujMeret };
+  return { kepek, eredetiMeret, ujMeret, kicsik, ajanlott };
 }
 
 async function main() {
@@ -296,10 +354,14 @@ async function main() {
   let osszEredeti = 0;
   let osszUj = 0;
 
+  const figyelmeztetesek = [];
+
   for (const csoport of csoportok.sort((a, b) => a.kulcs.localeCompare(b.kulcs))) {
-    const { kepek, eredetiMeret, ujMeret } = await csoportFeldolgozas(csoport);
+    const { kepek, eredetiMeret, ujMeret, kicsik, ajanlott } =
+      await csoportFeldolgozas(csoport);
     osszEredeti += eredetiMeret;
     osszUj += ujMeret;
+    if (kicsik.length) figyelmeztetesek.push({ kulcs: csoport.kulcs, kicsik, ajanlott });
     if (!kepek.length) continue;
 
     leiro.csoportok.push({
@@ -318,6 +380,21 @@ async function main() {
   console.log(`Kész: ${db} kép, ${leiro.csoportok.length} helyre.`);
   console.log(`Eredeti méret:  ${mb(osszEredeti)}`);
   console.log(`Weboldalra:     ${mb(osszUj)}`);
+
+  if (figyelmeztetesek.length) {
+    console.log('');
+    console.log('⚠  KIS FELBONTÁSÚ FORRÁSKÉPEK');
+    console.log('   Ezek az eredeti fotók kisebbek a javasoltnál, ezért a');
+    console.log('   weboldalon nem lesznek élesek. A szkript nem tud rajtuk');
+    console.log('   segíteni: ami nincs benne a fájlban, azt nem lehet');
+    console.log('   visszanagyítani. Keresd meg a nagyobb változatukat.');
+    for (const f of figyelmeztetesek) {
+      console.log(`\n   ${f.kulcs}  (javasolt: legalább ${f.ajanlott} pont széles)`);
+      for (const k of f.kicsik) {
+        console.log(`     ${k.fajl}  —  ${k.szeles}×${k.magas}`);
+      }
+    }
+  }
   console.log('');
   console.log('A képek a public/kepek mappába kerültek, a leíró a lib/galeriaAdat.json fájlba.');
   console.log('Most már mentheted:  git add -A && git commit -m "Fotok" && git push');

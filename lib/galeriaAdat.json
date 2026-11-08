@@ -22,6 +22,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/extrak/evfordulo/eredeti-extrak-evfordulo-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/extrak/evfordulo/eredeti-extrak-evfordulo-1000.webp"
             }
           ]
         }
@@ -48,6 +52,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/extrak/gourmet_reggeli/gourmet-reggeli-nga-2585-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/extrak/gourmet_reggeli/gourmet-reggeli-nga-2585-1000.webp"
             }
           ]
         }
@@ -74,6 +82,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/extrak/lanykeres/lanykeres-nga-3060-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/extrak/lanykeres/lanykeres-nga-3060-1000.webp"
             }
           ]
         }
@@ -104,10 +116,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/extrak/sajttal/01-sajttal-img-0970-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/extrak/sajttal/01-sajttal-img-0970-2000.webp"
             }
           ]
         }
@@ -130,6 +138,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/fuge/01-haz-nga-2727-480.webp"
+            },
+            {
+              "szelesseg": 697,
+              "fajl": "/kepek/fuge/01-haz-nga-2727-697.webp"
             }
           ]
         },
@@ -150,10 +162,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/fuge/02-szoba-04-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/fuge/02-szoba-04-2000.webp"
             }
           ]
         },
@@ -166,6 +174,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/fuge/03-terasz-nga-2396-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/fuge/03-terasz-nga-2396-665.webp"
             }
           ]
         },
@@ -178,6 +190,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/fuge/04-jakuzzi-nga-2740-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/fuge/04-jakuzzi-nga-2740-665.webp"
             }
           ]
         },
@@ -190,6 +206,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/fuge/05-bor-nga-2377-480.webp"
+            },
+            {
+              "szelesseg": 678,
+              "fajl": "/kepek/fuge/05-bor-nga-2377-678.webp"
             }
           ]
         },
@@ -250,10 +270,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/fuge/08-erdo-nga-1702-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/fuge/08-erdo-nga-1702-2000.webp"
             }
           ]
         },
@@ -266,6 +282,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/fuge/09-terasz-nga-2653-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/fuge/09-terasz-nga-2653-665.webp"
             }
           ]
         },
@@ -306,10 +326,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/fuge/11-hangulat-14-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/fuge/11-hangulat-14-2000.webp"
             }
           ]
         },
@@ -322,6 +338,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/fuge/12-terasz-nga-2481-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/fuge/12-terasz-nga-2481-665.webp"
             }
           ]
         },
@@ -338,6 +358,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/fuge/13-szoba-nga-2492-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/fuge/13-szoba-nga-2492-1000.webp"
             }
           ]
         },
@@ -350,6 +374,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/fuge/14-konyha-nga-2522-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/fuge/14-konyha-nga-2522-665.webp"
             }
           ]
         }
@@ -370,12 +398,12 @@
           "magassag": 685,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/01-fahaz-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/01-fahaz-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/01-fahaz-960.webp"
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/01-fahaz-1000.webp"
             }
           ]
         },
@@ -386,12 +414,12 @@
           "magassag": 665,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/02-jacuzzi-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/02-jacuzzi-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/02-jacuzzi-960.webp"
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/02-jacuzzi-1000.webp"
             }
           ]
         },
@@ -402,20 +430,20 @@
           "magassag": 1996,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/03-szoba-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/03-szoba-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/03-szoba-960.webp"
+              "szelesseg": 1280,
+              "fajl": "/kepek/hero/03-szoba-1280.webp"
             },
             {
-              "szelesseg": 1600,
-              "fajl": "/kepek/hero/03-szoba-1600.webp"
+              "szelesseg": 1920,
+              "fajl": "/kepek/hero/03-szoba-1920.webp"
             },
             {
-              "szelesseg": 2000,
-              "fajl": "/kepek/hero/03-szoba-2000.webp"
+              "szelesseg": 2560,
+              "fajl": "/kepek/hero/03-szoba-2560.webp"
             }
           ]
         },
@@ -426,12 +454,12 @@
           "magassag": 665,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/05-kaja-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/05-kaja-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/05-kaja-960.webp"
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/05-kaja-1000.webp"
             }
           ]
         },
@@ -442,20 +470,20 @@
           "magassag": 1996,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/06-to-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/06-to-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/06-to-960.webp"
+              "szelesseg": 1280,
+              "fajl": "/kepek/hero/06-to-1280.webp"
             },
             {
-              "szelesseg": 1600,
-              "fajl": "/kepek/hero/06-to-1600.webp"
+              "szelesseg": 1920,
+              "fajl": "/kepek/hero/06-to-1920.webp"
             },
             {
-              "szelesseg": 2000,
-              "fajl": "/kepek/hero/06-to-2000.webp"
+              "szelesseg": 2560,
+              "fajl": "/kepek/hero/06-to-2560.webp"
             }
           ]
         },
@@ -466,12 +494,12 @@
           "magassag": 665,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/07-szoba2-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/07-szoba2-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/07-szoba2-960.webp"
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/07-szoba2-1000.webp"
             }
           ]
         },
@@ -482,12 +510,12 @@
           "magassag": 665,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/08-jakuzzi-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/08-jakuzzi-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/08-jakuzzi-960.webp"
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/08-jakuzzi-1000.webp"
             }
           ]
         },
@@ -498,12 +526,12 @@
           "magassag": 665,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/09-szoba-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/09-szoba-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/09-szoba-960.webp"
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/09-szoba-1000.webp"
             }
           ]
         },
@@ -514,20 +542,20 @@
           "magassag": 2003,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/10-to-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/10-to-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/10-to-960.webp"
+              "szelesseg": 1280,
+              "fajl": "/kepek/hero/10-to-1280.webp"
             },
             {
-              "szelesseg": 1600,
-              "fajl": "/kepek/hero/10-to-1600.webp"
+              "szelesseg": 1920,
+              "fajl": "/kepek/hero/10-to-1920.webp"
             },
             {
-              "szelesseg": 2000,
-              "fajl": "/kepek/hero/10-to-2000.webp"
+              "szelesseg": 2560,
+              "fajl": "/kepek/hero/10-to-2560.webp"
             }
           ]
         },
@@ -538,12 +566,12 @@
           "magassag": 665,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/11-jakuzzi-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/11-jakuzzi-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/11-jakuzzi-960.webp"
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/11-jakuzzi-1000.webp"
             }
           ]
         },
@@ -554,12 +582,12 @@
           "magassag": 544,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/12-haz-nga-2666-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/12-haz-nga-2666-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/12-haz-nga-2666-960.webp"
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/12-haz-nga-2666-1000.webp"
             }
           ]
         },
@@ -570,20 +598,20 @@
           "magassag": 2003,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/13-to-nga-7455-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/13-to-nga-7455-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/13-to-nga-7455-960.webp"
+              "szelesseg": 1280,
+              "fajl": "/kepek/hero/13-to-nga-7455-1280.webp"
             },
             {
-              "szelesseg": 1600,
-              "fajl": "/kepek/hero/13-to-nga-7455-1600.webp"
+              "szelesseg": 1920,
+              "fajl": "/kepek/hero/13-to-nga-7455-1920.webp"
             },
             {
-              "szelesseg": 2000,
-              "fajl": "/kepek/hero/13-to-nga-7455-2000.webp"
+              "szelesseg": 2560,
+              "fajl": "/kepek/hero/13-to-nga-7455-2560.webp"
             }
           ]
         },
@@ -594,20 +622,20 @@
           "magassag": 1996,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/14-to-nga-1677-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/14-to-nga-1677-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/14-to-nga-1677-960.webp"
+              "szelesseg": 1280,
+              "fajl": "/kepek/hero/14-to-nga-1677-1280.webp"
             },
             {
-              "szelesseg": 1600,
-              "fajl": "/kepek/hero/14-to-nga-1677-1600.webp"
+              "szelesseg": 1920,
+              "fajl": "/kepek/hero/14-to-nga-1677-1920.webp"
             },
             {
-              "szelesseg": 2000,
-              "fajl": "/kepek/hero/14-to-nga-1677-2000.webp"
+              "szelesseg": 2560,
+              "fajl": "/kepek/hero/14-to-nga-1677-2560.webp"
             }
           ]
         },
@@ -618,20 +646,20 @@
           "magassag": 2003,
           "valtozatok": [
             {
-              "szelesseg": 480,
-              "fajl": "/kepek/hero/15-to-nga-7494-480.webp"
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/15-to-nga-7494-640.webp"
             },
             {
-              "szelesseg": 960,
-              "fajl": "/kepek/hero/15-to-nga-7494-960.webp"
+              "szelesseg": 1280,
+              "fajl": "/kepek/hero/15-to-nga-7494-1280.webp"
             },
             {
-              "szelesseg": 1600,
-              "fajl": "/kepek/hero/15-to-nga-7494-1600.webp"
+              "szelesseg": 1920,
+              "fajl": "/kepek/hero/15-to-nga-7494-1920.webp"
             },
             {
-              "szelesseg": 2000,
-              "fajl": "/kepek/hero/15-to-nga-7494-2000.webp"
+              "szelesseg": 2560,
+              "fajl": "/kepek/hero/15-to-nga-7494-2560.webp"
             }
           ]
         }
@@ -658,6 +686,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/kiemelt/01-jaku-nga-2898-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/kiemelt/01-jaku-nga-2898-1000.webp"
             }
           ]
         },
@@ -674,6 +706,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/kiemelt/02-kaja-nga-2709-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/kiemelt/02-kaja-nga-2709-1000.webp"
             }
           ]
         },
@@ -690,6 +726,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/kiemelt/03-pezsi-jaku-nga-2846-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/kiemelt/03-pezsi-jaku-nga-2846-1000.webp"
             }
           ]
         },
@@ -706,6 +746,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/kiemelt/04-tv-nga-2961a-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/kiemelt/04-tv-nga-2961a-1000.webp"
             }
           ]
         },
@@ -726,10 +770,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kiemelt/05-kv-06-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kiemelt/05-kv-06-2000.webp"
             }
           ]
         },
@@ -746,6 +786,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/kiemelt/06-pezsi-nga-2903-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/kiemelt/06-pezsi-nga-2903-1000.webp"
             }
           ]
         }
@@ -772,6 +816,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/konyha/01-konyha-nga-2545-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/konyha/01-konyha-nga-2545-1000.webp"
             }
           ]
         },
@@ -788,6 +836,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/konyha/02-konyha-nga-2490a-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/konyha/02-konyha-nga-2490a-1000.webp"
             }
           ]
         },
@@ -804,6 +856,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/konyha/03-konyha-nga-3021a-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/konyha/03-konyha-nga-3021a-1000.webp"
             }
           ]
         }
@@ -834,10 +890,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/bowling/nga-1725-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/bowling/nga-1725-2000.webp"
             }
           ]
         },
@@ -858,10 +910,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/bowling/nga-1731-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/bowling/nga-1731-2000.webp"
             }
           ]
         },
@@ -882,10 +930,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/bowling/nga-1740-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/bowling/nga-1740-2000.webp"
             }
           ]
         }
@@ -916,10 +960,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/csonakazas/nga-1665-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/csonakazas/nga-1665-2000.webp"
             }
           ]
         },
@@ -940,10 +980,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/csonakazas/nga-1865-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/csonakazas/nga-1865-2000.webp"
             }
           ]
         }
@@ -974,10 +1010,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/duna/nga-1628-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/duna/nga-1628-2000.webp"
             }
           ]
         }
@@ -1008,10 +1040,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/ettermek/nga-1735-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/ettermek/nga-1735-2000.webp"
             }
           ]
         }
@@ -1082,10 +1110,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/fotozas/nga-1670-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/fotozas/nga-1670-2000.webp"
             }
           ]
         },
@@ -1106,10 +1130,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/fotozas/nga-1673-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/fotozas/nga-1673-2000.webp"
             }
           ]
         },
@@ -1150,10 +1170,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/fotozas/nga-1871-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/fotozas/nga-1871-2000.webp"
             }
           ]
         },
@@ -1174,10 +1190,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/fotozas/nga-1916-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/fotozas/nga-1916-2000.webp"
             }
           ]
         },
@@ -1198,10 +1210,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/fotozas/nga-7390-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/fotozas/nga-7390-2000.webp"
             }
           ]
         },
@@ -1222,10 +1230,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/fotozas/nga-7406-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/fotozas/nga-7406-2000.webp"
             }
           ]
         },
@@ -1246,10 +1250,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/fotozas/nga-7484-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/fotozas/nga-7484-2000.webp"
             }
           ]
         }
@@ -1280,10 +1280,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/kalocsa/nga-1756-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/kalocsa/nga-1756-2000.webp"
             }
           ]
         },
@@ -1304,10 +1300,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/kalocsa/nga-1766-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/kalocsa/nga-1766-2000.webp"
             }
           ]
         },
@@ -1328,10 +1320,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/kalocsa/nga-1769-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/kalocsa/nga-1769-2000.webp"
             }
           ]
         },
@@ -1352,10 +1340,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/kalocsa/nga-1775-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/kalocsa/nga-1775-2000.webp"
             }
           ]
         },
@@ -1376,10 +1360,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/kalocsa/nga-1785-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/kalocsa/nga-1785-2000.webp"
             }
           ]
         },
@@ -1420,10 +1400,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/kalocsa/nga-1792-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/kalocsa/nga-1792-2000.webp"
             }
           ]
         },
@@ -1444,10 +1420,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/kalocsa/nga-1798-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/kalocsa/nga-1798-2000.webp"
             }
           ]
         },
@@ -1468,10 +1440,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/kalocsa/nga-1803-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/kalocsa/nga-1803-2000.webp"
             }
           ]
         },
@@ -1492,10 +1460,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/kalocsa/nga-7427-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/kalocsa/nga-7427-2000.webp"
             }
           ]
         },
@@ -1516,10 +1480,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/kalocsa/nga-7429-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/kalocsa/nga-7429-2000.webp"
             }
           ]
         }
@@ -1550,10 +1510,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/kerekpar/nga-1647-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/kerekpar/nga-1647-2000.webp"
             }
           ]
         },
@@ -1574,10 +1530,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/kerekpar/nga-1707-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/kerekpar/nga-1707-2000.webp"
             }
           ]
         }
@@ -1650,10 +1602,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/madarles/nga-1655-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/madarles/nga-1655-2000.webp"
             }
           ]
         },
@@ -1694,10 +1642,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/madarles/nga-7375-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/madarles/nga-7375-2000.webp"
             }
           ]
         }
@@ -1728,10 +1672,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/naplemente/nga-1673-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/naplemente/nga-1673-2000.webp"
             }
           ]
         },
@@ -1752,10 +1692,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/naplemente/nga-1677-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/naplemente/nga-1677-2000.webp"
             }
           ]
         },
@@ -1776,10 +1712,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/naplemente/nga-1952-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/naplemente/nga-1952-2000.webp"
             }
           ]
         },
@@ -1800,10 +1732,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/naplemente/nga-1968-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/naplemente/nga-1968-2000.webp"
             }
           ]
         },
@@ -1824,10 +1752,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/naplemente/nga-7413-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/naplemente/nga-7413-2000.webp"
             }
           ]
         },
@@ -1848,10 +1772,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/naplemente/nga-7470-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/naplemente/nga-7470-2000.webp"
             }
           ]
         }
@@ -1882,10 +1802,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/pincesor/nga-1810-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/pincesor/nga-1810-2000.webp"
             }
           ]
         },
@@ -1906,10 +1822,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/pincesor/nga-1816-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/pincesor/nga-1816-2000.webp"
             }
           ]
         },
@@ -1950,10 +1862,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/pincesor/nga-1820-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/pincesor/nga-1820-2000.webp"
             }
           ]
         },
@@ -1974,10 +1882,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/pincesor/nga-1823-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/pincesor/nga-1823-2000.webp"
             }
           ]
         },
@@ -1998,10 +1902,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/pincesor/nga-1827-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/pincesor/nga-1827-2000.webp"
             }
           ]
         },
@@ -2022,10 +1922,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/pincesor/nga-1831-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/pincesor/nga-1831-2000.webp"
             }
           ]
         },
@@ -2046,10 +1942,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/pincesor/nga-1835-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/pincesor/nga-1835-2000.webp"
             }
           ]
         },
@@ -2070,10 +1962,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/pincesor/nga-1838-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/pincesor/nga-1838-2000.webp"
             }
           ]
         },
@@ -2124,10 +2012,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/strand/nga-1926-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/strand/nga-1926-2000.webp"
             }
           ]
         },
@@ -2148,10 +2032,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/strand/nga-7447-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/strand/nga-7447-2000.webp"
             }
           ]
         }
@@ -2182,10 +2062,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/tanosveny/nga-1614-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/tanosveny/nga-1614-2000.webp"
             }
           ]
         },
@@ -2206,10 +2082,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/tanosveny/nga-1714-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/tanosveny/nga-1714-2000.webp"
             }
           ]
         },
@@ -2230,10 +2102,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/tanosveny/nga-1716-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/tanosveny/nga-1716-2000.webp"
             }
           ]
         },
@@ -2254,10 +2122,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/kornyek/tanosveny/nga-1754-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/kornyek/tanosveny/nga-1754-2000.webp"
             }
           ]
         }
@@ -2288,10 +2152,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/lakoter/01-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/lakoter/01-2000.webp"
             }
           ]
         },
@@ -2312,10 +2172,6 @@
             {
               "szelesseg": 1600,
               "fajl": "/kepek/lakoter/02-1600.webp"
-            },
-            {
-              "szelesseg": 2000,
-              "fajl": "/kepek/lakoter/02-2000.webp"
             }
           ]
         },
@@ -2332,6 +2188,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/lakoter/nga-2500-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-2500-1000.webp"
             }
           ]
         },
@@ -2344,6 +2204,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/lakoter/nga-2681-480.webp"
+            },
+            {
+              "szelesseg": 845,
+              "fajl": "/kepek/lakoter/nga-2681-845.webp"
             }
           ]
         },
@@ -2360,6 +2224,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/lakoter/nga-2953a-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-2953a-1000.webp"
             }
           ]
         },
@@ -2376,6 +2244,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/lakoter/nga-2961a-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-2961a-1000.webp"
             }
           ]
         },
@@ -2392,6 +2264,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/lakoter/nga-2970-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-2970-1000.webp"
             }
           ]
         },
@@ -2408,6 +2284,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/lakoter/nga-3021a-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-3021a-1000.webp"
             }
           ]
         },
@@ -2424,6 +2304,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/lakoter/nga-3029-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-3029-1000.webp"
             }
           ]
         },
@@ -2440,6 +2324,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/lakoter/nga-3118-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-3118-1000.webp"
             }
           ]
         },
@@ -2456,6 +2344,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/lakoter/nga-3153-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-3153-1000.webp"
             }
           ]
         },
@@ -2472,6 +2364,10 @@
             {
               "szelesseg": 960,
               "fajl": "/kepek/lakoter/nga-3171-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-3171-1000.webp"
             }
           ]
         }
@@ -2494,6 +2390,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/mandula/01-fahaz-nga-2668-480.webp"
+            },
+            {
+              "szelesseg": 673,
+              "fajl": "/kepek/mandula/01-fahaz-nga-2668-673.webp"
             }
           ]
         },
@@ -2506,6 +2406,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/mandula/02-jakuzzi-nga-2976-480.webp"
+            },
+            {
+              "szelesseg": 693,
+              "fajl": "/kepek/mandula/02-jakuzzi-nga-2976-693.webp"
             }
           ]
         },
@@ -2518,6 +2422,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/mandula/03-szoba-nga-3104-480.webp"
+            },
+            {
+              "szelesseg": 739,
+              "fajl": "/kepek/mandula/03-szoba-nga-3104-739.webp"
             }
           ]
         },
@@ -2530,6 +2438,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/mandula/04-konyha-nga-3025a-480.webp"
+            },
+            {
+              "szelesseg": 733,
+              "fajl": "/kepek/mandula/04-konyha-nga-3025a-733.webp"
             }
           ]
         },
@@ -2542,6 +2454,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/mandula/05-furdo-nga-3034-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/mandula/05-furdo-nga-3034-665.webp"
             }
           ]
         },
@@ -2554,6 +2470,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/mandula/06-furdo-nga-3037-480.webp"
+            },
+            {
+              "szelesseg": 629,
+              "fajl": "/kepek/mandula/06-furdo-nga-3037-629.webp"
             }
           ]
         },
@@ -2586,6 +2506,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/mandula/08-bor-nga-2377-480.webp"
+            },
+            {
+              "szelesseg": 678,
+              "fajl": "/kepek/mandula/08-bor-nga-2377-678.webp"
             }
           ]
         },
@@ -2598,6 +2522,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/mandula/09-jakuzzi-nga-2933-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/mandula/09-jakuzzi-nga-2933-665.webp"
             }
           ]
         },
@@ -2610,6 +2538,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/mandula/10-jakuzzi-nga-2990-480.webp"
+            },
+            {
+              "szelesseg": 936,
+              "fajl": "/kepek/mandula/10-jakuzzi-nga-2990-936.webp"
             }
           ]
         },
@@ -2622,6 +2554,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/mandula/11-hangulat-nga-3049-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/mandula/11-hangulat-nga-3049-665.webp"
             }
           ]
         },
@@ -2634,6 +2570,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/mandula/12-jakuzzi-nga-3074-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/mandula/12-jakuzzi-nga-3074-665.webp"
             }
           ]
         },
@@ -2646,6 +2586,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/mandula/13-hangulat-nga-3125-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/mandula/13-hangulat-nga-3125-665.webp"
             }
           ]
         },
@@ -2658,6 +2602,10 @@
             {
               "szelesseg": 480,
               "fajl": "/kepek/mandula/14-szoba-nga-3136-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/mandula/14-szoba-nga-3136-665.webp"
             }
           ]
         }

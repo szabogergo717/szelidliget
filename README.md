@@ -1298,6 +1298,31 @@ eredeti/kornyek/madarles/        eredeti/kornyek/fotozas/
 > **Az első kép számít a legtöbbet:** minden helyen az látszik elsőként.
 > Oda a legszebbet tedd.
 
+### Milyen felbontású legyen a fotó
+
+A szkript **kicsinyíteni tud, nagyítani nem**. Ami nincs benne az
+eredeti fájlban, azt nem lehet visszanyerni — ezért a forrásfotó
+mérete szabja meg, mennyire lesz éles a weboldalon.
+
+| Hely | Javasolt szélesség |
+|---|---|
+| `hero` (nyitóképernyő) | **legalább 2500 pont**, ideálisan 3000–4000 |
+| minden más | **legalább 1600 pont** |
+
+Fényképezőgépből és újabb telefonból kijövő fotó ennél jóval nagyobb,
+tehát általában nincs teendő. Akkor szokott kicsi lenni a kép, ha
+Facebookról, Messengerből vagy levélből mentetted le — ezek
+átméretezik a fotót. Ilyenkor keresd meg az eredetit.
+
+**A szkript megmondja, ha baj van.** Futtatás után kiírja azokat a
+fájlokat, amik kisebbek a javasoltnál, a pontos méretükkel:
+
+```
+⚠  KIS FELBONTÁSÚ FORRÁSKÉPEK
+   hero  (javasolt: legalább 2000 pont széles)
+     03-naplemente.jpg  —  1200×800
+```
+
 > ⚠ **Az extrák mappaneveiben az aláhúzás számít.** A `gourmet_reggeli`
 > mappa jó, a `gourmet-reggeli` nem — az adatbázisbeli azonosítóval
 > pontosan egyeznie kell.
