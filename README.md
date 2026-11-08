@@ -33,6 +33,7 @@ A két faház: **Füge** (2–4 fő) és **Mandula** (2–6 fő).
 - [Ha valami nem működik](#ha-valami-nem-mukodik)
 - [Mi van kész és mi nincs](#mi-van-kesz)
 - [Négy dolog a rendszerről](#negy-dolog)
+- [Megtalálhatóság a Google-ben](#kereso)
 - [Arculat és logófájlok](#arculat)
 
 ---
@@ -459,6 +460,7 @@ utána **Redeploy**.
 | `NEXT_PUBLIC_SZEKHELY` | a cég székhelye | lábléc, impresszum |
 | `NEXT_PUBLIC_TELEFON` | pl. `+36 30 123 4567` | kapcsolat rovat |
 | `NEXT_PUBLIC_IFA_FO_EJ` | pl. `300` | idegenforgalmi adó; ha üres, 300 Ft/fő/éj |
+| `NEXT_PUBLIC_GEO` | pl. `46.5745, 19.0186` | koordináták a térképes találatokhoz |
 | `NEXT_PUBLIC_FACEBOOK` | a Facebook-oldal címe | közösségi linkek |
 | `NEXT_PUBLIC_INSTAGRAM` | az Instagram-oldal címe | közösségi linkek |
 | `NEXT_PUBLIC_TIKTOK` | a TikTok-oldal címe | közösségi linkek |
@@ -1468,6 +1470,80 @@ Redeploy.
   adatforgalommal. A határ 820 képpont: efölött videó, alatta kép.
 - Ha a `NEXT_PUBLIC_HERO_VIDEO` nincs bekapcsolva, a videó **le sem
   töltődik** — nem fogyaszt adatot feleslegesen.
+
+<a name="kereso"></a>
+## Megtalálhatóság a Google-ben
+
+**Mit csinál a kód, és mit kell neked csinálnod.** A kettő együtt
+működik — a technikai rész önmagában nem elég.
+
+### Amit a kód már elintéz
+
+- **Keresőbarát címek és leírások** magyarul és angolul, a keresett
+  kifejezésekkel: „Luxus faházak a Szelidi-tónál — Szelid Liget".
+- **Nyelvi jelölés és nyelvi párok** (`hreflang`): a Google tudja, hogy
+  a magyar és az angol oldal ugyanaz a tartalom két nyelven, nem
+  másolat. Ez eddig hibás volt: az angol oldalak is magyarként mentek ki.
+- **Strukturált adat** — a kereső gépi formában is megkapja, hogy ez
+  egy szálláshely, hol van, mennyibe kerül, hány fő fér el, mi van
+  benne, és mik a gyakori kérdések. Ettől a találat mellett megjelenhet
+  nagy kép, ár és lenyíló kérdés-válasz.
+- **Oldaltérkép** (`/sitemap.xml`) és **robots.txt** a keresőknek.
+- **Megosztási kép**: ha már feltöltötted a fotókat, a Facebookon és a
+  Messengerben a nyitófotó jelenik meg a link mellett, nem a logó.
+- **Gyorsaság**: a képek három méretben készülnek, és csak a szükséges
+  töltődik le. A sebesség a Google egyik rangsorolási szempontja.
+
+### Amit neked kell elintézned
+
+Ez a négy a legfontosabb, és **mind ingyenes**:
+
+1. **Google Cégprofil** (Google Business Profile) — `business.google.com`.
+   Helyi keresésnél (pl. „faház Szelidi-tó") **ez számít a legtöbbet**,
+   gyakran többet, mint maga a weboldal. Vedd fel a szálláshelyet
+   címmel, fotókkal, nyitvatartással, és kösd rá a `szelidliget.hu`-t.
+2. **Google Search Console** — `search.google.com/search-console`.
+   Itt jelented be az oldalt a Google-nek, és itt látod, milyen
+   keresésekre jelensz meg. Add meg az oldaltérképet:
+   `https://www.szelidliget.hu/sitemap.xml`.
+3. **Bing Webmaster Tools** — `bing.com/webmasters`. Ugyanez a Bingnek
+   (és rajta keresztül a ChatGPT keresésének is). A Search Console-ból
+   egy kattintással átvehető.
+4. **Vendégértékelések.** A Google Cégprofilra érkező értékelések
+   nagyon erősen hatnak a helyi találatokra. Érdemes a távozás utáni
+   e-mailben kérni.
+
+### Mire lehet reálisan számítani
+
+Őszintén: **helyezést senki nem tud garantálni**, és aki garantál, az
+nem mond igazat. Amire viszont jó esély van:
+
+| Keresés | Reális esély |
+|---|---|
+| „Szelid Liget" | **Első hely**, néhány héten belül. Ez a saját neved. |
+| „faház Szelidi-tó", „szállás Szelidi-tó" | **Jó esély az első oldalra**, főleg a Cégprofillal együtt. Kevés a versenytárs. |
+| „luxus faház" (országosan) | **Nehéz.** Itt több száz szálláshely verseng, évek óta. Ide tartós munka kell: tartalom, értékelések, más oldalakról érkező hivatkozások. |
+
+A helyi, konkrét keresések hozzák a vendéget — „luxus faház" általában
+nem foglalással végződik, „faház Szelidi-tó jakuzzival" viszont igen.
+
+> **Az első eredmények 4–8 hét.** A Google-nek időbe telik bejárnia és
+> megítélnie egy új oldalt. Addig is a Cégprofil hozhat forgalmat.
+
+### Koordináták megadása (opcionális, de érdemes)
+
+A pontos helyszín segíti a térképes találatokat. Keresd meg a házat a
+Google Mapsen, kattints rá jobb gombbal, és másold ki a két számot
+(pl. `46.5745, 19.0186`). Utána Vercel → **Settings → Environment
+Variables**:
+
+| Name | Value |
+|---|---|
+| `NEXT_PUBLIC_GEO` | `46.5745, 19.0186` |
+
+Ha üresen hagyod, a koordináta egyszerűen kimarad — a cím attól még ott van.
+
+---
 
 <a name="arculat"></a>
 ## Arculat és logófájlok

@@ -3,7 +3,7 @@ import JogiOldal from '@/components/JogiOldal';
 import { aszf } from '@/lib/jogi';
 
 export const metadata: Metadata = {
-  title: 'Általános Szerződési Feltételek — Szelid Liget',
+  title: 'Általános Szerződési Feltételek',
   alternates: { canonical: '/aszf', languages: { hu: '/aszf', en: '/en/aszf' } },
 };
 

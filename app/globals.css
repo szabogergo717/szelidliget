@@ -177,12 +177,12 @@ img { max-width: 100%; display: block; }
    videót nem töltjük le), a videó betöltése alatt, és annál is, aki
    kikapcsolta a mozgást a rendszerében. */
 .hero-media { background: url('/hero-poster.jpg') center / cover no-repeat; }
-/* A logó eredeti aránya 869:517. A `height: auto` nélkül a böngésző
+/* A logó eredeti aránya 869:513. A `height: auto` nélkül a böngésző
    a HTML-ben megadott magasságot tartaná, és a kép megnyúlna. */
 .hero-logo {
   width: min(420px, 72vw);
   height: auto;
-  aspect-ratio: 869 / 517;
+  aspect-ratio: 869 / 513;
   margin: 0 auto 30px;
 }
 .hero h1 {
@@ -471,23 +471,37 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
 @media (max-width: 620px) { .szolg-racs { grid-template-columns: 1fr; gap: 24px; } }
 
 /* ---------- környék ---------- */
-/* Hasábos elrendezés rács helyett: a kártyák képpel és kép nélkül is
-   különböző magasak, és így egymás alá csúsznak ahelyett, hogy a
-   legmagasabbhoz igazodva üres helyet hagynának. */
-.kornyek-racs { columns: 3; column-gap: 26px; }
-.kornyek-elem {
-  padding-top: 18px; border-top: 2px solid var(--ochre-light);
-  break-inside: avoid; -webkit-column-break-inside: avoid;
-  margin-bottom: 26px; display: inline-block; width: 100%;
+/* Egyforma magas, önálló kártyák. Korábban hasábos elrendezés volt, de
+   ott a képes és kép nélküli kártyák elcsúsztak egymáshoz képest, és a
+   választóvonalak összevissza jelentek meg. A körülhatárolt kártya
+   mindegyik programot egyben tartja: kép, címke, cím, szöveg. */
+.kornyek-racs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  align-items: stretch;
 }
+.kornyek-elem {
+  display: flex; flex-direction: column;
+  background: var(--cream);
+  border: 1px solid var(--line-soft);
+  border-top: 2px solid var(--ochre-light);
+  border-radius: 3px;
+  overflow: hidden;
+}
+/* A kép a kártya tetején, széltől szélig. */
+.kornyek-elem .dia-kornyek { margin: 0 0 2px; border-radius: 0; }
+.kornyek-szoveg { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
 .kornyek-elem .n {
   font-family: var(--betu-cim), sans-serif; font-size: 11.5px;
-  letter-spacing: .18em; color: var(--ochre); margin-bottom: 10px;
+  letter-spacing: .18em; color: var(--ochre); margin-bottom: 8px;
 }
 .kornyek-elem h3 { font-size: 18px; margin-bottom: 8px; line-height: 1.3; }
 .kornyek-elem p { font-size: 15px; color: var(--slate-soft); line-height: 1.6; }
-@media (max-width: 980px) { .kornyek-racs { columns: 2; } }
-@media (max-width: 640px) { .kornyek-racs { columns: 1; } }
+/* A hivatkozások a kártya aljára kerülnek, hogy egy sorban legyenek. */
+.kornyek-elem .kornyek-linkek { margin-top: auto; padding-top: 12px; }
+@media (max-width: 980px) { .kornyek-racs { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .kornyek-racs { grid-template-columns: 1fr; } }
 
 /* ---------- rólunk ---------- */
 .rolunk-racs { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 56px; align-items: start; }

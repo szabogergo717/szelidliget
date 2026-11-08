@@ -3,7 +3,7 @@ import JogiOldal from '@/components/JogiOldal';
 import { hazirend } from '@/lib/jogi';
 
 export const metadata: Metadata = {
-  title: 'House Rules — Szelid Liget',
+  title: 'House Rules',
   alternates: { canonical: '/en/hazirend', languages: { hu: '/hazirend', en: '/en/hazirend' } },
 };
 

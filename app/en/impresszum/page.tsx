@@ -3,7 +3,7 @@ import JogiOldal from '@/components/JogiOldal';
 import { impresszum } from '@/lib/jogi';
 
 export const metadata: Metadata = {
-  title: 'Imprint — Szelid Liget',
+  title: 'Imprint',
   alternates: { canonical: '/en/impresszum', languages: { hu: '/impresszum', en: '/en/impresszum' } },
 };
 

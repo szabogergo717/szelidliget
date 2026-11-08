@@ -3,7 +3,7 @@ import JogiOldal from '@/components/JogiOldal';
 import { hazirend } from '@/lib/jogi';
 
 export const metadata: Metadata = {
-  title: 'Házirend — Szelid Liget',
+  title: 'Házirend',
   alternates: { canonical: '/hazirend', languages: { hu: '/hazirend', en: '/en/hazirend' } },
 };
 

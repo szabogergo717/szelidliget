@@ -3,7 +3,7 @@ import JogiOldal from '@/components/JogiOldal';
 import { adatvedelem } from '@/lib/jogi';
 
 export const metadata: Metadata = {
-  title: 'Privacy Notice — Szelid Liget',
+  title: 'Privacy Notice',
   alternates: { canonical: '/en/adatvedelem', languages: { hu: '/adatvedelem', en: '/en/adatvedelem' } },
 };
 

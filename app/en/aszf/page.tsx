@@ -3,7 +3,7 @@ import JogiOldal from '@/components/JogiOldal';
 import { aszf } from '@/lib/jogi';
 
 export const metadata: Metadata = {
-  title: 'Terms and Conditions — Szelid Liget',
+  title: 'Terms and Conditions',
   alternates: { canonical: '/en/aszf', languages: { hu: '/aszf', en: '/en/aszf' } },
 };
 

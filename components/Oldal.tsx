@@ -7,6 +7,7 @@ import FoglaloUrlap, { type HazAdat, type ExtraAdat } from './FoglaloUrlap';
 import Galeria from './Galeria';
 import { VAN_GALERIA, vanKep } from '@/lib/galeria';
 import Diavetites from './Diavetites';
+import StrukturaltAdat from './StrukturaltAdat';
 import Terkep from './Terkep';
 import HatterVideo from './HatterVideo';
 import HirlevelDoboz from './HirlevelDoboz';
@@ -250,6 +251,17 @@ export default function Oldal({
   // Ha bármelyik szolgáltatás-oszlophoz van kép, a többi ugyanakkora
   // helyet hagy ki, hogy a címsorok egy vonalban maradjanak.
   const szolgKepVan = SZOLG_KEPEK.some((k) => vanKep(k));
+
+  /**
+   * A környék programjai közül előre kerülnek azok, amikhez már van
+   * fotó. Így a képes kártyák egymás mellé kerülnek, és nem marad üres
+   * folt a soraikban. Ha mindegyikhez van kép (vagy egyikhez sem), a
+   * sorrend változatlan marad.
+   */
+  const kornyekSorrend = [
+    ...KORNYEK.filter((k) => vanKep(`kornyek/${k.kulcs}`)),
+    ...KORNYEK.filter((k) => !vanKep(`kornyek/${k.kulcs}`)),
+  ];
   const videoVan = !heroKepek && process.env.NEXT_PUBLIC_HERO_VIDEO === '1';
   const hatterVan = heroKepek || videoVan;
 
@@ -259,6 +271,9 @@ export default function Oldal({
 
   return (
     <>
+      {/* Gépi adatok a keresőknek — a látogatónak nem látszik. */}
+      <StrukturaltAdat nyelv={nyelv} hazak={hazak} />
+
       <Fejlec nyelv={nyelv} />
 
       <section className={`hero${hatterVan ? ' hero-video' : ''}`} id="top">
@@ -289,7 +304,7 @@ export default function Oldal({
             src={hatterVan ? '/logo-light.png' : '/logo-transparent.png'}
             alt="Szelid Liget"
             width={869}
-            height={517}
+            height={513}
             sizes="(max-width: 600px) 72vw, 460px"
             priority
           />
@@ -419,7 +434,7 @@ export default function Oldal({
             <p>{T.kornyekBevezeto[nyelv]}</p>
           </div>
           <div className="kornyek-racs">
-            {KORNYEK.map((k) => (
+            {kornyekSorrend.map((k) => (
               <article className="kornyek-elem" key={k.kulcs}>
                 {/* Kép csak ott, ahova töltöttek: eredeti/kornyek/<kulcs>/ */}
                 {vanKep(`kornyek/${k.kulcs}`) && (
@@ -432,20 +447,22 @@ export default function Oldal({
                     osztaly="dia-kornyek"
                   />
                 )}
-                <div className="n">{k.cimke[nyelv]}</div>
-                <h3>{k.cim[nyelv]}</h3>
-                <p>{k.szoveg[nyelv]}</p>
-                {k.linkek && (
-                  <ul className="kornyek-linkek">
-                    {k.linkek.map((l) => (
-                      <li key={l.url}>
-                        <a href={l.url} target="_blank" rel="noopener noreferrer">
-                          {l.cim}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                <div className="kornyek-szoveg">
+                  <div className="n">{k.cimke[nyelv]}</div>
+                  <h3>{k.cim[nyelv]}</h3>
+                  <p>{k.szoveg[nyelv]}</p>
+                  {k.linkek && (
+                    <ul className="kornyek-linkek">
+                      {k.linkek.map((l) => (
+                        <li key={l.url}>
+                          <a href={l.url} target="_blank" rel="noopener noreferrer">
+                            {l.cim}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </article>
             ))}
           </div>
