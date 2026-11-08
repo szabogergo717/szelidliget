@@ -28,6 +28,7 @@ A két faház: **Füge** (2–4 fő) és **Mandula** (2–6 fő).
 - [11. lépés — Élesítés](#11-lepes)
 - [Admin felület](#admin)
 - [Hírlevél](#hirlevel)
+- [A fotók feltöltése](#fotok)
 - [Háttérvideó a főoldalra (opcionális)](#hattervideo)
 - [Ha valami nem működik](#ha-valami-nem-mukodik)
 - [Mi van kész és mi nincs](#mi-van-kesz)
@@ -457,6 +458,7 @@ utána **Redeploy**.
 | `NEXT_PUBLIC_ADOSZAM` | a Szekundum Kft. adószáma | lábléc, impresszum |
 | `NEXT_PUBLIC_SZEKHELY` | a cég székhelye | lábléc, impresszum |
 | `NEXT_PUBLIC_TELEFON` | pl. `+36 30 123 4567` | kapcsolat rovat |
+| `NEXT_PUBLIC_IFA_FO_EJ` | pl. `300` | idegenforgalmi adó; ha üres, 300 Ft/fő/éj |
 | `NEXT_PUBLIC_FACEBOOK` | a Facebook-oldal címe | közösségi linkek |
 | `NEXT_PUBLIC_INSTAGRAM` | az Instagram-oldal címe | közösségi linkek |
 | `NEXT_PUBLIC_TIKTOK` | a TikTok-oldal címe | közösségi linkek |
@@ -1076,6 +1078,12 @@ szerkesztéshez kell, az oldal futásához nem.
   (érkezés- és távozásnap) átlósan kettéosztva
 - **Kötelező számlázási cím** — számlát cím nélkül nem lehet kiállítani
 - **Hétvégi felár** péntek és szombat éjszakára, kapcsolhatóan
+- **Képgaléria** lapozható teljes képernyős nézettel
+- **Képnézegetők** a nyitóképernyőn, a házaknál, a szolgáltatásoknál,
+  az extráknál és mind a 14 környékbeli programnál — 5 másodperces
+  automatikus váltással
+- **Idegenforgalmi adó** kimutatva az összesítőben és a visszaigazoló
+  e-mailben (a helyszínen fizetendő)
 
 **Még hátravan:**
 - **Számlázz.hu integráció** — a számla most kézzel készül. A beépítéshez
@@ -1083,8 +1091,9 @@ szerkesztéshez kell, az oldal futásához nem.
   amit a kulcs megérkezése után tudunk megcsinálni.
 - Booking.com / Szallas.hu szinkron
 - Lejárt, kifizetetlen foglalások automatikus felszabadítása
-- **Valódi fotók a faházakról** — most növénymotívumok állnak a helyükön.
-  Amint megvannak a képek, a `public/kepek` mappába kerülnek.
+- **Valódi fotók a faházakról** — a feltöltésük készen áll, lásd
+  [A fotók feltöltése](#fotok) fejezetet. Amíg nincsenek képek,
+  növénymotívumok állnak a helyükön.
 - **A jogi szövegek ügyvédi átnézése** (lásd a 11. lépést)
 
 ---
@@ -1202,6 +1211,170 @@ tesz. Külön szolgáltatóra nincs szükség.
 > időpontok a szezon előtt, esetleg egy téli ajánlat. A túl gyakori
 > levél leiratkozáshoz vezet.
 
+<a name="fotok"></a>
+## A fotók feltöltése
+
+**Mit csinálsz:** a nyers fényképekből weboldalra kész képeket készítesz,
+és feltöltöd őket. **Mennyi idő:** 30–45 perc, 60 képpel.
+**Telepíteni semmit nem kell** — minden a böngészőben fut.
+
+### Miért nem lehet a nyers fotókat feltölteni
+
+Egy fényképezőgépből kijövő kép 8–20 MB. Hatvan ilyen kép **800 MB**,
+és ez három helyen is gond:
+
+- a GitHub egyetlen fájlra 100 MB-ot enged, és a nagy tároló a
+  Codespaces-t is lelassítja;
+- a vendég telefonján egy ekkora kép 10–20 másodpercig töltődne;
+- a havi adatforgalom pár száz látogató után elfogyna.
+
+Ugyanez a 60 kép webre optimalizálva **nagyjából 20–25 MB**, és a
+látogató **semmilyen különbséget nem lát** — egy képernyőn megjelenő kép
+1600 képpont széles, nem 6000.
+
+A projektben van egy szkript, ami ezt elvégzi helyetted.
+
+### 1. Rendezd mappákba a képeket
+
+**A mappa neve dönti el, hova kerül a kép.** A saját gépeden csinálj
+egy `eredeti` mappát, és abban annyi almappát, ahány helyre képet
+szeretnél. Egyik sem kötelező: amelyik mappa hiányzik vagy üres, azon
+a helyen a weboldal nem mutat képnézegetőt, és minden más ugyanúgy
+működik.
+
+**A főoldal fő helyei**
+
+| Mappa | Hova kerül | Javasolt darab |
+|---|---|---|
+| `hero` | a nyitóképernyő háttere, 5 másodpercenként váltva | 4–8 |
+| `fuge` | a Füge ház kártyája | 5–10 |
+| `mandula` | a Mandula ház kártyája | 5–10 |
+| `liget` | a „Nézz körül" galéria harmadik füle | 5–15 |
+
+**„Ami a házakban vár" szakasz**
+
+| Mappa | Hova kerül |
+|---|---|
+| `kiemelt` | a Kiemelt szolgáltatások oszlop |
+| `lakoter` | a Lakótér oszlop |
+| `konyha` | a Konyha oszlop |
+| `biztositunk` | az „Amit biztosítunk neked" oszlop |
+
+**Extra szolgáltatások** — a mappa neve pontosan az extra azonosítója
+legyen, ahogy az adatbázisban szerepel:
+
+```
+eredeti/extrak/gourmet_reggeli/
+eredeti/extrak/sajttal/
+eredeti/extrak/lovaskocsi/
+eredeti/extrak/szuletesnap/
+eredeti/extrak/evfordulo/
+eredeti/extrak/lanykeres/
+```
+
+Itt elég **1–3 kép** extránként: a jelölőnégyzet mellett kicsiben
+látszik, és kattintásra nyílik meg nagyban.
+
+**A környék programjai** — mind a tizennégyhez tehetsz képet:
+
+```
+eredeti/kornyek/csonakazas/      eredeti/kornyek/bowling/
+eredeti/kornyek/tanosveny/       eredeti/kornyek/ettermek/
+eredeti/kornyek/pincesor/        eredeti/kornyek/kerekpar/
+eredeti/kornyek/kalocsa/         eredeti/kornyek/duna/
+eredeti/kornyek/lovasbemutato/   eredeti/kornyek/naplemente/
+eredeti/kornyek/lovaskocsi/      eredeti/kornyek/strand/
+eredeti/kornyek/madarles/        eredeti/kornyek/fotozas/
+```
+
+> **A sorrend a fájlnév szerint alakul.** Ha adott sorrendet szeretnél,
+> számozd őket: `01-terasz.jpg`, `02-jakuzzi.jpg`, `03-halo.jpg`…
+> A fájlnévből lesz a kép felirata is a nagyított nézetben
+> (`02-nagy_terasz.jpg` → „nagy terasz"), ezért érdemes értelmesen
+> elnevezni őket.
+>
+> **Az első kép számít a legtöbbet:** minden helyen az látszik elsőként.
+> Oda a legszebbet tedd.
+
+> ⚠ **Az extrák mappaneveiben az aláhúzás számít.** A `gourmet_reggeli`
+> mappa jó, a `gourmet-reggeli` nem — az adatbázisbeli azonosítóval
+> pontosan egyeznie kell.
+
+### 2. Töltsd fel őket a Codespaces-be
+
+1. Indíts Codespace-t (8. lépés).
+2. A bal oldali fájllistában kattints jobb gombbal az üres helyre →
+   **New Folder**, és csinálj egy `eredeti` nevű mappát.
+3. Azon belül csinálj annyi almappát, ahányat az 1. lépésben
+   összeállítottál. (A `kornyek` és az `extrak` esetében előbb ezt a
+   mappát csinálod meg, azon belül pedig az egyes programokét.)
+4. Húzd bele a fotókat a megfelelő mappákba. **Érdemes 10–15
+   képenként**, nem mind a hatvanat egyszerre — így látod, ha valamelyik
+   feltöltés megakad.
+
+### 3. Futtasd a szkriptet
+
+A terminálba:
+
+```
+npm install
+npm run kepek
+```
+
+Az `npm install` csak az első alkalommal kell, 1–2 perc. Az `npm run kepek`
+60 képpel nagyjából egy perc. A végén ilyesmit ír ki:
+
+```
+Kész: 60 kép feldolgozva.
+Eredeti méret:  812.4 MB
+Weboldalra:     23.1 MB
+```
+
+### 4. Mentsd és töltsd fel
+
+```
+git add -A
+git commit -m "Fotok"
+git push
+```
+
+**A nyers fotók nem kerülnek fel a GitHubra** — a projekt kizárja az
+`eredeti` mappát. Csak a belőlük készült kis változatok mennek fel.
+
+Végül **bal lent → Codespaces → Stop Current Codespace.**
+
+### Mit csinál a weboldal a képekkel
+
+- **A nyitóképernyőn** a `hero` mappa képei peregnek, 5 másodpercenként,
+  lágy áttűnéssel. A logó áttetsző hátterű változata kerül föléjük,
+  hogy ne takarja a képet, és egy finom sötét fátyol tartja olvashatóan
+  a szöveget.
+- A főoldalra bekerül egy **Képek** szakasz, három füllel (Füge,
+  Mandula, A liget). Üres mappát nem mutat.
+- Bármelyik képre kattintva **teljes képernyős nézet** nyílik, ahol
+  jobbra-balra lehet lapozni: nyílgombbal, a billentyűzet nyilaival,
+  telefonon pedig ujjal húzva. Bezárás az ×-szel vagy az Esc-kel.
+- Minden képből **három méret** készül, és a böngésző mindig a
+  képernyőhöz illő legkisebbet tölti le. Egy telefonos látogató a
+  bélyegképeknél a 480 képpontos változatot kapja, nem a nagyot.
+- A képek **csak akkor töltődnek, amikor a képernyőre kerülnek** —
+  aki nem görget le a galériáig, egyetlen fotót sem tölt le.
+- **A faházkártyákon, a szolgáltatás-oszlopoknál és a környék
+  programjainál** képnézegető jelenik meg, szintén 5 másodperces
+  váltással. Mindenhol lehet kézzel is lapozni: nyíllal, a pöttyökre
+  kattintva, és telefonon ujjal húzva.
+- **A váltás megáll, amíg az egérmutató a képen van** — így nem ugrik
+  el az alól, amit épp nézel. Aki a rendszerében kikapcsolta a mozgást,
+  annál egyáltalán nem vált magától.
+
+### Ha változtatni akarsz
+
+Cseréld ki vagy nevezd át a fájlokat az `eredeti` mappában, és futtasd
+újra az `npm run kepek` parancsot. A szkript minden alkalommal tiszta
+lappal indul, tehát a törölt képek a weboldalról is eltűnnek.
+
+---
+
 <a name="hattervideo"></a>
 ## Háttérvideó a főoldalra (opcionális)
 
@@ -1228,30 +1401,39 @@ idegen márka, és gyorsabb is.
 
 | Tulajdonság | Ajánlás | Miért |
 |---|---|---|
-| Hossz | 6–12 másodperc | Észrevétlenül ismétlődik |
+| Hossz | 8–15 másodperc | Észrevétlenül ismétlődik |
 | Felbontás | 1920×1080 | Ennél nagyobb felesleges |
-| Fájlméret | **5 MB alatt** | Mobilneten is gyorsan induljon |
+| Fájlméret | **2–4 MB** | Mobilneten is gyorsan induljon |
 | Hang | **nincs** | A böngésző csak néma videót indít el magától |
 | Tartalom | lassú mozgás (víz, lombok, füst a dézsából) | Gyors vágás a szöveg olvasását zavarja |
 
-A videót bármely videószerkesztőben rövidre lehet vágni és tömöríteni
-(pl. a HandBrake nevű ingyenes programmal, „Web" előbeállítással).
+**A tömörítést is a Codespaces elvégzi**, nem kell programot telepítened.
+Húzd be a nyers videót a Codespace-be `nyers-video.mp4` néven, és futtasd
+ezt a három parancsot:
+
+```
+ffmpeg -i nyers-video.mp4 -t 15 -an -vf "scale=1920:-2" -c:v libx264 -crf 30 -preset slow -pix_fmt yuv420p -movflags +faststart public/hero.mp4
+
+ffmpeg -i nyers-video.mp4 -t 15 -an -vf "scale=1920:-2" -c:v libvpx-vp9 -crf 38 -b:v 0 public/hero.webm
+
+ffmpeg -i public/hero.mp4 -frames:v 1 -q:v 4 public/hero-poster.jpg
+```
+
+Az első a legtöbb böngészőnek szóló változat, a második egy kisebb
+(a modern böngészők ezt kapják), a harmadik az állókép. A `-t 15` vágja
+15 másodpercre, az `-an` veszi ki a hangot.
+
+Ha a `hero.mp4` 4 MB-nál nagyobb lett, emeld a `-crf 30` értéket
+`34`-re és futtasd újra — annál kisebb lesz a fájl, minél nagyobb ez
+a szám.
 
 ### Bekapcsolás, három lépés
 
-1. **Tedd be a fájlokat** a Codespace-ben a `public` mappába, pontosan
-   ezekkel a nevekkel:
-   - `hero.mp4` — maga a videó
-   - `hero-poster.jpg` — egy állókép a videóból (ez látszik, amíg a
-     videó töltődik, és ez marad annak, aki kikapcsolta a mozgást a
-     rendszerében)
-
-   Állóképet a videó első kockájából így készíthetsz a Codespace
-   termináljában:
-
-   ```bash
-   ffmpeg -i public/hero.mp4 -vframes 1 -q:v 4 public/hero-poster.jpg
-   ```
+1. **A három fájl** a `public` mappában legyen, pontosan ezekkel a
+   nevekkel (a fenti parancsok már ide teszik őket):
+   - `hero.mp4` — a videó
+   - `hero.webm` — ugyanaz kisebb fájlban
+   - `hero-poster.jpg` — az állókép
 
 2. **Mentsd és töltsd fel:**
 
@@ -1280,6 +1462,10 @@ Redeploy.
   enélkül a jel vékony vonalai elvesznének a mozgó képen.
 - Aki a rendszerében **kikapcsolta a mozgást** (akadálymentesítési
   beállítás), annak csak az állókép jelenik meg.
+- **Telefonon a videó le sem töltődik.** Kis képernyőn úgyis alig
+  látszana belőle valami, viszont több megabájtot vinne el a vendég
+  mobilnetéből. Ott az állókép marad — ugyanaz a hangulat, töredék
+  adatforgalommal. A határ 820 képpont: efölött videó, alatta kép.
 - Ha a `NEXT_PUBLIC_HERO_VIDEO` nincs bekapcsolva, a videó **le sem
   töltődik** — nem fogyaszt adatot feleslegesen.
 

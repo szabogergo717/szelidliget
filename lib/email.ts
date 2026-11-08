@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 import { supabaseAdmin } from './supabase';
-import { CEG } from './tartalom';
+import { CEG, IFA_FO_EJ } from './tartalom';
 
 /**
  * Tranzakciós e-mailek Resenden keresztül.
@@ -156,6 +156,9 @@ const SZOVEG = {
     bevezeto: 'A fizetés megérkezett, a foglalásod véglegesítve.',
     azonosito: 'Foglalási azonosító', haz: 'Faház', erkezes: 'Érkezés',
     tavozas: 'Távozás', vendegek: 'Vendégek', fo: 'fő', osszeg: 'Fizetett összeg',
+    ifa: 'Idegenforgalmi adó',
+    ifaMagyarazat: (ar: string, osszeg: string) =>
+      `Az idegenforgalmi adó (${ar} Ft/fő/éj, összesen ${osszeg}) a helyszínen fizetendő, érkezéskor. Ez nem része a fent kifizetett összegnek.`,
     erkezesInfo:
       'Érkezés 15:00-tól, távozás 10:00-ig. Néhány nappal az érkezés előtt küldünk egy tájékoztatót a megközelítésről és a parkolásról.',
     labl: 'Ha bármi kérdésed van, válaszolj erre a levélre.',
@@ -166,6 +169,9 @@ const SZOVEG = {
     bevezeto: 'Your payment has arrived and the booking is confirmed.',
     azonosito: 'Booking reference', haz: 'Cabin', erkezes: 'Check-in',
     tavozas: 'Check-out', vendegek: 'Guests', fo: 'guests', osszeg: 'Amount paid',
+    ifa: 'Tourist tax',
+    ifaMagyarazat: (ar: string, osszeg: string) =>
+      `The tourist tax (${ar} HUF per person per night, ${osszeg} in total) is payable on arrival. It is not included in the amount paid above.`,
     erkezesInfo:
       'Check-in from 3:00 pm, check-out by 10:00 am. A few days before arrival we will send directions and parking details.',
     labl: 'If you have any questions, just reply to this email.',
@@ -180,6 +186,17 @@ export async function visszaigazoloEmail(foglalasId: string): Promise<void> {
   const nyelv = (v.nyelv === 'en' ? 'en' : 'hu') as 'hu' | 'en';
   const t = SZOVEG[nyelv];
 
+  // Az idegenforgalmi adót a vendég a helyszínen fizeti — itt csak
+  // megmutatjuk, hogy érkezéskor ne érje meglepetés.
+  const ejszakak = Math.max(
+    0,
+    Math.round(
+      (new Date(f.tavozas + 'T12:00:00Z').getTime() -
+        new Date(f.erkezes + 'T12:00:00Z').getTime()) / 86_400_000
+    )
+  );
+  const ifaOsszeg = IFA_FO_EJ * f.fo * ejszakak;
+
   const html = keret(
     `<h1 style="font-size:24px;font-weight:400;margin:0 0 12px;text-align:center">${t.cim}</h1>
      <p style="margin:0 0 30px;color:#5d6273;line-height:1.6;text-align:center">${t.bevezeto}</p>
@@ -189,8 +206,17 @@ export async function visszaigazoloEmail(foglalasId: string): Promise<void> {
        adatSor(t.erkezes, datum(f.erkezes, nyelv)) +
        adatSor(t.tavozas, datum(f.tavozas, nyelv)) +
        adatSor(t.vendegek, `${f.fo} ${t.fo}`) +
-       adatSor(t.osszeg, ft(f.vegosszeg))
+       adatSor(t.osszeg, ft(f.vegosszeg)) +
+       (IFA_FO_EJ > 0 ? adatSor(t.ifa, ft(ifaOsszeg)) : '')
      )}
+     ${
+       IFA_FO_EJ > 0
+         ? `<p style="margin:18px 0 0;color:#a97231;line-height:1.6;font-size:14.5px">${t.ifaMagyarazat(
+             new Intl.NumberFormat(nyelv === 'en' ? 'en-GB' : 'hu-HU').format(IFA_FO_EJ),
+             ft(ifaOsszeg)
+           )}</p>`
+         : ''
+     }
      <p style="margin:28px 0 0;color:#5d6273;line-height:1.6">${t.erkezesInfo}</p>`,
     nyelv
   );

@@ -127,7 +127,27 @@ img { max-width: 100%; display: block; }
 .hero { padding: 76px 0 0; text-align: center; overflow: hidden; }
 
 /* ---------- hero háttérvideóval ---------- */
-.hero.hero-video { position: relative; padding-top: 96px; }
+.hero.hero-video {
+  position: relative;
+  padding-top: 96px;
+  /* Képpel a háttérben a nyitóképernyő nagy: majdnem a teljes
+     képernyőt kitölti, de nem többet, hogy a tartalom eleje még
+     látsszon és legyen mit görgetni. */
+  min-height: min(88vh, 880px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* A hullámmotívum és a tények a szakasz aljára kerülnek. */
+.hero.hero-video .waves { margin-top: auto; }
+.hero.hero-video .hero-logo { width: min(460px, 76vw); }
+@media (max-width: 700px) {
+  .hero.hero-video { min-height: min(84vh, 680px); padding-top: 84px; }
+}
+
+/* A háttér-diavetítés a teljes nyitóképernyőt kitölti. */
+.dia-hero { background: var(--slate); }
+.dia-hero .dia-kep { transition: opacity 1.4s ease; }
 .hero-media { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
 .hero-media video {
   width: 100%; height: 100%; object-fit: cover;
@@ -153,11 +173,10 @@ img { max-width: 100%; display: block; }
 .hero.hero-video .fact strong { color: var(--ochre-light); }
 .hero.hero-video .fact span { color: rgba(254, 252, 245, .7); }
 
-/* Aki kikapcsolta a mozgást a rendszerében, annak állókép marad. */
-@media (prefers-reduced-motion: reduce) {
-  .hero-media video { display: none; }
-  .hero-media { background: url('/hero-poster.jpg') center / cover no-repeat; }
-}
+/* A poszterkép mindig a háttérben van: ez látszik telefonon (ahol a
+   videót nem töltjük le), a videó betöltése alatt, és annál is, aki
+   kikapcsolta a mozgást a rendszerében. */
+.hero-media { background: url('/hero-poster.jpg') center / cover no-repeat; }
 /* A logó eredeti aránya 869:517. A `height: auto` nélkül a böngésző
    a HTML-ben megadott magasságot tartaná, és a kép megnyúlna. */
 .hero-logo {
@@ -208,7 +227,7 @@ section { padding: 92px 0; }
   padding: 40px 32px; min-height: 300px; position: relative;
 }
 .cabin-badge {
-  position: absolute; top: 18px; left: 18px;
+  position: absolute; top: 18px; left: 18px; z-index: 2;
   font-family: var(--betu-cim), sans-serif; font-size: 11px; letter-spacing: 0.16em;
   color: var(--slate-soft); background: var(--cream);
   border: 1px solid var(--line-soft); padding: 5px 11px;
@@ -452,16 +471,23 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
 @media (max-width: 620px) { .szolg-racs { grid-template-columns: 1fr; gap: 24px; } }
 
 /* ---------- környék ---------- */
-.kornyek-racs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
-.kornyek-elem { padding-top: 18px; border-top: 2px solid var(--ochre-light); }
+/* Hasábos elrendezés rács helyett: a kártyák képpel és kép nélkül is
+   különböző magasak, és így egymás alá csúsznak ahelyett, hogy a
+   legmagasabbhoz igazodva üres helyet hagynának. */
+.kornyek-racs { columns: 3; column-gap: 26px; }
+.kornyek-elem {
+  padding-top: 18px; border-top: 2px solid var(--ochre-light);
+  break-inside: avoid; -webkit-column-break-inside: avoid;
+  margin-bottom: 26px; display: inline-block; width: 100%;
+}
 .kornyek-elem .n {
   font-family: var(--betu-cim), sans-serif; font-size: 11.5px;
   letter-spacing: .18em; color: var(--ochre); margin-bottom: 10px;
 }
 .kornyek-elem h3 { font-size: 18px; margin-bottom: 8px; line-height: 1.3; }
 .kornyek-elem p { font-size: 15px; color: var(--slate-soft); line-height: 1.6; }
-@media (max-width: 980px) { .kornyek-racs { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px) { .kornyek-racs { grid-template-columns: 1fr; gap: 22px; } }
+@media (max-width: 980px) { .kornyek-racs { columns: 2; } }
+@media (max-width: 640px) { .kornyek-racs { columns: 1; } }
 
 /* ---------- rólunk ---------- */
 .rolunk-racs { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 56px; align-items: start; }
@@ -720,4 +746,212 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
   font-size: 15px;
   color: var(--slate);
   text-align: left;
+}
+
+/* ---------- képgaléria ---------- */
+.galeria-fulek {
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 8px; margin-bottom: 26px;
+}
+.galeria-ful {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--slate-soft);
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 9px 18px; border-radius: 3px; cursor: pointer;
+}
+.galeria-ful:hover { border-color: var(--ochre); color: var(--slate); }
+.galeria-ful.aktiv {
+  background: var(--ochre); border-color: var(--ochre); color: #fff;
+}
+
+.galeria-racs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  .galeria-racs { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+}
+.galeria-kocka {
+  padding: 0; border: none; background: var(--cream-3);
+  cursor: pointer; overflow: hidden; border-radius: 3px;
+  aspect-ratio: 4 / 3;
+}
+.galeria-kocka img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .45s ease;
+}
+.galeria-kocka:hover img { transform: scale(1.04); }
+.galeria-kocka:focus-visible { outline: 2px solid var(--ochre); outline-offset: 2px; }
+
+/* ---------- teljes képernyős nézet ---------- */
+.nagyito {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(30, 33, 40, .94);
+  display: flex; align-items: center; justify-content: center;
+  padding: 56px 16px;
+}
+.nagyito-kep {
+  margin: 0; max-width: 100%; max-height: 100%;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.nagyito-kep img {
+  max-width: 100%;
+  max-height: calc(100vh - 150px);
+  width: auto; height: auto;
+  object-fit: contain;
+  border-radius: 2px;
+}
+.nagyito-kep figcaption {
+  display: flex; gap: 14px; align-items: baseline;
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 13.5px; color: rgba(254, 252, 245, .78);
+}
+.nagyito-szamlalo { color: rgba(254, 252, 245, .5); }
+
+.nagyito-bezar, .nagyito-lep {
+  position: absolute; background: rgba(254, 252, 245, .1);
+  border: 1px solid rgba(254, 252, 245, .25);
+  color: var(--cream); cursor: pointer; border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+}
+.nagyito-bezar:hover, .nagyito-lep:hover { background: rgba(254, 252, 245, .22); }
+.nagyito-bezar { top: 14px; right: 14px; width: 40px; height: 40px; font-size: 26px; line-height: 1; }
+.nagyito-lep { top: 50%; transform: translateY(-50%); width: 46px; height: 64px; font-size: 32px; line-height: 1; }
+.nagyito-lep.bal { left: 14px; }
+.nagyito-lep.jobb { right: 14px; }
+@media (max-width: 600px) {
+  .nagyito { padding: 56px 8px; }
+  .nagyito-lep { width: 38px; height: 54px; font-size: 26px; }
+  .nagyito-lep.bal { left: 6px; }
+  .nagyito-lep.jobb { right: 6px; }
+}
+
+/* A faházkártya fotója a növénymotívum helyén. */
+.cabin-kep { position: relative; width: 100%; height: 100%; }
+.cabin-kep img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---------- képnézegető (diavetítés) ---------- */
+.dia {
+  position: relative;
+  overflow: hidden;
+  background: var(--cream-3);
+  width: 100%;
+}
+.dia-teljes { position: absolute; inset: 0; height: 100%; }
+
+.dia-kep {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.1s ease;
+  /* A nem látszó képek ne fogják el a kattintást. */
+  pointer-events: none;
+}
+.dia-kep.latszik { opacity: 1; }
+
+/* Aki kikapcsolta a mozgást, annak ne ússzanak egymásba a képek. */
+@media (prefers-reduced-motion: reduce) {
+  .dia-kep { transition: none; }
+}
+
+.dia-nyil {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 36px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(30, 33, 40, .3);
+  border: 1px solid rgba(254, 252, 245, .3);
+  color: var(--cream);
+  font-size: 26px; line-height: 1;
+  border-radius: 3px; cursor: pointer;
+  opacity: 0; transition: opacity .25s ease, background .25s ease;
+}
+.dia:hover .dia-nyil, .dia:focus-within .dia-nyil { opacity: 1; }
+.dia-nyil:hover { background: rgba(30, 33, 40, .55); }
+.dia-nyil.bal { left: 10px; }
+.dia-nyil.jobb { right: 10px; }
+/* Érintőképernyőn nincs egérmutató, ezért ott mindig látszanak. */
+@media (hover: none) {
+  .dia-nyil { opacity: .85; width: 32px; height: 46px; font-size: 22px; }
+}
+
+.dia-pottyok {
+  position: absolute; left: 0; right: 0; bottom: 12px;
+  display: flex; justify-content: center; gap: 7px;
+  padding: 0 12px; flex-wrap: wrap;
+}
+.dia-potty {
+  width: 8px; height: 8px; padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(254, 252, 245, .85);
+  background: transparent;
+  cursor: pointer;
+  transition: background .25s ease, transform .25s ease;
+}
+.dia-potty.aktiv { background: var(--cream); transform: scale(1.25); }
+.dia-potty:hover { background: rgba(254, 252, 245, .6); }
+
+/* A szolgáltatás-oszlopok és a környék-kártyák képnézegetője. */
+.dia-szolg { margin-bottom: 18px; border-radius: 3px; }
+.dia-kornyek { margin-bottom: 14px; border-radius: 3px; }
+
+/* Az extrák melletti kép. Fix méretű, hogy a sorok egyforma
+   magasak maradjanak, akárhány fotó tartozik az extrához. */
+.extra-kep {
+  flex: none;
+  width: 72px; height: 54px;
+  padding: 0; border: 1px solid var(--line-soft);
+  border-radius: 3px; overflow: hidden;
+  background: var(--cream-3);
+  cursor: zoom-in; position: relative;
+  margin-top: 1px;
+}
+.extra-kep img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.extra-kep:hover { border-color: var(--ochre); }
+.extra-kep:focus-visible { outline: 2px solid var(--ochre); outline-offset: 2px; }
+.extra-kep-db {
+  position: absolute; right: 3px; bottom: 3px;
+  background: rgba(30, 33, 40, .72); color: var(--cream);
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 10.5px; line-height: 1;
+  padding: 2px 5px; border-radius: 2px;
+}
+@media (max-width: 520px) {
+  .extra-kep { width: 56px; height: 44px; }
+}
+
+/* Idegenforgalmi adó: a végösszeg alatt, láthatóan elkülönítve,
+   mert ez nem most fizetendő, hanem érkezéskor a helyszínen. */
+.ifa {
+  margin-top: 14px; padding: 12px 14px;
+  background: var(--cream-2);
+  border: 1px dashed var(--line);
+  border-radius: 3px;
+}
+.ifa .sum { border: none; padding: 0; font-size: 15px; }
+.ifa-magyarazat {
+  margin-top: 4px;
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 12.5px; line-height: 1.5; color: var(--slate-soft);
+}
+
+/* Ha a szolgáltatás-oszlopok közül némelyikhez van kép, a többi
+   ugyanakkora üres helyet kap, hogy a címsorok egy vonalban legyenek. */
+.szolg-oszlop.kephely::before {
+  content: ''; display: block; aspect-ratio: 4 / 3; margin-bottom: 18px;
+}
+@media (max-width: 620px) {
+  .szolg-oszlop.kephely::before { display: none; }
+}
+
+/* Ugyanez az extráknál: ha bármelyikhez van kép, a többi helyet hagy,
+   hogy a nevek egy vonalban kezdődjenek. */
+.extra-kephely {
+  flex: none; width: 72px; height: 54px; margin-top: 1px;
+}
+@media (max-width: 520px) {
+  .extra-kephely { width: 56px; height: 44px; }
 }

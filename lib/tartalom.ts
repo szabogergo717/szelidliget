@@ -34,6 +34,19 @@ export const CEG = {
 };
 
 /** Közösségi oldalak. Üres érték = a link nem jelenik meg. */
+/**
+ * Idegenforgalmi adó. A vendég a HELYSZÍNEN fizeti, ezért nincs benne
+ * a foglalás végösszegében — csak megmutatjuk, hogy ne érje meglepetés.
+ *
+ * Az összeget a Vercelen lehet átírni (Settings → Environment Variables,
+ * `NEXT_PUBLIC_IFA_FO_EJ`), kódmódosítás nélkül. Ha nincs megadva,
+ * 300 Ft/fő/éj az alapérték.
+ */
+export const IFA_FO_EJ: number = (() => {
+  const nyers = Number(process.env.NEXT_PUBLIC_IFA_FO_EJ);
+  return Number.isFinite(nyers) && nyers >= 0 ? Math.round(nyers) : 300;
+})();
+
 export const SOCIAL = {
   facebook: process.env.NEXT_PUBLIC_FACEBOOK ?? '',
   instagram: process.env.NEXT_PUBLIC_INSTAGRAM ?? '',
@@ -158,6 +171,21 @@ export const T = {
     'Fridge with freezer|Dishwasher|Built-in microwave|Toaster|Kettle|Tchibo coffee machine and capsules|Tea and spices|Cleaning supplies'
   ),
 
+  // ---------- galéria ----------
+  menuKepek: S('Képek', 'Photos'),
+  galeriaCimke: S('KÉPEK', 'PHOTOS'),
+  galeriaCim: S('Nézz körül', 'Take a look around'),
+  galeriaBevezeto: S(
+    'Kattints bármelyik képre a nagyításhoz — utána nyilakkal lapozhatsz.',
+    'Tap any photo to enlarge — then use the arrows to browse.'
+  ),
+  diaCimke: S('Képek', 'Photos'),
+  diaKep: S('kép', 'photo'),
+  galeriaNagyitas: S('Kép nagyítása', 'Enlarge photo'),
+  galeriaBezar: S('Bezárás', 'Close'),
+  galeriaElozo: S('Előző kép', 'Previous photo'),
+  galeriaKovetkezo: S('Következő kép', 'Next photo'),
+
   // ---------- foglalás ----------
   foglalasCimke: S('FOGLALÁS', 'BOOKING'),
   foglalasCim: S('Nézzük meg a szabad időpontokat', 'Find your dates'),
@@ -242,6 +270,11 @@ export const T = {
   ejszaka: S('éjszaka', 'nights'),
 
   osszHetvegiFelar: S('ebből hétvégi felár', 'incl. weekend surcharge'),
+  osszIfa: S('Idegenforgalmi adó', 'Tourist tax'),
+  osszIfaMagyarazat: S(
+    'A helyszínen fizetendő, {ar} Ft/fő/éj. Nem része a fenti összegnek.',
+    'Payable on arrival, {ar} HUF per person per night. Not included above.'
+  ),
 
   fizetesCim: S('Fizetési mód', 'Payment method'),
   fizetesKartya: S('Bankkártya', 'Card payment'),
@@ -494,6 +527,12 @@ export function lista(szoveg: string): string[] {
 export type KornyekLink = { cim: string; url: string };
 
 export const KORNYEK: {
+  /**
+   * A képek mappájának neve: a fotók az `eredeti/kornyek/<kulcs>/`
+   * mappába kerülnek. A README „A fotók feltöltése" fejezete
+   * felsorolja mind a tizennégyet.
+   */
+  kulcs: string;
   cimke: Szoveg;
   cim: Szoveg;
   szoveg: Szoveg;
@@ -502,6 +541,7 @@ export const KORNYEK: {
 }[] = [
   {
     cimke: S('A TÓN', 'ON THE LAKE'),
+    kulcs: 'csonakazas',
     cim: S('Csónakázás a Szelidi-tavon', 'Boating on Lake Szelid'),
     szoveg: S(
       'Májustól szeptemberig, kísérővel, elektromos meghajtású csónakkal. Robbanómotoros hajó nem járhat a tavon, ezért olyan csend van, amilyet máshol nem találsz. Horgászni lehet — a területi engedélyt a Dunapataji Horgászegyesületnél vagy a helyi horgászboltokban lehet megváltani.',
@@ -510,6 +550,7 @@ export const KORNYEK: {
   },
   {
     cimke: S('TÚRA', 'HIKING'),
+    kulcs: 'tanosveny',
     cim: S('Kékmoszat tanösvény', 'Blue-algae nature trail'),
     szoveg: S(
       'A tóparton és a tölgyerdőben vezető tanösvény, akár vezetett túrával. A Szelidi-tó sós vizű, szikes tó — a tanösvény ennek a különleges élővilágnak a nyomait mutatja meg.',
@@ -518,6 +559,7 @@ export const KORNYEK: {
   },
   {
     cimke: S('BOR', 'WINE'),
+    kulcs: 'pincesor',
     cim: S('Hajósi pincesor', 'The Hajós cellar village'),
     szoveg: S(
       'Több mint kétezer pince egymás mellett — Európában egyedülálló látvány. A pincesor egész falunyi méretű, saját utcákkal; több pincészet fogad kóstolóra, és a hangulat önmagában megéri az utat.',
@@ -526,6 +568,7 @@ export const KORNYEK: {
   },
   {
     cimke: S('VÁROS', 'TOWN'),
+    kulcs: 'kalocsa',
     cim: S('Kalocsai városnézés', 'A day in Kalocsa'),
     szoveg: S(
       'Paprika múzeum, Érseki palota, Érsekkert, az Érseki könyvtár, a Nagyboldogasszony-székesegyház és a Fazekas alkotóház — egy teljes nap program, autóval húsz percre.',
@@ -542,6 +585,7 @@ export const KORNYEK: {
   },
   {
     cimke: S('LOVAK', 'HORSES'),
+    kulcs: 'lovasbemutato',
     cim: S('Bakodpusztai lovasbemutató', 'Bakodpuszta horse show'),
     szoveg: S(
       'Márciustól október végéig, nemzetközi színvonalú lovasbemutató és hagyományos csikós produkció. A környék egyik legismertebb programja.',
@@ -550,6 +594,7 @@ export const KORNYEK: {
   },
   {
     cimke: S('KOCSIKÁZÁS', 'CARRIAGE'),
+    kulcs: 'lovaskocsi',
     cim: S('Lovaskocsikázás', 'Horse-drawn carriage ride'),
     szoveg: S(
       'A helyi tájban, kocsissal. Extraként a foglalásnál is kérhető — óránkénti díjjal, előzetes egyeztetéssel.',
@@ -558,6 +603,7 @@ export const KORNYEK: {
   },
   {
     cimke: S('MADARAK', 'BIRDS'),
+    kulcs: 'madarles',
     cim: S('Hajnali madárles', 'Dawn birdwatching'),
     szoveg: S(
       'Ornitológus vezetésével a nádasokban és a közeli erdőkben. Korán kell kelni, de a szikes tó madárvilága ritka élmény.',
@@ -566,6 +612,7 @@ export const KORNYEK: {
   },
   {
     cimke: S('JÁTÉK', 'GAMES'),
+    kulcs: 'bowling',
     cim: S('Bowling a tónál', 'Bowling by the lake'),
     szoveg: S(
       'Négypályás bowling center a Family étterem mellett, biliárddal, darts-szal, csocsóval és léghokival. Esős napra tökéletes.',
@@ -574,6 +621,7 @@ export const KORNYEK: {
   },
   {
     cimke: S('ASZTAL', 'TABLE'),
+    kulcs: 'ettermek',
     cim: S('Éttermek a közelben', 'Restaurants nearby'),
     szoveg: S(
       'A Family étterem a tónál finom ebédet és vacsorát ad, a Pataji tanya bisztró pedig országos hírű pacalkínálatáról ismert.',
@@ -582,6 +630,7 @@ export const KORNYEK: {
   },
   {
     cimke: S('KERÉKPÁR', 'CYCLING'),
+    kulcs: 'kerekpar',
     cim: S('Tóparti kerékpártúra és séta', 'Cycling and walking by the lake'),
     szoveg: S(
       'A tavat körbe lehet kerekezni és sétálni, kisebb-nagyobb útvonalakon, akár 5–10 kilométeres távon. Bicikli a helyszínen bérelhető.',
@@ -590,6 +639,7 @@ export const KORNYEK: {
   },
   {
     cimke: S('DUNA', 'DANUBE'),
+    kulcs: 'duna',
     cim: S('Hartai Duna-parti séta', 'Danube walk at Harta'),
     szoveg: S(
       'Az ország egyik legszebb Duna-partja, néhány percre autóval. Széles, árnyas part, ahol jólesik végigsétálni a víz mellett, leülni egy padra, és nézni, ahogy a folyó megy a dolgára.',
@@ -598,6 +648,7 @@ export const KORNYEK: {
   },
   {
     cimke: S('ESTE', 'EVENING'),
+    kulcs: 'naplemente',
     cim: S('Naplemente a tóparton', 'Sunset by the lake'),
     szoveg: S(
       'A legegyszerűbb és talán a legjobb program. Néhány perc séta a tópartig, és onnan nézve ér igazán véget a nap.',
@@ -606,6 +657,7 @@ export const KORNYEK: {
   },
   {
     cimke: S('VÍZI PROGRAMOK', 'ON THE WATER'),
+    kulcs: 'strand',
     cim: S('Strand és vízi kalandpark', 'Beach and water park'),
     szoveg: S(
       'A tó strandján homokos part, játszóterek, büfék és éttermek várnak, a vízen pedig vízi kalandpark — ugrálóvárakkal, mászófalakkal, csúszdákkal. SUP-ot, vízibiciklit és csónakot a helyszínen lehet bérelni, és élménycsónakázásra is be lehet ülni. Egy egész napot el lehet tölteni úgy, hogy közben el sem hagyod a tópartot.',
@@ -614,6 +666,7 @@ export const KORNYEK: {
   },
   {
     cimke: S('FOTÓZÁS', 'PHOTOGRAPHY'),
+    kulcs: 'fotozas',
     cim: S('Érintetlen természet, fényképezőgéppel', 'Untouched nature, with a camera'),
     szoveg: S(
       'A Szelidi-tó a Kiskunsági Nemzeti Park része és természetvédelmi terület, ezért olyan tájat lehet itt fényképezni, amit máshol már nem. A nádas élete hajnalban és alkonyatkor a legmozgalmasabb: a szikes tó madárvilága, a vízi növények és a parti erdő együtt olyan képeket adnak, amiért a fotósok külön utat tesznek meg. Őzek gyakran jönnek elő az erdőszélen — jó eséllyel a teraszról is látsz belőlük, anélkül hogy elmozdulnál.',

@@ -1,8 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { T, type Nyelv } from '@/lib/tartalom';
+import { T, IFA_FO_EJ, type Nyelv } from '@/lib/tartalom';
 import Naptar from './Naptar';
+import ExtraKep from './ExtraKep';
+import { vanKep } from '@/lib/galeria';
 
 /**
  * Foglalóűrlap.
@@ -167,6 +169,10 @@ export default function FoglaloUrlap({
 
   const kuldheto = Boolean(ar?.foglalhato) && adatokKeszek && !kuldes && !tolt;
 
+  // Ha bármelyik extrához van kép, a többi ugyanakkora helyet hagy ki,
+  // hogy a nevek egy vonalban kezdődjenek.
+  const extraKepVan = extrak.some((x) => vanKep(`extrak/${x.slug}`));
+
   // Van-e olyan kiválasztott extra, aminek az ára egyeztetés kérdése?
   const arKeresreValasztva = valasztottExtrak.some(
     (s) => extrak.find((e) => e.slug === s)?.ar === 0
@@ -319,6 +325,12 @@ export default function FoglaloUrlap({
                     checked={valasztottExtrak.includes(x.slug)}
                     onChange={() => extraValt(x.slug)}
                   />
+                  {/* Kép csak ott, ahova töltöttek: eredeti/extrak/<slug>/ */}
+                  {vanKep(`extrak/${x.slug}`) ? (
+                    <ExtraKep slug={x.slug} nev={x.nev} nyelv={nyelv} />
+                  ) : (
+                    extraKepVan && <span className="extra-kephely" aria-hidden="true" />
+                  )}
                   <span>
                     {x.nev}
                     {x.ejszakankent ? ` (${T.ejszakankent[nyelv]})` : ''}
@@ -522,6 +534,28 @@ export default function FoglaloUrlap({
           <span>{T.osszFizetendo[nyelv]}</span>
           <span>{ft(ar?.vegosszeg ?? 0, nyelv)}</span>
         </div>
+
+        {/* Az idegenforgalmi adót a vendég a helyszínen fizeti, ezért
+            a végösszeg ALATT áll, külön elválasztva — nem keverhető
+            össze a most fizetendő összeggel. */}
+        {IFA_FO_EJ > 0 && (
+          <div className="ifa">
+            <div className="sum">
+              <span>{T.osszIfa[nyelv]}</span>
+              <span>
+                {ar && ar.ejszakak > 0
+                  ? ft(IFA_FO_EJ * fo * ar.ejszakak, nyelv)
+                  : '—'}
+              </span>
+            </div>
+            <p className="ifa-magyarazat">
+              {T.osszIfaMagyarazat[nyelv].replace(
+                '{ar}',
+                new Intl.NumberFormat(nyelv === 'en' ? 'en-GB' : 'hu-HU').format(IFA_FO_EJ)
+              )}
+            </p>
+          </div>
+        )}
 
         <p className="side-note">{T.fizetesiTajekoztato[nyelv]}</p>
 

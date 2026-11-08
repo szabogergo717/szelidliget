@@ -4,7 +4,11 @@ import {
   T, CEG, SOCIAL, KORNYEK, lista, type Nyelv, utvonal,
 } from '@/lib/tartalom';
 import FoglaloUrlap, { type HazAdat, type ExtraAdat } from './FoglaloUrlap';
+import Galeria from './Galeria';
+import { VAN_GALERIA, vanKep } from '@/lib/galeria';
+import Diavetites from './Diavetites';
 import Terkep from './Terkep';
+import HatterVideo from './HatterVideo';
 import HirlevelDoboz from './HirlevelDoboz';
 
 /**
@@ -30,6 +34,7 @@ function Fejlec({ nyelv }: { nyelv: Nyelv }) {
         </Link>
         <nav className="nav-links">
           <Link href="#hazak">{T.menuHazak[nyelv]}</Link>
+          {VAN_GALERIA && <Link href="#kepek">{T.menuKepek[nyelv]}</Link>}
           <Link href="#szolgaltatasok">{T.menuSzolgaltatasok[nyelv]}</Link>
           <Link href="#foglalas">{T.menuFoglalas[nyelv]}</Link>
           <Link href="#kornyek">{T.menuKornyek[nyelv]}</Link>
@@ -144,13 +149,28 @@ function Hazkartya({
   haz: HazAdat; nyelv: Nyelv; cimke: string; alcim: string;
   leiras: string; halo: string; felszereltseg: string; abra: React.ReactNode;
 }) {
+  // A ház saját képei: eredeti/fuge/ vagy eredeti/mandula/
+  const vannakFotok = vanKep(haz.slug);
+
   return (
     <article className="cabin">
       <div className="cabin-art">
         <span className="cabin-badge">{cimke}</span>
-        {abra}
-        {/* A valódi fotók helye. Amint megvannak, ide kerülnek. */}
-        <span className="kep-helye">{T.kepekHelye[nyelv]}</span>
+        {vannakFotok ? (
+          <Diavetites
+            kulcs={haz.slug}
+            nyelv={nyelv}
+            masodperc={5}
+            alak="teljes"
+            meretek="(max-width: 900px) 100vw, 46vw"
+          />
+        ) : (
+          <>
+            {abra}
+            {/* Amíg nincsenek fotók, a növénymotívum tartja a helyet. */}
+            <span className="kep-helye">{T.kepekHelye[nyelv]}</span>
+          </>
+        )}
       </div>
       <div className="cabin-body">
         <h3>{haz.nev}</h3>
@@ -186,9 +206,30 @@ function Hazkartya({
   );
 }
 
-function SzolgOszlop({ cim, elemek }: { cim: string; elemek: string[] }) {
+/** A szolgáltatás-oszlopok, és hogy melyikhez tartozik képmappa. */
+const SZOLG_KEPEK = ['kiemelt', 'lakoter', 'konyha', 'biztositunk'];
+
+function SzolgOszlop({
+  cim, elemek, kepKulcs, nyelv, helyKihagyas,
+}: {
+  cim: string; elemek: string[]; kepKulcs?: string; nyelv: Nyelv;
+  helyKihagyas?: boolean;
+}) {
+  // Kép csak ott, ahova töltöttek — a többi oszlop ugyanúgy marad.
+  const vannakKepek = Boolean(kepKulcs) && vanKep(kepKulcs as string);
+
   return (
-    <div className="szolg-oszlop">
+    <div className={`szolg-oszlop${!vannakKepek && helyKihagyas ? ' kephely' : ''}`}>
+      {vannakKepek && (
+        <Diavetites
+          kulcs={kepKulcs as string}
+          nyelv={nyelv}
+          masodperc={5}
+          alak="4 / 3"
+          meretek="(max-width: 620px) 100vw, (max-width: 1040px) 46vw, 23vw"
+          osztaly="dia-szolg"
+        />
+      )}
       <h3>{cim}</h3>
       <ul>
         {elemek.map((e) => <li key={e}>{e}</li>)}
@@ -202,7 +243,15 @@ export default function Oldal({
 }: {
   nyelv: Nyelv; hazak: HazAdat[]; extrak: ExtraAdat[];
 }) {
-  const videoVan = process.env.NEXT_PUBLIC_HERO_VIDEO === '1';
+  // A nyitóképernyő háttere: ha vannak `hero` képek, azok peregnek;
+  // ha nincsenek, de be van kapcsolva a videó, az megy; egyébként a
+  // letisztult krémszínű változat marad.
+  const heroKepek = vanKep('hero');
+  // Ha bármelyik szolgáltatás-oszlophoz van kép, a többi ugyanakkora
+  // helyet hagy ki, hogy a címsorok egy vonalban maradjanak.
+  const szolgKepVan = SZOLG_KEPEK.some((k) => vanKep(k));
+  const videoVan = !heroKepek && process.env.NEXT_PUBLIC_HERO_VIDEO === '1';
+  const hatterVan = heroKepek || videoVan;
 
   const fuge = hazak.find((h) => h.slug === 'fuge');
   const mandula = hazak.find((h) => h.slug === 'mandula');
@@ -212,24 +261,36 @@ export default function Oldal({
     <>
       <Fejlec nyelv={nyelv} />
 
-      <section className={`hero${videoVan ? ' hero-video' : ''}`} id="top">
-        {videoVan && (
-          <div className="hero-media" aria-hidden="true">
-            <video autoPlay muted loop playsInline preload="metadata" poster="/hero-poster.jpg">
-              <source src="/hero.mp4" type="video/mp4" />
-            </video>
+      <section className={`hero${hatterVan ? ' hero-video' : ''}`} id="top">
+        {hatterVan && (
+          <div className="hero-media">
+            {heroKepek ? (
+              <Diavetites
+                kulcs="hero"
+                nyelv={nyelv}
+                masodperc={5}
+                alak="teljes"
+                nyilak={false}
+                meretek="100vw"
+                elsobbseg
+                osztaly="dia-hero"
+              />
+            ) : (
+              <HatterVideo />
+            )}
             <div className="hero-fatyol" />
           </div>
         )}
 
         <div className="wrap">
+          {/* A logó áttetsző hátterű változata, hogy ne takarja a képet. */}
           <Image
             className="hero-logo"
-            src={videoVan ? '/logo-light.png' : '/logo-transparent.png'}
+            src={hatterVan ? '/logo-light.png' : '/logo-transparent.png'}
             alt="Szelid Liget"
             width={869}
             height={517}
-            sizes="(max-width: 600px) 72vw, 420px"
+            sizes="(max-width: 600px) 72vw, 460px"
             priority
           />
           <h1>{T.heroCim[nyelv]}</h1>
@@ -282,6 +343,20 @@ export default function Oldal({
         </div>
       </section>
 
+      {/* ---------- Galéria ---------- */}
+      {VAN_GALERIA && (
+        <section className="band" id="kepek">
+          <div className="wrap">
+            <div className="head">
+              <div className="label">{T.galeriaCimke[nyelv]}</div>
+              <h2>{T.galeriaCim[nyelv]}</h2>
+              <p>{T.galeriaBevezeto[nyelv]}</p>
+            </div>
+            <Galeria nyelv={nyelv} />
+          </div>
+        </section>
+      )}
+
       {/* ---------- Szolgáltatások ---------- */}
       <section id="szolgaltatasok">
         <div className="wrap">
@@ -291,12 +366,33 @@ export default function Oldal({
             <p>{T.szolgBevezeto[nyelv]}</p>
           </div>
           <div className="szolg-racs">
-            <SzolgOszlop cim={T.szolgKiemeltCim[nyelv]} elemek={lista(T.szolgKiemelt[nyelv])} />
-            <SzolgOszlop cim={T.szolgLakterCim[nyelv]} elemek={lista(T.szolgLakter[nyelv])} />
-            <SzolgOszlop cim={T.szolgKonyhaCim[nyelv]} elemek={lista(T.szolgKonyha[nyelv])} />
+            <SzolgOszlop
+              cim={T.szolgKiemeltCim[nyelv]}
+              elemek={lista(T.szolgKiemelt[nyelv])}
+              kepKulcs="kiemelt"
+              nyelv={nyelv}
+              helyKihagyas={szolgKepVan}
+            />
+            <SzolgOszlop
+              cim={T.szolgLakterCim[nyelv]}
+              elemek={lista(T.szolgLakter[nyelv])}
+              kepKulcs="lakoter"
+              nyelv={nyelv}
+              helyKihagyas={szolgKepVan}
+            />
+            <SzolgOszlop
+              cim={T.szolgKonyhaCim[nyelv]}
+              elemek={lista(T.szolgKonyha[nyelv])}
+              kepKulcs="konyha"
+              nyelv={nyelv}
+              helyKihagyas={szolgKepVan}
+            />
             <SzolgOszlop
               cim={T.szolgBiztositunkCim[nyelv]}
               elemek={lista(T.szolgBiztositunk[nyelv])}
+              kepKulcs="biztositunk"
+              nyelv={nyelv}
+              helyKihagyas={szolgKepVan}
             />
           </div>
         </div>
@@ -324,7 +420,18 @@ export default function Oldal({
           </div>
           <div className="kornyek-racs">
             {KORNYEK.map((k) => (
-              <article className="kornyek-elem" key={k.cim.hu}>
+              <article className="kornyek-elem" key={k.kulcs}>
+                {/* Kép csak ott, ahova töltöttek: eredeti/kornyek/<kulcs>/ */}
+                {vanKep(`kornyek/${k.kulcs}`) && (
+                  <Diavetites
+                    kulcs={`kornyek/${k.kulcs}`}
+                    nyelv={nyelv}
+                    masodperc={5}
+                    alak="3 / 2"
+                    meretek="(max-width: 700px) 100vw, (max-width: 1040px) 46vw, 30vw"
+                    osztaly="dia-kornyek"
+                  />
+                )}
                 <div className="n">{k.cimke[nyelv]}</div>
                 <h3>{k.cim[nyelv]}</h3>
                 <p>{k.szoveg[nyelv]}</p>

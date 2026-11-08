@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node --experimental-strip-types --test tests/*.test.mjs"
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "kepek": "node eszkozok/kepek.mjs"
   },
   "dependencies": {
     "@fontsource/jost": "^5.3.0",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@types/node": "^20.19.43",
     "@types/react": "^18.3.3",
+    "sharp": "^0.33.5",
     "typescript": "5.5"
   }
 }

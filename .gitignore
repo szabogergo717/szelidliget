@@ -14,3 +14,7 @@ npm-debug.log*
 .vercel
 next-env.d.ts
 *.tsbuildinfo
+
+# A nyers fotók és videók — ezek csak a Codespaces-ben kellenek,
+# a feldolgozott változatok mennek fel a public/kepek mappába.
+eredeti/
