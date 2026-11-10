@@ -1080,3 +1080,30 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
 }
 .ar-keresre-gombok { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
 .ar-keresre-gombok .btn { text-decoration: none; }
+
+/* A jakuzzi használatát leíró, letölthető lap a házirendnél. */
+.jakuzzi-lap {
+  display: flex; align-items: center; gap: 14px;
+  max-width: 640px; margin: 0 auto 26px;
+  padding: 14px 18px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--water);
+  border-radius: 3px;
+  text-decoration: none;
+  transition: border-color .2s ease, background .2s ease;
+}
+.jakuzzi-lap:hover { border-color: var(--water); background: var(--cream-2); }
+.jakuzzi-lap-ikon {
+  flex: none;
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 11px; letter-spacing: .1em;
+  color: var(--cream); background: var(--water);
+  padding: 7px 9px; border-radius: 2px;
+}
+.jakuzzi-lap-szoveg { display: flex; flex-direction: column; gap: 2px; }
+.jakuzzi-lap-szoveg strong {
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-weight: 400; font-size: 16px; color: var(--slate);
+}
+.jakuzzi-lap-szoveg span { font-size: 14px; color: var(--slate-soft); line-height: 1.5; }

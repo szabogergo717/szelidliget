@@ -404,6 +404,14 @@ export const T = {
     'Hogy minden vendégünk ugyanolyan állapotban találja a házat, mint te.',
     'So that every guest finds the cabin in the same condition you did.'
   ),
+  jakuzziLetoltes: S(
+    'A jakuzzi használata — letölthető lap',
+    'Using the hot tub — printable sheet'
+  ),
+  jakuzziLetoltesLeiras: S(
+    'Egy oldalon minden, amit a jakuzziról tudni érdemes. A faházban is megtalálod kinyomtatva.',
+    'Everything worth knowing about the hot tub, on one page. You will also find it printed in the cabin.'
+  ),
   hazirendKiemeles: S(
     'A területen egész évben tűzgyújtási tilalom van érvényben.',
     'A fire ban is in force on the property all year round.'

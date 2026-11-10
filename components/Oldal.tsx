@@ -517,6 +517,16 @@ export default function Oldal({
             <p>{T.hazirendBevezeto[nyelv]}</p>
           </div>
           <p className="hazirend-kiemeles">{T.hazirendKiemeles[nyelv]}</p>
+          {/* A jakuzzi használata külön lapon — a vendég előre elolvashatja,
+              és a faházban is ott van kinyomtatva. */}
+          <a className="jakuzzi-lap" href="/jakuzzi-hazirend.pdf" target="_blank" rel="noopener">
+            <span className="jakuzzi-lap-ikon" aria-hidden="true">PDF</span>
+            <span className="jakuzzi-lap-szoveg">
+              <strong>{T.jakuzziLetoltes[nyelv]}</strong>
+              <span>{T.jakuzziLetoltesLeiras[nyelv]}</span>
+            </span>
+          </a>
+
           <div className="hazirend-racs">
             {([
               [T.hazirend1Cim[nyelv], T.hazirend1[nyelv]],

@@ -325,6 +325,10 @@ const EMLEK_SZOVEG = {
       'Háziállatot sajnos nem tudunk fogadni, és a dohányzás a házban és a teraszon is tilos.',
       'Nyílt tüzet — grillt, tűzrakást — az erdő közelsége miatt nem gyújthatunk.',
     ],
+    jakuzziCim: 'A jakuzzi használata',
+    jakuzziSzoveg:
+      'A faházban kinyomtatva is megtalálod, de érkezés előtt is elolvashatod — egy oldal, a legfontosabb tudnivalókkal:',
+    jakuzziGomb: 'Jakuzzi házirend megnyitása',
     labl: 'Ha bármi közbejön, vagy késnél, hívj minket nyugodtan.',
   },
   en: {
@@ -341,6 +345,10 @@ const EMLEK_SZOVEG = {
       'We cannot accept pets, and smoking is not allowed inside or on the terrace.',
       'Open fires — barbecues or campfires — are not permitted because of the forest.',
     ],
+    jakuzziCim: 'Using the hot tub',
+    jakuzziSzoveg:
+      'You will find it printed in the cabin, but you can also read it before you arrive — one page with everything that matters:',
+    jakuzziGomb: 'Open the hot tub guide',
     labl: 'If anything comes up, or you are running late, just give us a call.',
   },
 };
@@ -366,6 +374,12 @@ export async function emlekeztetoEmail(foglalasId: string): Promise<void> {
      <ul style="margin:0;padding-left:20px;color:#5d6273;line-height:1.7;font-size:14.5px">
        ${t.lista.map((s) => `<li>${s}</li>`).join('')}
      </ul>
+     <h2 style="font-size:17px;font-weight:600;margin:30px 0 8px">${t.jakuzziCim}</h2>
+     <p style="margin:0 0 14px;color:#5d6273;line-height:1.6">${t.jakuzziSzoveg}</p>
+     <p style="margin:0">
+       <a href="${OLDAL}/jakuzzi-hazirend.pdf"
+          style="display:inline-block;padding:11px 18px;background:#3b7ea0;color:#fefcf5;text-decoration:none;border-radius:3px;font-size:15px">${t.jakuzziGomb}</a>
+     </p>
      <p style="margin:24px 0 0;color:#5d6273;line-height:1.6">${t.labl}</p>`,
     nyelv
   );
