@@ -1,5 +1,5 @@
 {
-  "keszult": "2026-11-08",
+  "keszult": "2026-11-10",
   "csoportok": [
     {
       "kulcs": "extrak/evfordulo",
@@ -39,6 +39,26 @@
       },
       "galeriaban": false,
       "kepek": [
+        {
+          "nev": "01-reggeli-kosar-narile-tej",
+          "leiras": "reggeli kosar narile tej",
+          "szelesseg": 1157,
+          "magassag": 710,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/extrak/gourmet_reggeli/01-reggeli-kosar-narile-tej-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/extrak/gourmet_reggeli/01-reggeli-kosar-narile-tej-960.webp"
+            },
+            {
+              "szelesseg": 1157,
+              "fajl": "/kepek/extrak/gourmet_reggeli/01-reggeli-kosar-narile-tej-1157.webp"
+            }
+          ]
+        },
         {
           "nev": "gourmet-reggeli-nga-2585",
           "leiras": "gourmet reggeli NGA 2585",

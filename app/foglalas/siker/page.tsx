@@ -3,7 +3,7 @@ import Allapot from '@/components/Allapot';
 import { T, type Nyelv } from '@/lib/tartalom';
 
 /**
- * A SimplePay ide irányítja vissza a vendéget sikeres fizetés után.
+ * A Barion ide irányítja vissza a vendéget a fizetés után.
  *
  * ⚠ Ez NEM állítja a foglalás állapotát — azt csak az aláírt IPN teszi.
  *   Ezt a címet bárki megnyithatja, ezért csak tájékoztat.

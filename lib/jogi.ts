@@ -52,7 +52,7 @@ export function aszf(nyelv: Nyelv): JogiOldal {
           cim: '2. Booking and payment',
           szoveg: [
             'A booking is made online, by selecting the cabin, the dates and any extras. The price shown at the time of booking is the price payable.',
-            'The full amount is due at the time of booking. Payment can be made by bank card through SimplePay (operated by OTP Mobil Kft.) or by bank transfer.',
+            'The full amount is due at the time of booking. Payment can be made by bank card through Barion (operated by Barion Payment Zrt.) or by bank transfer.',
             'For card payments the booking is confirmed once the payment is authorised. For bank transfers we hold the dates and the booking becomes final when the amount arrives in our account. If the transfer does not arrive within the stated deadline, we may release the dates.',
             'An invoice is issued electronically and sent to the email address given at booking.',
           ],
@@ -97,7 +97,7 @@ export function aszf(nyelv: Nyelv): JogiOldal {
         {
           cim: '7. Liability',
           szoveg: [
-            'The hot tub and the outdoor areas are used at the guest\'s own risk. Children must be supervised at all times.',
+            'The hot tub and the outdoor areas are used at the guest\'s own risk.',
             'We are not liable for valuables left in the cabin, or for damage arising from use contrary to these terms or the house rules.',
           ],
         },
@@ -130,13 +130,14 @@ export function aszf(nyelv: Nyelv): JogiOldal {
           CEG.szekhely ? `Székhely: ${CEG.szekhely}` : 'Székhely: kitöltendő',
           `A szálláshely címe: ${CEG.cim}`,
           `E-mail: ${CEG.email}`,
+          CEG.telefon ? `Telefon: ${CEG.telefon}` : 'Telefon: kitöltendő',
         ],
       },
       {
         cim: '2. A foglalás és a fizetés',
         szoveg: [
           'A foglalás online történik: kiválasztod a faházat, az időpontot és az esetleges extrákat. A foglaláskor megjelenített ár a fizetendő ár.',
-          'A teljes összeg a foglaláskor esedékes. Fizetni bankkártyával a SimplePay rendszerén keresztül (üzemeltető: OTP Mobil Kft.) vagy banki átutalással lehet.',
+          'A teljes összeg a foglaláskor esedékes. Fizetni bankkártyával a Barion rendszerén keresztül (üzemeltető: Barion Payment Zrt.) vagy banki átutalással lehet.',
           'Bankkártyás fizetésnél a foglalás a sikeres tranzakcióval válik véglegessé. Átutalásnál az időpontot fenntartjuk, és a foglalás akkor válik véglegessé, amikor az összeg megérkezik a számlánkra. Ha az utalás a megadott határidőn belül nem érkezik meg, az időpontot felszabadíthatjuk.',
           'A számlát elektronikusan állítjuk ki, és a foglaláskor megadott e-mail címre küldjük.',
         ],
@@ -170,7 +171,7 @@ export function aszf(nyelv: Nyelv): JogiOldal {
       {
         cim: '6. Házirend',
         szoveg: [
-          'Háziállatot egyik faházba sem tudunk fogadni.',
+          'Háziállatot egyik faházban sem tudunk fogadni.',
           'A faházakban és a fedett teraszon a dohányzás tilos.',
           'A birtok területén nyílt tűz gyújtása — beleértve a grillezést és a tűzrakást — tilos.',
           'Este 22:00 és reggel 7:00 között kérjük a csend megőrzését.',
@@ -181,7 +182,7 @@ export function aszf(nyelv: Nyelv): JogiOldal {
       {
         cim: '7. Felelősség',
         szoveg: [
-          'A jakuzzi és a kültéri területek használata saját felelősségre történik. Gyermekek felügyeletéről a vendégnek kell gondoskodnia.',
+          'A jakuzzi és a kültéri területek használata saját felelősségre történik.',
           'Nem vállalunk felelősséget a faházban hagyott értéktárgyakért, valamint a jelen feltételekkel vagy a házirenddel ellentétes használatból eredő károkért.',
         ],
       },
@@ -216,13 +217,13 @@ export function adatvedelem(nyelv: Nyelv): JogiOldal {
           szoveg: [
             'Booking: name, email address, phone number, and billing details if given. We need these to provide the accommodation and to issue an invoice. Legal basis: performance of a contract, and a legal obligation for invoicing.',
             'Newsletter: email address and name, only if you tick the box or subscribe on the site. Legal basis: your consent, which you may withdraw at any time.',
-            'Payment: card details are entered on SimplePay\'s own payment page and never reach us.',
+            'Payment: card details are entered on Barion\'s own payment page and never reach us.',
           ],
         },
         {
           cim: '2. Who else sees the data',
           szoveg: [
-            'SimplePay (OTP Mobil Kft.) — card payment processing.',
+            'Barion Payment Zrt. — card payment processing.',
             'Resend — sending transactional and newsletter emails.',
             'Supabase — database hosting within the EU.',
             'Vercel — website hosting.',
@@ -276,13 +277,13 @@ export function adatvedelem(nyelv: Nyelv): JogiOldal {
         szoveg: [
           'Foglalás: név, e-mail cím, telefonszám, valamint — ha megadod — számlázási adatok. Ezekre a szállás biztosításához és a számla kiállításához van szükség. Jogalap: szerződés teljesítése, illetve a számlázás körében jogi kötelezettség.',
           'Hírlevél: e-mail cím és név, kizárólag akkor, ha a jelölőnégyzetet bepipálod, vagy feliratkozol az oldalon. Jogalap: a te hozzájárulásod, amit bármikor visszavonhatsz.',
-          'Fizetés: a bankkártya adatait a SimplePay saját fizetőoldalán adod meg, azok hozzánk nem jutnak el.',
+          'Fizetés: a bankkártya adatait a Barion saját fizetőoldalán adod meg, azok hozzánk nem jutnak el.',
         ],
       },
       {
         cim: '2. Kik láthatják még az adatokat',
         szoveg: [
-          'SimplePay (OTP Mobil Kft.) — bankkártyás fizetés lebonyolítása.',
+          'Barion Payment Zrt. — bankkártyás fizetés lebonyolítása.',
           'Resend — a visszaigazoló és hírlevél e-mailek kiküldése.',
           'Supabase — adatbázis-tárolás az Európai Unión belül.',
           'Vercel — a weboldal kiszolgálása.',
@@ -293,7 +294,7 @@ export function adatvedelem(nyelv: Nyelv): JogiOldal {
       {
         cim: '3. Adattovábbítási nyilatkozat',
         szoveg: [
-          `Tudomásul veszem, hogy a ${CEG.nev} adatkezelő által a www.szelidliget.hu felhasználói adatbázisában tárolt alábbi személyes adataim átadásra kerülnek az OTP Mobil Kft., mint adatfeldolgozó részére. Az adatkezelő által továbbított adatok köre az alábbi: név, e-mail cím, telefonszám, számlázási cím, összeg. Az adatfeldolgozó által végzett adatfeldolgozási tevékenység jellege és célja a SimplePay Adatkezelési tájékoztatóban, az alábbi linken tekinthető meg: http://simplepay.hu/vasarlo-aff`,
+          `Tudomásul veszem, hogy a ${CEG.nev} adatkezelő által a www.szelidliget.hu felhasználói adatbázisában tárolt alábbi személyes adataim átadásra kerülnek a Barion Payment Zrt. (1117 Budapest, Irinyi József utca 4–20. 2. emelet), mint adatfeldolgozó részére. Az adatkezelő által továbbított adatok köre az alábbi: név, e-mail cím, telefonszám, számlázási cím, összeg. Az adatfeldolgozó által végzett adatfeldolgozási tevékenység jellege és célja a Barion Adatkezelési tájékoztatójában tekinthető meg: https://www.barion.com/hu/adatvedelmi-tajekoztato/`,
         ],
       },
       {
@@ -364,7 +365,7 @@ export function hazirend(nyelv: Nyelv): JogiOldal {
         {
           cim: 'The hot tub',
           szoveg: [
-            'Please shower before using the hot tub, and do not take glass into or near it. Children must be supervised at all times. Use is at your own risk.',
+            'Please shower before using the hot tub, and do not take glass into or near it. Use is at your own risk.',
           ],
         },
         {
@@ -393,7 +394,7 @@ export function hazirend(nyelv: Nyelv): JogiOldal {
       {
         cim: 'Háziállat nem hozható',
         szoveg: [
-          'Egyik faházba sem tudunk háziállatot fogadni. Ez a berendezést és a textíliákat védi, a jakuzzi tisztán tartását szolgálja, és allergiás vendégeink érdeke is.',
+          'Egyik faházban sem tudunk háziállatot fogadni. Ez a berendezést és a textíliákat védi, a jakuzzi tisztán tartását szolgálja, és allergiás vendégeink érdeke is.',
         ],
       },
       {
@@ -415,9 +416,33 @@ export function hazirend(nyelv: Nyelv): JogiOldal {
         ],
       },
       {
-        cim: 'A jakuzzi',
+        cim: 'A jakuzzi — alapvető szabályok',
         szoveg: [
-          'Használat előtt kérjük a zuhanyzást, és kérjük, hogy üveget ne vigyetek a jakuzziba vagy a közelébe. Gyermekek felügyeletéről a vendégnek kell gondoskodnia. A használat saját felelősségre történik.',
+          'A kültéri jakuzzit mindenki saját felelősségére, egészségi állapota tudatában veheti igénybe. A medencében egyszerre 2 fő tartózkodhat.',
+          'A jakuzzi lazításra és masszázsra való, tisztálkodásra kérjük ne használd. Használat előtt mindig zuhanyozz le, és mosd le a krémeket, testápolót, sminket — ezek erősen habzó vizet okoznak és rontják a víz minőségét.',
+          'Izzadtan (napozás, sportolás után) ne menj be a vízbe. Idegen anyagot — szappant, tusfürdőt — bevinni tilos. Ételt és italt kérjük ne vigyél a jakuzziba.',
+          'Gyertyát, mécsest a jakuzzi peremére helyezni tilos. Elektromos eszközt ne használj a vízben, mert áramütést okozhat. Viharban ne tartózkodj a vízben.',
+          'Terhes nők, gyógykezelés alatt állók és keringési panaszokkal élők a használat előtt kérjék orvosuk tanácsát. Az eszméletvesztés elkerülése érdekében fürdőzés előtt és közben ne igyál alkoholt.',
+          'Be- és kiszállásnál légy óvatos a csúszásveszély miatt, és kapcsold ki a masszázsfunkciókat, hogy lásd, hova lépsz.',
+        ],
+      },
+      {
+        cim: 'A jakuzzi — használat',
+        szoveg: [
+          'A kijelzőn az aktuális hőmérséklet látható, a fel-le nyilakkal állítható, fél fokonként. Amíg a hőmérséklet villog, más gombhoz ne nyúlj, mert elállítódhat a program.',
+          'Az alapbeállítás hideg időben 37, nyáron 34 fok. Kérjük, ne állítsd 38 fok fölé: a hosszas fürdőzés ennél melegebb vízben árthat az egészségnek.',
+          'A masszázsprogram 15 percig megy, majd leáll — a JET gombbal újraindítható. A peremen lévő szürke gomb eltekerésével oxigénnel dúsítható a víz. A LIGHT gomb a fényterápiát kapcsolja, a FLIP a kijelző irányát fordítja.',
+          'A jakuzzi időnként magától vizet forgat és tisztít: ilyenkor egyes fúvókák működnek, és ózonbuborékok jönnek fel. Ez normális, kikapcsolni nem lehet. Ugyanígy a fűtés közbeni vízforgatás is.',
+          'Ha valami beleesik a vízbe, a reggeli szekrényke oldalában találsz hálót.',
+        ],
+      },
+      {
+        cim: 'A jakuzzi — használat után',
+        szoveg: [
+          'Óvatosan szállj ki, és kapcsold ki az esetleg még működő masszázsprogramot és fényterápiát.',
+          'Emeld vissza a thermotetőt a medencére, győződj meg róla, hogy mindenhol illeszkedik, és rögzítsd a csatokkal — szeles időben a szél lekaphatja. A tető tartja a hőmérsékletet és a víz tisztaságát.',
+          'A jakuzzit nem kell (és nem is szabad) kikapcsolni: elég a thermotetőt visszahelyezni.',
+          'Kérjük, olyan állapotban hagyd a jakuzzit, ahogyan legközelebb te is találni szeretnéd. Ha meghibásodást, rendellenes működést vagy hibaüzenetet tapasztalsz, illetve ha a víz beszennyeződött, kérjük, szólj nekünk, hogy mielőbb intézkedhessünk.',
         ],
       },
       {
@@ -467,7 +492,7 @@ export function impresszum(nyelv: Nyelv): JogiOldal {
         {
           cim: 'Payment',
           szoveg: [
-            'Card payments are processed by OTP Mobil Kft. (SimplePay), 1143 Budapest, Hungária krt. 17-19.',
+            'Card payments are processed by Barion Payment Zrt., 1117 Budapest, Irinyi József utca 4–20. 2. emelet.',
           ],
         },
       ],
@@ -499,7 +524,7 @@ export function impresszum(nyelv: Nyelv): JogiOldal {
       {
         cim: 'Fizetés',
         szoveg: [
-          'A bankkártyás fizetést az OTP Mobil Kft. (SimplePay) biztosítja, 1143 Budapest, Hungária krt. 17-19.',
+          'A bankkártyás fizetést a Barion Payment Zrt. biztosítja, 1117 Budapest, Irinyi József utca 4–20. 2. emelet.',
         ],
       },
     ],

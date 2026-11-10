@@ -198,7 +198,7 @@ export default async function FoglalasReszlet({
             <StatuszValto azonosito={f.azonosito} jelenlegi={f.statusz} />
             <p className="halvany" style={{ marginTop: 14, fontSize: 13 }}>
               A lemondás felszabadítja az időszakot, és a naptárban újra
-              foglalhatóvá teszi. Pénzt nem térít vissza — azt a SimplePay
+              foglalhatóvá teszi. Pénzt nem térít vissza — azt a Barion
               felületén kell elindítani.
             </p>
           </div>

@@ -3,7 +3,7 @@ import { supabaseAdmin } from '@/lib/supabase';
 import { arajanlat, foglalasHibai, foglalasAzonosito } from '@/lib/pricing';
 import type { Haz, Arazas, Extra } from '@/lib/pricing';
 import { szabad } from '@/lib/availability';
-import { fizetestIndit } from '@/lib/simplepay';
+import { fizetestIndit } from '@/lib/barion';
 import { utalasiEmail, adminErtesito } from '@/lib/email';
 
 /**
@@ -41,7 +41,7 @@ type Keres = {
   megjegyzes?: string;
   /** Külön, önkéntes hozzájárulás marketing levelekhez. */
   hirlevel?: boolean;
-  /** 'kartya' = SimplePay, 'utalas' = banki átutalás. */
+  /** 'kartya' = Barion, 'utalas' = banki átutalás. */
   fizetesi_mod?: 'kartya' | 'utalas';
 };
 
@@ -286,22 +286,38 @@ export async function POST(req: NextRequest) {
       customer: k.vendeg.nev,
       customerEmail: k.vendeg.email,
       nyelv: vendegNyelv.toUpperCase() as 'HU' | 'EN',
-      // A nyelvet visszük magunkkal, hogy a vendég a saját nyelvén
-      // lássa a fizetés utáni visszajelzést is.
-      sikeresUrl: `${alap}/foglalas/siker?ref=${foglalas.azonosito}&lang=${vendegNyelv}`,
-      sikertelenUrl: `${alap}/foglalas/hiba?ref=${foglalas.azonosito}&lang=${vendegNyelv}`,
-      megszakitottUrl: `${alap}/foglalas/megszakitva?ref=${foglalas.azonosito}&lang=${vendegNyelv}`,
-      idouSzUrl: `${alap}/foglalas/lejart?ref=${foglalas.azonosito}&lang=${vendegNyelv}`,
-      ipnUrl: `${alap}/api/simplepay/ipn`,
+      /**
+       * A Barion egyetlen visszatérési címet használ, akármi lett a
+       * fizetés sorsa. A tényleges állapotot nem innen tudjuk meg,
+       * hanem a visszahívásból — ez az oldal csak megmutatja a
+       * vendégnek, hol tart a foglalása.
+       */
+      visszaUrl: `${alap}/foglalas/siker?ref=${foglalas.azonosito}&lang=${vendegNyelv}`,
+      visszahivasUrl: `${alap}/api/barion/visszahivas`,
     });
+
+    // A Barion fizetésazonosítóját eltesszük: ezzel tudjuk később
+    // visszakérdezni az állapotot, és ez köti össze a két rendszert.
+    try {
+      await db.from('fizetesek').insert({
+        foglalas_id: foglalas.id,
+        osszeg: ajanlat.vegosszeg,
+        statusz: 'varakozik',
+        szolgaltato: 'barion',
+        kulso_tranzakcio_id: fizetes.paymentId,
+      });
+    } catch (e) {
+      // A naplózás hibája nem akadályozhatja meg a fizetést.
+      console.error('[foglalas] fizetési kísérlet naplózása:', e);
+    }
 
     return NextResponse.json({
       azonosito: foglalas.azonosito,
       vegosszeg: ajanlat.vegosszeg,
-      fizetesi_url: fizetes.paymentUrl,
+      fizetesi_url: fizetes.fizetesiUrl,
     });
   } catch (e) {
-    console.error('[foglalas] SimplePay indítás:', e);
+    console.error('[foglalas] Barion indítás:', e);
     // A foglalás létrejött, de fizetni nem tud. Függőben hagyjuk —
     // egy takarító feladat a lejárt függő foglalásokat felszabadítja.
     return NextResponse.json(

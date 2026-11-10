@@ -14,7 +14,7 @@ A két faház: **Füge** (2–4 fő) és **Mandula** (2–6 fő).
 - [Mielőtt belekezdesz](#mielott-belekezdesz)
 - [Szótár — mi mire való](#szotar)
 - [A sorrend számít](#a-sorrend-szamit)
-- [1. lépés — SimplePay szerződés elindítása](#1-lepes)
+- [1. lépés — Barion fiók létrehozása](#1-lepes)
 - [2. lépés — GitHub-fiók és a projekt feltöltése](#2-lepes)
 - [3. lépés — Supabase (az adatbázis)](#3-lepes)
 - [4. lépés — Vercel (az oldal közzététele)](#4-lepes)
@@ -23,7 +23,7 @@ A két faház: **Füge** (2–4 fő) és **Mandula** (2–6 fő).
 - [6.5 — Érkezés előtti emlékeztető](#emlekezteto)
 - [7. lépés — A domain rákötése](#7-lepes)
 - [8. lépés — Ha szerkesztened kell: Codespaces](#8-lepes)
-- [9. lépés — SimplePay összekötése](#9-lepes)
+- [9. lépés — Barion összekötése](#9-lepes)
 - [10. lépés — Tesztelés élesítés előtt](#10-lepes)
 - [11. lépés — Élesítés](#11-lepes)
 - [Admin felület](#admin)
@@ -139,7 +139,7 @@ címen. A 7. lépésben kerül rá a saját domained.
 ---
 
 <a name="1-lepes"></a>
-## 1. lépés — SimplePay szerződés elindítása
+## 1. lépés — Barion fiók létrehozása
 
 **Mit csinálsz:** elindítod a bankkártyás fizetés szerződéskötését.
 **Mennyi idő:** 30 perc kitöltés, utána hetek várakozás.
@@ -468,6 +468,9 @@ utána **Redeploy**.
 | `UTALAS_SZAMLASZAM` | a bankszámlaszám | utalásos fizetés e-mailje |
 | `UTALAS_IBAN` | az IBAN (külföldi vendégeknek) | utalásos fizetés e-mailje |
 | `UTALAS_HATARIDO_NAP` | pl. `3` — hány napja van utalni | utalásos fizetés e-mailje |
+| `BARION_POSKEY` | a Barion boltod POSKey értéke | bankkártyás fizetés |
+| `BARION_EMAIL` | a Barion fiókod e-mail címe | a kedvezményezett |
+| `BARION_TESZT` | `true` teszteléshez, `false` élesben | melyik Barion környezet |
 | `CRON_SECRET` | egy általad kitalált hosszú jelszó | az érkezés előtti emlékeztető |
 | `ADMIN_JELSZO` | az admin felület jelszava | admin belépés |
 | `ADMIN_SESSION_TITOK` | egy másik hosszú, kitalált jelszó | az admin munkamenet aláírása |
@@ -837,7 +840,7 @@ tényleges használat — bőven elég alkalmi szerkesztéshez.
 ---
 
 <a name="9-lepes"></a>
-## 9. lépés — SimplePay összekötése
+## 9. lépés — Barion összekötése
 
 **Ezt csak akkor csináld, ha megjött a SimplePay szerződés.**
 

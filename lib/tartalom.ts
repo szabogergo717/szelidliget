@@ -22,13 +22,20 @@ export function utvonal(nyelv: Nyelv, ut = ''): string {
 /** A vállalkozás adatai — egy helyen, hogy ne csússzon szét az oldalon. */
 export const CEG = {
   nev: 'Szekundum Kft.',
-  // A hiányzó adatokat a NEXT_PUBLIC_ADOSZAM és NEXT_PUBLIC_SZEKHELY
-  // környezeti változóból vesszük, hogy ne kelljen kódot módosítani.
-  adoszam: process.env.NEXT_PUBLIC_ADOSZAM ?? '',
-  szekhely: process.env.NEXT_PUBLIC_SZEKHELY ?? '',
+  /**
+   * A cégadatok itt állnak, mert a számlán és az ÁSZF-ben is ezek
+   * szerepelnek — egy helyen kell javítani, ha változnak. A környezeti
+   * változó felülírhatja őket (Vercel → Environment Variables), így
+   * sürgős javításhoz nem kell kódot módosítani.
+   */
+  adoszam: process.env.NEXT_PUBLIC_ADOSZAM || '12377785-2-13',
+  szekhely: process.env.NEXT_PUBLIC_SZEKHELY || '2092 Budakeszi, Gábor Áron utca 123.',
+  /** A szálláshely címe — ez nem azonos a székhellyel. */
   cim: '6328 Dunapataj-Szelidi tó, Kastély utca 17.',
   email: 'foglalas@szelidliget.hu',
-  telefon: process.env.NEXT_PUBLIC_TELEFON ?? '',
+  telefon: process.env.NEXT_PUBLIC_TELEFON || '+36 20 417 4871',
+  /** Tárcsázható alak: szóköz nélkül, országhívóval. */
+  telefonHivas: '+36204174871',
   // Térkép: a cím koordinátái
   terkepQuery: 'Dunapataj, Kastély utca 17, 6328',
 };
@@ -69,7 +76,7 @@ export const T = {
   ),
 
   // ---------- menü ----------
-  menuHazak: S('Faházak', 'Cabins'),
+  menuHazak: S('Házaink', 'Our cabins'),
   menuSzolgaltatasok: S('Szolgáltatások', 'Amenities'),
   menuFoglalas: S('Foglalás', 'Booking'),
   menuKornyek: S('Környék', 'Nearby'),
@@ -81,11 +88,11 @@ export const T = {
   // ---------- hero ----------
   heroCim: S('Luxus faházak az erdő szélén', 'Luxury cabins at the forest edge'),
   heroAlcim: S(
-    'A Füge és a Mandula egymástól függetlenül foglalható, néhány lépésre az erdő szélétől. Kint jakuzzi, bent csend és kényelem.',
+    'A Füge és a Mandula házak egymástól függetlenül foglalhatóak, néhány lépésre az erdő szélétől. Kint jakuzzi, bent csend és kényelem.',
     'Füge and Mandula can be booked independently, a few steps from the forest edge. A hot tub outside, quiet and comfort inside.'
   ),
   heroGombSzabad: S('Szabad időpontok', 'Check dates'),
-  heroGombHazak: S('A két ház', 'The cabins'),
+  heroGombHazak: S('Házaink', 'Our cabins'),
 
   tenyHazak: S('önálló faház', 'separate cabins'),
   tenyFo: S('fő házanként', 'guests per cabin'),
@@ -93,7 +100,7 @@ export const T = {
   tenyVisszaigazolas: S('órás visszaigazolás', 'hour confirmation'),
 
   // ---------- faházak ----------
-  hazakCimke: S('A KÉT HÁZ', 'THE CABINS'),
+  hazakCimke: S('HÁZAINK', 'OUR CABINS'),
   hazakCim: S('Füge és Mandula', 'Füge and Mandula'),
   hazakBevezeto: S(
     'Két ház, két karakter, egy liget. Mindkettőnek saját terasza és jakuzzija van — külön-külön és együtt is foglalhatók.',
@@ -106,8 +113,8 @@ export const T = {
     'More sheltered, right by the forest'
   ),
   fugeLeiras: S(
-    'A Füge a liget csendesebb, nyugodtabb részén található, ahol a természet közelsége és a zavartalan pihenés kerül a középpontba. Elegáns enteriőrjében az arany, fekete és drapp árnyalatok harmonikus kombinációja teremti meg a kifinomult, otthonos hangulatot. A légkondicionáló, a látványkandalló és a kiváló minőségű matrac egész évben gondoskodnak a kényelemről, míg a fényterápia tovább fokozza a relaxáció élményét. A délnyugati fekvésű teraszon a késő délutáni napfény hosszan elkísér, így tökéletes helyszín egy nyugodt nap lezárásához. A Füge egész évben foglalható, hogy bármely évszakban legyen egy saját kis menedéked a természetben.',
-    'Füge sits on the quieter, calmer side of the grove, where closeness to nature and undisturbed rest come first. Its elegant interior combines gold, black and beige tones into a refined, homely atmosphere. Air conditioning, a feature fireplace and a high-quality mattress keep it comfortable all year, while light therapy deepens the sense of relaxation. On the southwest-facing terrace the late afternoon sun stays with you for hours — the perfect place to close a quiet day. Füge is bookable all year round, so you have your own small retreat in nature in any season.'
+    'A Füge a liget csendesebb, nyugodtabb részén található, ahol a természet közelsége és a zavartalan pihenés kerül a középpontba. Elegáns enteriőrjében az arany, fekete és drapp árnyalatok harmonikus kombinációja teremti meg a kifinomult, otthonos hangulatot. A légkondicionáló és a kiváló minőségű matrac egész évben gondoskodnak a kényelemről, míg a fényterápia tovább fokozza a relaxáció élményét. A délnyugati fekvésű teraszon a késő délutáni napfény hosszan elkísér, így tökéletes helyszín egy nyugodt nap lezárásához. A Füge egész évben foglalható, hogy bármely évszakban legyen egy saját kis menedéked a természetben.',
+    'Füge sits on the quieter, calmer side of the grove, where closeness to nature and undisturbed rest come first. Its elegant interior combines gold, black and beige tones into a refined, homely atmosphere. Air conditioning and a high-quality mattress keep it comfortable all year, while light therapy deepens the sense of relaxation. On the southwest-facing terrace the late afternoon sun stays with you for hours — the perfect place to close a quiet day. Füge is bookable all year round, so you have your own small retreat in nature in any season.'
   ),
   fugeFelszereltseg: S(
     'Jakuzzi 24 m²-es fedett teraszon, kerti bútorok, franciaágy 30 cm-es matraccal, Smart TV, gépesített konyha, Tchibo kapszulás kávéfőző',
@@ -157,8 +164,8 @@ export const T = {
   ),
   szolgLakterCim: S('Lakótér', 'Living space'),
   szolgLakter: S(
-    'Franciaágy 160×200 cm|Látványkandalló|Légkondicionáló|Kerti pihenő|Hajszárító|Ágynemű, törülközők és fürdőköntös',
-    'Double bed 160×200 cm|Feature fireplace|Air conditioning|Garden seating|Hairdryer|Bed linen, towels and bathrobes'
+    'Franciaágy 160×200 cm|Légkondicionáló|Kerti pihenő|Hajszárító|Ágynemű, törülközők és fürdőköntös',
+    'Double bed 160×200 cm|Air conditioning|Garden seating|Hairdryer|Bed linen, towels and bathrobes'
   ),
   szolgBiztositunkCim: S('Amit biztosítunk neked', 'Included for you'),
   szolgBiztositunk: S(
@@ -196,15 +203,21 @@ export const T = {
 
   mezoHaz: S('FAHÁZ', 'CABIN'),
   mezoVendegek: S('VENDÉGEK', 'GUESTS'),
+  naptarMelyikHaz: S(
+    'A {haz} ház szabad időpontjai:',
+    'Availability for {haz}:'
+  ),
   mezoErkezes: S('ÉRKEZÉS', 'CHECK-IN'),
   mezoTavozas: S('TÁVOZÁS', 'CHECK-OUT'),
   extrakCim: S('EXTRA SZOLGÁLTATÁSOK', 'EXTRA SERVICES'),
   ejszakankent: S('éjszakánként', 'per night'),
   arKeresre: S('Ár kérésre', 'Price on request'),
   arKeresreMagyarazat: S(
-    'Ezt a foglalás után e-mailben egyeztetjük.',
-    'We will arrange this by email after your booking.'
+    'Ezeknek az áráról előre is szívesen adunk tájékoztatást — hívj minket, vagy írj egy e-mailt:',
+    'We are happy to quote these in advance — call us or send an email:'
   ),
+  gombHivas: S('Hívás', 'Call'),
+  gombEmail: S('E-mail írása', 'Send an email'),
 
   egyFoTajekoztato: S(
     'Egy főre is foglalható — az ár ilyenkor is a 2 fős ár.',
@@ -365,7 +378,7 @@ export const T = {
   ),
   gyik3K: S('Vihetünk háziállatot?', 'Can we bring a pet?'),
   gyik3V: S(
-    'Sajnos nem. A faházak berendezése, a textíliák és a jakuzzi tisztán tartása, valamint az allergiás vendégeink védelme miatt egyik házba sem tudunk háziállatot fogadni. Megértésedet köszönjük.',
+    'Sajnos nem. A faházak berendezése, a textíliák és a jakuzzi tisztán tartása, valamint az allergiás vendégeink védelme miatt egyik faházban sem tudunk háziállatot fogadni. Megértésedet köszönjük.',
     'Unfortunately not. Because of the cabins\' furnishings, the textiles, keeping the hot tub clean, and to protect guests with allergies, we cannot accept pets in either cabin. Thank you for understanding.'
   ),
   gyik4K: S('Mikor érkezhetünk és mikor kell távozni?', 'What are the check-in and check-out times?'),
@@ -397,7 +410,7 @@ export const T = {
   ),
   hazirend1Cim: S('Háziállat nem hozható', 'No pets'),
   hazirend1: S(
-    'Egyik faházba sem tudunk háziállatot fogadni — a berendezés, a textíliák és allergiás vendégeink védelmében.',
+    'Egyik faházban sem tudunk háziállatot fogadni — a berendezés, a textíliák és allergiás vendégeink védelmében.',
     'We cannot accept pets in either cabin — to protect the furnishings, the textiles and guests with allergies.'
   ),
   hazirend2Cim: S('A dohányzás tilos', 'No smoking'),
@@ -540,12 +553,12 @@ export const KORNYEK: {
   linkek?: KornyekLink[];
 }[] = [
   {
-    cimke: S('A TÓN', 'ON THE LAKE'),
+    cimke: S('A TAVON', 'ON THE LAKE'),
     kulcs: 'csonakazas',
     cim: S('Csónakázás a Szelidi-tavon', 'Boating on Lake Szelid'),
     szoveg: S(
-      'Májustól szeptemberig, kísérővel, elektromos meghajtású csónakkal. Robbanómotoros hajó nem járhat a tavon, ezért olyan csend van, amilyet máshol nem találsz. Horgászni lehet — a területi engedélyt a Dunapataji Horgászegyesületnél vagy a helyi horgászboltokban lehet megváltani.',
-      'From May to September, with a guide, in an electric boat. Combustion engines are not allowed on the lake, so it is quieter here than anywhere else nearby. Fishing is permitted — permits are available from the Dunapataj angling association or the local tackle shops.'
+      'Májustól szeptemberig, kísérővel, elektromos meghajtású csónakkal. Nyugalom és gyönyörű, érintetlen természeti környezet vár ott téged: megfigyelheted a tó élővilágát, és bekukkanthatsz a madarak lakhelyére, a nádasba. Csodálatos, felfedezni való csodaország ez.',
+      'From May to September, with a guide, in an electric boat. Calm and untouched nature await you out on the water: you can watch the life of the lake and peer into the reed beds where the birds live. A wonderland to discover.'
     ),
   },
   {
@@ -624,9 +637,13 @@ export const KORNYEK: {
     kulcs: 'ettermek',
     cim: S('Éttermek a közelben', 'Restaurants nearby'),
     szoveg: S(
-      'A Family étterem a tónál finom ebédet és vacsorát ad, a Pataji tanya bisztró pedig országos hírű pacalkínálatáról ismert.',
-      'The Family restaurant by the lake serves good lunches and dinners, while the Pataji tanya bisztró is known nationwide for its tripe dishes.'
+      'A Family étterem a tónál finom ebédet és vacsorát ad — öt perc séta, nem kell autóba ülnöd. A Tanya Bisztró pedig országos hírű a pataji pacalpörköltjéről; 2025-ben Guinness-rekord is született belőle.',
+      'The Family restaurant by the lake serves good lunches and dinners — a five-minute walk, no need to take the car. Tanya Bisztró is famous across Hungary for its Pataj tripe stew; in 2025 it even set a Guinness record.'
     ),
+    linkek: [
+      { cim: 'Tanya Bisztró — Dunapataj', url: 'https://tanyabisztro.hu/' },
+      { cim: 'A pataji pacal története', url: 'https://tanyabisztro.hu/pataji-pacal-tortenete/' },
+    ],
   },
   {
     cimke: S('KERÉKPÁR', 'CYCLING'),

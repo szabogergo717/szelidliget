@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { T, IFA_FO_EJ, type Nyelv } from '@/lib/tartalom';
+import { T, CEG, IFA_FO_EJ, type Nyelv } from '@/lib/tartalom';
 import Naptar from './Naptar';
 import ExtraKep from './ExtraKep';
 import { vanKep } from '@/lib/galeria';
@@ -74,6 +74,25 @@ export default function FoglaloUrlap({
   const alapKi = new Date(ma); alapKi.setDate(alapKi.getDate() + 16);
 
   const [hazSlug, setHazSlug] = useState(kezdoHaz ?? hazak[0]?.slug ?? '');
+
+  /**
+   * A faházkártyák „Foglalom" gombja a `#foglalas-fuge` vagy
+   * `#foglalas-mandula` horgonyra mutat. Innen tudjuk meg, melyik házat
+   * választotta a vendég — enélkül mindig az első ház jönne fel, és a
+   * Mandulát nem lehetne egy kattintással foglalni.
+   */
+  useEffect(() => {
+    function horgonybol() {
+      const h = window.location.hash.replace('#', '');
+      const elotag = 'foglalas-';
+      if (!h.startsWith(elotag)) return;
+      const kert = h.slice(elotag.length);
+      if (hazak.some((x) => x.slug === kert)) setHazSlug(kert);
+    }
+    horgonybol();
+    window.addEventListener('hashchange', horgonybol);
+    return () => window.removeEventListener('hashchange', horgonybol);
+  }, [hazak]);
   const [erkezes, setErkezes] = useState(ymd(alapBe));
   const [tavozas, setTavozas] = useState(ymd(alapKi));
   const [fo, setFo] = useState(2);
@@ -251,18 +270,34 @@ export default function FoglaloUrlap({
   return (
     <form className="panel" onSubmit={foglal}>
       <div className="panel-main">
-        <div className="row">
-          <div className="field">
-            <label htmlFor="f-haz">{T.mezoHaz[nyelv]}</label>
-            <select id="f-haz" value={hazSlug} onChange={(e) => setHazSlug(e.target.value)}>
-              {hazak.map((h) => (
-                <option key={h.slug} value={h.slug}>
-                  {h.nev} — {ft(h.alap_ar, nyelv)}
-                  {nyelv === 'hu' ? '/éj' : '/night'}
-                </option>
-              ))}
-            </select>
+        {/* A házválasztás nem legördülő, hanem két jól látható gomb:
+            egy pillantásból látszik, melyik ház naptárát és árát nézed. */}
+        <fieldset className="haz-valaszto">
+          <legend>{T.mezoHaz[nyelv]}</legend>
+          <div className="haz-gombok">
+            {hazak.map((h) => (
+              <label
+                key={h.slug}
+                className={`haz-gomb${h.slug === hazSlug ? ' aktiv' : ''}`}
+              >
+                <input
+                  type="radio"
+                  name="haz"
+                  value={h.slug}
+                  checked={h.slug === hazSlug}
+                  onChange={() => setHazSlug(h.slug)}
+                />
+                <span className="haz-nev">{h.nev}</span>
+                <span className="haz-ar">
+                  {ft(h.alap_ar, nyelv)}
+                  {nyelv === 'hu' ? ' / éj' : ' / night'}
+                </span>
+              </label>
+            ))}
           </div>
+        </fieldset>
+
+        <div className="row">
           <div className="field">
             <label htmlFor="f-fo">{T.mezoVendegek[nyelv]}</label>
             <select id="f-fo" value={fo} onChange={(e) => setFo(Number(e.target.value))}>
@@ -295,6 +330,12 @@ export default function FoglaloUrlap({
 
         {/* A naptár ugyanazt a két dátumot állítja, mint a mezők fent —
             aki szívesebben gépel, annak a mezők maradnak. */}
+        {haz && (
+          <p className="naptar-melyik">
+            {T.naptarMelyikHaz[nyelv].replace('{haz}', haz.nev)}
+          </p>
+        )}
+
         <Naptar
           hazSlug={hazSlug}
           erkezes={erkezes}
@@ -343,9 +384,24 @@ export default function FoglaloUrlap({
               </div>
             ))}
             {arKeresreValasztva && (
-              <p className="mezo-sugo" style={{ marginTop: 10 }}>
-                {T.arKeresreMagyarazat[nyelv]}
-              </p>
+              <div className="ar-keresre">
+                <p>{T.arKeresreMagyarazat[nyelv]}</p>
+                <div className="ar-keresre-gombok">
+                  {CEG.telefonHivas && (
+                    <a className="btn small ghost" href={`tel:${CEG.telefonHivas}`}>
+                      {T.gombHivas[nyelv]} · {CEG.telefon}
+                    </a>
+                  )}
+                  <a
+                    className="btn small ghost"
+                    href={`mailto:${CEG.email}?subject=${encodeURIComponent(
+                      nyelv === 'hu' ? 'Árajánlat kérése' : 'Price request'
+                    )}`}
+                  >
+                    {T.gombEmail[nyelv]}
+                  </a>
+                </div>
+              </div>
             )}
           </>
         )}

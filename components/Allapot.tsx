@@ -6,7 +6,7 @@ import { T, type Nyelv, utvonal } from '@/lib/tartalom';
  * A fizetés utáni visszatérő oldalak közös váza.
  *
  * FONTOS: ez az oldal csak TÁJÉKOZTAT. A foglalás állapotát nem innen
- * állítjuk — azt kizárólag a SimplePay szerverétől érkező, aláírt IPN
+ * állítjuk — azt kizárólag a Barion szerverétől érkező, visszaellenőrzött
  * üzenet dönti el. Ezt a címet bárki megnyithatja a böngészőjében,
  * ezért semmilyen következtetést nem vonunk le belőle.
  */

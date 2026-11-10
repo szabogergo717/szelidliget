@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Allapot from '@/components/Allapot';
 import { T, type Nyelv } from '@/lib/tartalom';
 
-/** A SimplePay ide irányít vissza: letelt a fizetésre szánt idő. */
+/** Ide jut a vendég, ha letelt a fizetésre szánt idő. */
 
 export const metadata: Metadata = {
   title: 'Lejárt fizetés — Szelid Liget',

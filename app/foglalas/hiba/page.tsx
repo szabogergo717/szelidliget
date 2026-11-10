@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Allapot from '@/components/Allapot';
 import { T, type Nyelv } from '@/lib/tartalom';
 
-/** A SimplePay ide irányít vissza: a bank elutasította a tranzakciót. */
+/** Ide jut a vendég, ha a bank elutasította a tranzakciót. */
 
 export const metadata: Metadata = {
   title: 'A fizetés nem sikerült — Szelid Liget',

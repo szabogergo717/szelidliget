@@ -30,7 +30,7 @@ function Fejlec({ nyelv }: { nyelv: Nyelv }) {
     <header className="site-header">
       <div className="nav">
         <Link className="brand" href={utvonal(nyelv)}>
-          <Image src="/logo-mark.png" alt="" width={695} height={400} priority />
+          <Image src="/logo-mark.png" alt="" width={728} height={421} priority />
           <span>SZELID LIGET</span>
         </Link>
         <nav className="nav-links">
@@ -80,7 +80,7 @@ function Lablec({ nyelv }: { nyelv: Nyelv }) {
       <div className="wrap foot">
         <div className="foot-bal">
           <Link className="brand foot-brand" href={utvonal(nyelv)}>
-            <Image src="/logo-mark-light.png" alt="" width={620} height={356} />
+            <Image src="/logo-mark-light.png" alt="" width={728} height={421} />
             <span>SZELID LIGET</span>
           </Link>
           <p className="foot-ceg">
@@ -200,7 +200,11 @@ function Hazkartya({
             <span>{T.arEttol[nyelv]}</span>
             <strong>{ft(haz.alap_ar, nyelv)}</strong>
           </div>
-          <Link href="#foglalas" className="btn small">{T.gombFoglalom[nyelv]}</Link>
+          {/* A ház azonosítója a horgonyban: így a foglalóűrlap tudja,
+              melyik ház naptárát kell felhoznia. */}
+          <Link href={`#foglalas-${haz.slug}`} className="btn small">
+            {T.gombFoglalom[nyelv]}
+          </Link>
         </div>
       </div>
     </article>
@@ -294,6 +298,19 @@ export default function Oldal({
               <HatterVideo />
             )}
             <div className="hero-fatyol" />
+            {/* Telefonon a logó a fotósáv alján ül, a szöveg pedig alatta,
+                krém háttéren. Ugyanaz a fájl, mint lent — a böngésző
+                egyszer tölti le, és mindig csak az egyik látszik. */}
+            <Image
+              className="hero-logo hero-logo-mobil"
+              src="/logo-light.png"
+              alt=""
+              aria-hidden="true"
+              width={869}
+              height={534}
+              sizes="76vw"
+              priority
+            />
           </div>
         )}
 
@@ -304,7 +321,7 @@ export default function Oldal({
             src={hatterVan ? '/logo-light.png' : '/logo-transparent.png'}
             alt="Szelid Liget"
             width={869}
-            height={513}
+            height={534}
             sizes="(max-width: 600px) 72vw, 460px"
             priority
           />
@@ -415,6 +432,9 @@ export default function Oldal({
 
       {/* ---------- Foglalás ---------- */}
       <section className="band" id="foglalas">
+        {/* Rejtett horgonyok: ide ugranak a faházkártyák gombjai. */}
+        <span id="foglalas-fuge" className="horgony" aria-hidden="true" />
+        <span id="foglalas-mandula" className="horgony" aria-hidden="true" />
         <div className="wrap">
           <div className="head">
             <div className="label">{T.foglalasCimke[nyelv]}</div>

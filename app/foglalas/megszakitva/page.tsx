@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Allapot from '@/components/Allapot';
 import { T, type Nyelv } from '@/lib/tartalom';
 
-/** A SimplePay ide irányít vissza: a vendég megszakította a fizetést. */
+/** Ide jut a vendég, ha megszakította a fizetést. */
 
 export const metadata: Metadata = {
   title: 'Megszakított fizetés — Szelid Liget',

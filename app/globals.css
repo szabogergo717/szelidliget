@@ -141,9 +141,12 @@ img { max-width: 100%; display: block; }
 /* A hullámmotívum és a tények a szakasz aljára kerülnek. */
 .hero.hero-video .waves { margin-top: auto; }
 .hero.hero-video .hero-logo { width: min(460px, 76vw); }
-@media (max-width: 700px) {
-  .hero.hero-video { min-height: min(84vh, 680px); padding-top: 84px; }
-}
+/* A logó két helyen szerepel: telefonon a fotósávban, nagyobb
+   képernyőn a szöveg fölött. Ugyanaz a fájl, így a böngésző egyszer
+   tölti le — mindig csak az egyik látszik. */
+.hero-logo-mobil { display: none; }
+
+
 
 /* A háttér-diavetítés a teljes nyitóképernyőt kitölti. */
 .dia-hero { background: var(--slate); }
@@ -158,7 +161,7 @@ img { max-width: 100%; display: block; }
 .hero-fatyol {
   position: absolute; inset: 0;
   background:
-    linear-gradient(180deg, rgba(38, 42, 52, .74) 0%, rgba(38, 42, 52, .52) 45%, rgba(38, 42, 52, .68) 100%);
+    linear-gradient(180deg, rgba(38, 42, 52, .56) 0%, rgba(38, 42, 52, .34) 42%, rgba(38, 42, 52, .62) 100%);
 }
 .hero.hero-video .wrap { position: relative; z-index: 1; }
 .hero.hero-video h1 { color: var(--cream); }
@@ -177,18 +180,70 @@ img { max-width: 100%; display: block; }
    videót nem töltjük le), a videó betöltése alatt, és annál is, aki
    kikapcsolta a mozgást a rendszerében. */
 .hero-media { background: url('/hero-poster.jpg') center / cover no-repeat; }
-/* A logó eredeti aránya 869:513. A `height: auto` nélkül a böngésző
+/* A logó eredeti aránya 869:534. A `height: auto` nélkül a böngésző
    a HTML-ben megadott magasságot tartaná, és a kép megnyúlna. */
 .hero-logo {
   width: min(420px, 72vw);
   height: auto;
-  aspect-ratio: 869 / 513;
+  aspect-ratio: 869 / 534;
   margin: 0 auto 30px;
 }
 .hero h1 {
   font-size: clamp(30px, 4.4vw, 50px); line-height: 1.18;
   max-width: 17ch; margin: 0 auto; color: var(--slate);
 }
+/* ---------- telefonos nyitóképernyő ----------
+   Kis képernyőn a fotót a magas kijelzőre vágni és sötét fátyollal
+   lefedni annyit jelent, hogy a képből semmi nem látszik. Ezért itt
+   más a felépítés: FELÜL a fotó, jól láthatóan, alatta krém háttéren
+   a szöveg és a gombok. A fotó marad fotónak, a szöveg olvashatónak. */
+@media (max-width: 760px) {
+  .hero.hero-video {
+    display: block;
+    min-height: 0;
+    padding-top: 0;
+    background: var(--cream);
+  }
+  .hero-media {
+    position: relative;
+    height: min(52vh, 440px);
+    min-height: 270px;
+  }
+  /* Csak a sáv alján sötétít, ott, ahol a logó ül. */
+  .hero-fatyol {
+    background: linear-gradient(
+      180deg,
+      rgba(38, 42, 52, .10) 0%,
+      rgba(38, 42, 52, .06) 45%,
+      rgba(38, 42, 52, .52) 100%
+    );
+  }
+  .hero-logo-mobil {
+    display: block;
+    position: absolute;
+    left: 50%; bottom: 20px;
+    transform: translateX(-50%);
+    width: min(300px, 66vw);
+    height: auto;
+    z-index: 2;
+    margin: 0;
+    /* Finom árnyék, hogy világos égbolt fölött is kivehető maradjon. */
+    filter: drop-shadow(0 2px 10px rgba(20, 24, 30, .55));
+  }
+  /* A szöveg a fotó alatt, krém háttéren — nincs szükség fátyolra. */
+  .hero.hero-video .wrap { padding-top: 30px; }
+  .hero.hero-video .hero-logo:not(.hero-logo-mobil) { display: none; }
+  .hero.hero-video h1 { color: var(--slate); }
+  .hero.hero-video .hero-sub { color: var(--slate-soft); }
+  .hero.hero-video .btn.ghost { color: var(--slate); border-color: var(--line); }
+  .hero.hero-video .btn.ghost:hover { background: var(--slate); color: var(--cream); border-color: var(--slate); }
+  .hero.hero-video .waves path { stroke: var(--water); }
+  .hero.hero-video .facts { border-top-color: var(--line-soft); }
+  .hero.hero-video .fact { border-right-color: var(--line-soft); }
+  .hero.hero-video .fact strong { color: var(--ochre); }
+  .hero.hero-video .fact span { color: var(--slate-soft); }
+}
+
 .hero-sub { margin: 22px auto 0; max-width: 52ch; font-size: 17.5px; color: var(--slate-soft); }
 .hero-cta { display: flex; gap: 14px; justify-content: center; margin-top: 34px; flex-wrap: wrap; }
 
@@ -969,3 +1024,59 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
 @media (max-width: 520px) {
   .extra-kephely { width: 56px; height: 44px; }
 }
+
+/* ---------- faházválasztó a foglalásnál ----------
+   Legördülő helyett két jól látható gomb: egy pillantásból látszik,
+   melyik ház naptárát és árát nézi a vendég. */
+.haz-valaszto { border: none; padding: 0; margin: 0 0 18px; }
+.haz-valaszto legend {
+  padding: 0; margin-bottom: 8px;
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 12px; letter-spacing: .14em; color: var(--slate-soft);
+}
+.haz-gombok { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 480px) { .haz-gombok { grid-template-columns: 1fr; } }
+.haz-gomb {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 13px 16px; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 3px;
+  background: var(--cream);
+  transition: border-color .2s ease, background .2s ease;
+}
+.haz-gomb:hover { border-color: var(--ochre-light); }
+.haz-gomb input { position: absolute; opacity: 0; width: 0; height: 0; }
+.haz-gomb .haz-nev {
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 17px; color: var(--slate);
+}
+.haz-gomb .haz-ar { font-size: 14px; color: var(--slate-soft); }
+.haz-gomb.aktiv {
+  border-color: var(--ochre); background: rgba(169, 114, 49, .07);
+  box-shadow: inset 0 0 0 1px var(--ochre);
+}
+.haz-gomb.aktiv .haz-nev { color: var(--ochre-dark); font-weight: 500; }
+.haz-gomb:focus-within { outline: 2px solid var(--ochre); outline-offset: 2px; }
+
+/* Megmondja, melyik ház naptárát mutatjuk — ne kelljen kitalálni. */
+.naptar-melyik {
+  margin: 18px 0 -8px;
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 14px; color: var(--ochre-dark);
+}
+
+/* Rejtett horgony: a ragadós fejléc miatt kicsit feljebb kezd. */
+.horgony { display: block; position: relative; top: -90px; visibility: hidden; }
+
+/* Az „ár kérésre" extráknál a vendég egy kattintással tudjon
+   telefonálni vagy e-mailt írni — ne kelljen keresgélnie. */
+.ar-keresre {
+  margin-top: 12px; padding: 14px 16px;
+  background: var(--cream-2); border: 1px solid var(--line-soft);
+  border-radius: 3px;
+}
+.ar-keresre p {
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-size: 14px; color: var(--slate-soft); line-height: 1.55;
+}
+.ar-keresre-gombok { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.ar-keresre-gombok .btn { text-decoration: none; }
