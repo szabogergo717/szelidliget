@@ -365,6 +365,7 @@ export function hazirend(nyelv: Nyelv): JogiOldal {
         {
           cim: 'The hot tub',
           szoveg: [
+            'If you have epilepsy or are sensitive to flashing light, please do NOT switch on the light therapy. The changing, flickering colours can trigger a seizure, which in water is life-threatening. The lights can be turned off at any time with the LIGHT button.',
             'Please shower before using the hot tub, and do not take glass into or near it. Use is at your own risk.',
           ],
         },
@@ -416,6 +417,13 @@ export function hazirend(nyelv: Nyelv): JogiOldal {
         ],
       },
       {
+        cim: 'A jakuzzi — fényterápia, epilepszia',
+        szoveg: [
+          'Ha epilepsziás vagy, vagy fényérzékenységre hajlamos, kérjük, NE kapcsold be a fényterápiát. A váltakozó, villódzó színes fény rohamot válthat ki.',
+          'Ez a vízben életveszélyes: egy roham fulladáshoz vezethet. Ha bizonytalan vagy, hagyd kikapcsolva — a medence fényterápia nélkül is ugyanúgy használható, és a világítás a LIGHT gombbal bármikor kioltható.',
+        ],
+      },
+      {
         cim: 'A jakuzzi — alapvető szabályok',
         szoveg: [
           'A kültéri jakuzzit mindenki saját felelősségére, egészségi állapota tudatában veheti igénybe. A medencében egyszerre 2 fő tartózkodhat.',
@@ -431,7 +439,7 @@ export function hazirend(nyelv: Nyelv): JogiOldal {
         szoveg: [
           'A kijelzőn az aktuális hőmérséklet látható, a fel-le nyilakkal állítható, fél fokonként. Amíg a hőmérséklet villog, más gombhoz ne nyúlj, mert elállítódhat a program.',
           'Az alapbeállítás hideg időben 37, nyáron 34 fok. Kérjük, ne állítsd 38 fok fölé: a hosszas fürdőzés ennél melegebb vízben árthat az egészségnek.',
-          'A masszázsprogram 15 percig megy, majd leáll — a JET gombbal újraindítható. A peremen lévő szürke gomb eltekerésével oxigénnel dúsítható a víz. A LIGHT gomb a fényterápiát kapcsolja, a FLIP a kijelző irányát fordítja.',
+          'A masszázsprogram 15 percig megy, majd leáll — a JET gombbal újraindítható. A peremen lévő szürke gomb eltekerésével oxigénnel dúsítható a víz. A LIGHT gomb a fényterápiát kapcsolja (epilepszia vagy fényérzékenység esetén hagyd kikapcsolva), a FLIP a kijelző irányát fordítja.',
           'A jakuzzi időnként magától vizet forgat és tisztít: ilyenkor egyes fúvókák működnek, és ózonbuborékok jönnek fel. Ez normális, kikapcsolni nem lehet. Ugyanígy a fűtés közbeni vízforgatás is.',
           'Ha valami beleesik a vízbe, a reggeli szekrényke oldalában találsz hálót.',
         ],
