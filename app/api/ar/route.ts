@@ -68,6 +68,8 @@ export async function POST(req: NextRequest) {
     .filter((e): e is Extra => Boolean(e))
     .map((e: Extra) => ({ extra_id: e.id, mennyiseg: 1 }));
 
+  const akciok = await akciokBetoltese(db);
+
   const ajanlat = arajanlat({
     haz: haz as Haz,
     erkezes: k.erkezes,
@@ -75,6 +77,7 @@ export async function POST(req: NextRequest) {
     arazasok: (arazasok ?? []) as Arazas[],
     extrak: extrakLista,
     valasztott_extrak: valasztott,
+    akciok,
   });
 
   const hibak = foglalasHibai({
@@ -101,6 +104,7 @@ export async function POST(req: NextRequest) {
     ejszakak: ajanlat.ejszakak,
     szallasdij: ajanlat.szallasdij,
     hetvegi_felar: ajanlat.hetvegi_felar,
+    akcio: ajanlat.akcio,
     extrak_dij: ajanlat.extrak_dij,
     vegosszeg: ajanlat.vegosszeg,
     min_ejszaka: ajanlat.min_ejszaka,
@@ -109,4 +113,45 @@ export async function POST(req: NextRequest) {
     foglalt,
     foglalhato: hibak.length === 0 && !foglalt,
   });
+}
+
+/**
+ * Az érvényes akciók betöltése.
+ *
+ * A lejártakat már az adatbázis kiszűri, de a dátumot az árszámítás is
+ * ellenőrzi — így egy elfelejtett sor sem tud régi árat adni.
+ */
+async function akciokBetoltese(db: ReturnType<typeof supabaseAdmin>) {
+  const { data, error } = await db
+    .from('akciok')
+    .select('slug, ejszakak, teljes_ar, ervenyes_tol, ervenyes_ig, aktiv, ' +
+            'akcio_hazak(hazak(slug)), akciok_forditas(nyelv, nev)')
+    .eq('aktiv', true)
+    .gte('ervenyes_ig', new Date().toISOString().slice(0, 10));
+
+  if (error) {
+    // Az akció hiánya nem állíthatja meg a foglalást: rendes áron megy.
+    console.error('[akciok] betöltés:', error.message);
+    return [];
+  }
+
+  type Sor = {
+    slug: string; ejszakak: number; teljes_ar: number;
+    ervenyes_tol: string; ervenyes_ig: string; aktiv: boolean;
+    akcio_hazak: { hazak: { slug: string } | null }[] | null;
+    akciok_forditas: { nyelv: string; nev: string }[] | null;
+  };
+
+  return ((data ?? []) as unknown as Sor[]).map((a) => ({
+    slug: a.slug,
+    ejszakak: a.ejszakak,
+    teljes_ar: a.teljes_ar,
+    ervenyes_tol: a.ervenyes_tol,
+    ervenyes_ig: a.ervenyes_ig,
+    aktiv: a.aktiv,
+    haz_slugok: (a.akcio_hazak ?? [])
+      .map((x) => x.hazak?.slug)
+      .filter((x): x is string => Boolean(x)),
+    nev: a.akciok_forditas?.find((f) => f.nyelv === 'hu')?.nev,
+  }));
 }

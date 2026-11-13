@@ -115,13 +115,224 @@ img { max-width: 100%; display: block; }
 .btn.water { background: var(--water); border-color: var(--water); }
 .btn.water:hover { background: #2f6884; border-color: #2f6884; }
 
+/* ---------- mobil menü ----------
+   940 px alatt a vízszintes menüsor nem fér ki. Helyette a hamburger
+   gomb és egy jobbról beúszó fiók navigál. Nagyobb képernyőn a gomb és
+   a fiók egyaránt rejtve van. */
 @media (max-width: 940px) { .nav-links { display: none; } }
+
+.menu-gomb { display: none; }
+.menu-fatyol { display: none; }
+.mobil-menu { display: none; }
+
+@media (max-width: 940px) {
+  .menu-gomb {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    /* 44×44 px: ennyi kell ahhoz, hogy ujjal biztosan el lehessen találni. */
+    width: 44px; height: 44px;
+    flex: none;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    /* A fiók fölött marad, hogy nyitva is látszódjon az X. */
+    position: relative;
+    z-index: 60;
+  }
+  .menu-gomb span {
+    display: block;
+    width: 20px; height: 1.5px;
+    margin: 0 auto;
+    background: var(--slate);
+    transition: transform .22s ease, opacity .18s ease;
+  }
+  /* Nyitva: a felső és az alsó vonal X-be fordul, a középső eltűnik. */
+  .menu-gomb.nyitva span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .menu-gomb.nyitva span:nth-child(2) { opacity: 0; }
+  .menu-gomb.nyitva span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* A fejléc jobb oldali blokkjából telefonon csak a foglalás gomb kell;
+     a nyelvváltó a fiókba került, hogy legyen hely. */
+  .nav-right .lang { display: none; }
+
+  .menu-fatyol {
+    display: block;
+    position: fixed; inset: 0;
+    background: rgba(28, 31, 38, .42);
+    opacity: 0; pointer-events: none;
+    transition: opacity .22s ease;
+    z-index: 40;
+  }
+  .menu-fatyol.nyitva { opacity: 1; pointer-events: auto; }
+
+  .mobil-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: min(320px, 84vw);
+    padding: 84px 26px 32px;
+    background: var(--cream);
+    border-left: 1px solid var(--line);
+    box-shadow: -14px 0 40px rgba(28, 31, 38, .14);
+    /* Zárva a képernyő jobb oldalán kívül várakozik. A `visibility`
+       azért kell, hogy zárva ne lehessen rátabozni. */
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform .26s ease, visibility .26s;
+    overflow-y: auto;
+    z-index: 50;
+  }
+  .mobil-menu.nyitva { transform: translateX(0); visibility: visible; }
+
+  .menu-zar {
+    position: absolute;
+    top: 22px; right: 22px;
+    width: 40px; height: 40px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--line);
+    cursor: pointer;
+  }
+  .menu-zar span {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 17px; height: 1.5px;
+    background: var(--slate);
+  }
+  .menu-zar span:nth-child(1) { transform: translate(-50%, -50%) rotate(45deg); }
+  .menu-zar span:nth-child(2) { transform: translate(-50%, -50%) rotate(-45deg); }
+
+  .mobil-menu ul { list-style: none; margin: 0 0 18px; padding: 0; }
+  .mobil-menu li + li { border-top: 1px solid var(--line); }
+  .mobil-menu li a {
+    display: block;
+    padding: 13px 2px;
+    font-family: var(--sans);
+    font-size: 15px;
+    letter-spacing: .04em;
+    color: var(--slate);
+    text-decoration: none;
+  }
+  .mobil-menu li a:active { color: var(--ochre); }
+  .mobil-menu .btn { justify-content: center; }
+
+  .menu-telefon {
+    margin-top: 14px;
+    font-family: var(--sans);
+    font-size: 17px;
+    color: var(--ochre);
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .menu-nyelv {
+    display: flex; gap: 14px; justify-content: center;
+    margin-top: 20px; padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+  .menu-nyelv a {
+    font-family: var(--sans); font-size: 13px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--slate-soft); text-decoration: none;
+  }
+  .menu-nyelv a.active { color: var(--ochre); }
+}
+
+/* Aki kikapcsolta a mozgást a rendszerében, annak ne úsztassunk. */
+@media (prefers-reduced-motion: reduce) {
+  .mobil-menu, .menu-fatyol, .menu-gomb span { transition: none; }
+}
 @media (max-width: 620px) {
   .brand span { font-size: 13px; letter-spacing: 0.16em; }
   .brand img { height: 32px; }
   .nav { padding: 12px 18px; gap: 10px; }
 }
 @media (max-width: 470px) { .site-header .brand span { display: none; } }
+
+/* ---------- bemutató videó (a hero fölött) ----------
+   A felvétel álló, 9:16. Telefonon ez tölti ki a képernyőt, asztali
+   gépen viszont középre kerül, két oldalán ugyanannak a felvételnek az
+   elmosott, felnagyított poszterképével — hogy ne fekete sáv legyen. */
+.bemutato {
+  position: relative;
+  overflow: hidden;
+  background: #1c1f26;
+  /* A fejléc ragadós, ezért a videó teteje alácsúszna. Ennyi hely kell. */
+  padding-top: 68px;
+}
+
+.bemutato-hatter {
+  position: absolute;
+  /* Túlnyúlik a szakaszon, mert az elmosás a széleken átlátszóvá
+     halványítaná a képet. A túlnyúlást a szakasz `overflow: hidden`-je vágja. */
+  inset: -8%;
+  /* Két fájlnevet adunk meg: a felső réteg a .jpg, alatta a .png.
+     Amelyik létezik, az látszik — így mindegy, melyik formátumban
+     töltötted fel a poszterképet. */
+  background:
+    url('/bemutato-poster.jpg') center / cover no-repeat,
+    url('/bemutato-poster.png') center / cover no-repeat;
+  filter: blur(34px) brightness(.55) saturate(.8);
+  transform: scale(1.12);
+}
+
+.bemutato-kerek {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bemutato-video {
+  display: block;
+  /* Az álló felvétel aránya. A böngésző ebből előre tudja a helyet,
+     így a videó betöltésekor nem ugrik meg az oldal. */
+  aspect-ratio: 9 / 16;
+  /* Asztali gépen a magasság a határ: a videó a képernyő nagy részét
+     elfoglalja, de a hero eleje még látszik alatta. */
+  height: min(78vh, 760px);
+  width: auto;
+  max-width: 100%;
+  object-fit: cover;
+  background: #1c1f26;
+}
+
+.bemutato-gombok {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 12px 0 16px;
+}
+.bemutato-gomb {
+  font-family: var(--sans);
+  font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+  padding: 8px 16px;
+  color: rgba(254, 252, 245, .9);
+  background: rgba(254, 252, 245, .1);
+  border: 1px solid rgba(254, 252, 245, .34);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.bemutato-gomb:hover { background: var(--cream); color: var(--slate); }
+
+/* Telefonon az álló felvétel a maga eleme: teljes szélesség, elmosott
+   háttér nélkül — ott nincs mit kitölteni mellette. */
+@media (max-width: 760px) {
+  .bemutato { padding-top: 60px; }
+  .bemutato-hatter { display: none; }
+  .bemutato-video {
+    width: 100%;
+    height: auto;
+    /* Ne nyúljon a teljes képernyő fölé: maradjon látható, hogy van
+       alatta tartalom, amit érdemes letekerni. */
+    max-height: 80vh;
+  }
+}
 
 /* ---------- hero ---------- */
 .hero { padding: 76px 0 0; text-align: center; overflow: hidden; }
@@ -218,12 +429,17 @@ img { max-width: 100%; display: block; }
       rgba(38, 42, 52, .52) 100%
     );
   }
-  .hero-logo-mobil {
+  /* A választó szándékosan ilyen hosszú: a `.hero.hero-video .hero-logo`
+     szabály erősebb, mint egy magányos `.hero-logo-mobil`, ezért az
+     felülírná a méretet. Itt ugyanolyan erős választó kell. */
+  .hero.hero-video .hero-logo-mobil {
     display: block;
     position: absolute;
     left: 50%; bottom: 20px;
     transform: translateX(-50%);
-    width: min(300px, 66vw);
+    /* Kérésre kb. harmad méret: a fotó így fotó marad, a logó csak
+       jelzi, hol vagyunk. Középen, a sáv alján ül. */
+    width: min(110px, 24vw);
     height: auto;
     z-index: 2;
     margin: 0;
@@ -1107,3 +1323,101 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
   font-weight: 400; font-size: 16px; color: var(--slate);
 }
 .jakuzzi-lap-szoveg span { font-size: 14px; color: var(--slate-soft); line-height: 1.5; }
+
+/* Az ajándékutalvány megtakarítása az összesítőben — zölddel, hogy
+   első pillantásra látsszon, hogy ez jó hír. */
+.sum.akcio-sor {
+  color: var(--zold);
+  font-size: 14.5px;
+  padding-top: 0;
+  margin-top: -6px;
+  border-top: none;
+}
+.sum.akcio-sor span:last-child { font-weight: 500; }
+
+/* ---------- futó ajánlat sávja ----------
+   A nyitókép alatt, rögtön a hajtás közelében. Csak addig látszik,
+   amíg az ajánlat érvényes — utána magától eltűnik. */
+.akcio-sav {
+  background: var(--ochre);
+  color: var(--cream);
+  padding: 16px 0;
+}
+.akcio-sav .wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 18px; flex-wrap: wrap;
+}
+.akcio-sav-szoveg { display: flex; flex-direction: column; gap: 2px; }
+.akcio-sav-szoveg strong {
+  font-family: var(--betu-cim), system-ui, sans-serif;
+  font-weight: 400; font-size: 19px; letter-spacing: .01em;
+}
+.akcio-sav-szoveg span { font-size: 15px; color: rgba(254, 252, 245, .88); line-height: 1.5; }
+.akcio-sav .btn {
+  background: var(--cream); color: var(--ochre-dark);
+  border-color: var(--cream); flex: none;
+}
+.akcio-sav .btn:hover { background: var(--cream-2); color: var(--ochre-dark); }
+@media (max-width: 700px) {
+  .akcio-sav .wrap { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .akcio-sav-szoveg strong { font-size: 17px; }
+}
+
+/* Az ÁSZF elfogadása — a foglalás jogi előfeltétele, ezért
+   hangsúlyosabb, mint a hírlevél-hozzájárulás. */
+.aszf-sor { margin-top: 20px; border-color: var(--line); }
+.aszf-sor.kell { border-color: var(--ochre-light); background: rgba(169, 114, 49, .05); }
+.aszf-linkek {
+  display: block; margin-top: 4px;
+  font-family: var(--betu-cim), system-ui, sans-serif; font-size: 13.5px;
+}
+.aszf-linkek a { color: var(--water); }
+
+
+/* ---------- Barion jelvény és lábléc-elérhetőség ----------
+   A Barion elfogadóhelyi szabályzata előírja a fizetési mód és az
+   elfogadott kártyatípusok feltüntetését. A képet a Barion adja; ha
+   nincs feltöltve, a komponens szöveges változatra vált. */
+/* A kép aránytartó: a szélességet adjuk meg, a magasság követi. */
+.barion img { display: block; width: 100%; height: auto; }
+
+.barion-lablec {
+  grid-column: 1 / -1;
+  margin-top: 6px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(254, 252, 245, .16);
+}
+/* A lábléc eleve sötét, ezért a fehér Visa felirat jól látszik rajta. */
+.barion-lablec img { max-width: 320px; }
+.barion-lablec .barion-szoveg {
+  font-family: var(--sans);
+  font-size: 12px; letter-spacing: .04em;
+  color: rgba(254, 252, 245, .62);
+}
+
+/* A foglalóűrlap krém hátterű, ott a fehér Visa felirat eltűnne.
+   Ezért a jelvény egy keskeny sötét sávon ül — a logókhoz így nem
+   kell hozzányúlni. */
+.barion-urlap {
+  margin: 14px 0 4px;
+  padding: 12px 16px;
+  background: var(--slate);
+  border-radius: 2px;
+}
+.barion-urlap img { max-width: 300px; margin: 0 auto; }
+.barion-urlap .barion-szoveg {
+  font-family: var(--sans);
+  font-size: 12px; color: rgba(254, 252, 245, .8);
+}
+
+.foot-elerhetoseg {
+  margin: 10px 0 0;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.foot-elerhetoseg a {
+  color: var(--ochre-light);
+  text-decoration: none;
+}
+.foot-elerhetoseg a:hover { text-decoration: underline; }

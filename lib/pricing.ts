@@ -55,12 +55,34 @@ export type ArTetel = {
   hetvege: boolean;
 };
 
+/**
+ * Teljes tartózkodásra szóló fix ár (pl. „3 éj a 2 éj áráért").
+ * Más, mint az `Arazas`: az egy éjszaka árát mondja meg, ez a teljes
+ * szállásdíjat váltja ki.
+ */
+export type Akcio = {
+  slug: string;
+  /** Pontosan ennyi éjszakánál érvényes. */
+  ejszakak: number;
+  /** A teljes szállásdíj forintban. */
+  teljes_ar: number;
+  /** Mettől meddig lehet foglalni — az ÉRKEZÉS napja esik ebbe. */
+  ervenyes_tol: string;
+  ervenyes_ig: string;
+  aktiv: boolean;
+  /** Ha üres vagy hiányzik, minden házra érvényes. */
+  haz_slugok?: string[];
+  nev?: string;
+};
+
 export type Arajanlat = {
   ejszakak: number;
   naponta: ArTetel[];
   szallasdij: number;
   /** A szállásdíjból mennyi a hétvégi felár — hogy ki lehessen mutatni. */
   hetvegi_felar: number;
+  /** Az érvényesült akció, ha volt ilyen. */
+  akcio: { slug: string; nev?: string; megtakaritas: number } | null;
   extrak_dij: number;
   extra_tetelek: { extra_id: string; slug: string; mennyiseg: number; egysegar: number; osszeg: number }[];
   vegosszeg: number;
@@ -170,6 +192,41 @@ export function naptAr(
 }
 
 /**
+ * Melyik akció érvényes erre a foglalásra.
+ *
+ * Feltételek, mind egyszerre:
+ *  - az akció aktív,
+ *  - az ÉRKEZÉS napja az érvényességi időszakba esik,
+ *  - az éjszakák száma pontosan annyi, amennyire az akció szól,
+ *  - a ház szerepel az akcióban (vagy az akció minden házra érvényes).
+ *
+ * Ha több akció illeszkedne, a vendégnek kedvezőbbet választjuk.
+ * A lejárt akciók maguktól kiesnek — nem kell törölni őket.
+ */
+export function ervenyesAkcio(params: {
+  akciok: Akcio[];
+  hazSlug: string;
+  erkezes: string;
+  ejszakak: number;
+  szallasdij: number;
+}): Akcio | null {
+  const { akciok, hazSlug, erkezes, ejszakak, szallasdij } = params;
+
+  const illeszkedo = akciok.filter((a) => {
+    if (!a.aktiv) return false;
+    if (a.ejszakak !== ejszakak) return false;
+    if (erkezes < a.ervenyes_tol || erkezes > a.ervenyes_ig) return false;
+    if (a.haz_slugok?.length && !a.haz_slugok.includes(hazSlug)) return false;
+    // Csak akkor ajánljuk fel, ha tényleg olcsóbb. Egy rosszul beírt
+    // akció ne drágítsa meg a foglalást.
+    return a.teljes_ar < szallasdij;
+  });
+
+  if (!illeszkedo.length) return null;
+  return illeszkedo.reduce((a, b) => (b.teljes_ar < a.teljes_ar ? b : a));
+}
+
+/**
  * Teljes árajánlat. Ezt hívja a foglalás API és az ár-előnézet is,
  * hogy a vendég pontosan azt az összeget lássa, amit fizetni fog.
  */
@@ -180,8 +237,11 @@ export function arajanlat(params: {
   arazasok: Arazas[];
   extrak: Extra[];
   valasztott_extrak: ExtraValasztas[];
+  /** Teljes tartózkodásra szóló akciók. Üres lista = nincs akció. */
+  akciok?: Akcio[];
 }): Arajanlat {
   const { haz, erkezes, tavozas, arazasok, extrak, valasztott_extrak } = params;
+  const akciok = params.akciok ?? [];
 
   const napok = tartozkodasNapjai(erkezes, tavozas);
   const ejszakak = napok.length;
@@ -198,6 +258,27 @@ export function arajanlat(params: {
     szallasdij += ar;
     hetvegi_felar += felar;
     if (mn > min_ejszaka) min_ejszaka = mn;
+  }
+
+  /**
+   * Akció: ha van rá érvényes ajánlat, a teljes szállásdíjat váltja ki.
+   * A naponkénti bontás megmarad — abból látszik, miből jött az eredeti
+   * ár —, de a fizetendő a fix összeg lesz.
+   */
+  const talalt = ervenyesAkcio({
+    akciok, hazSlug: haz.slug, erkezes, ejszakak, szallasdij,
+  });
+
+  let akcio: Arajanlat['akcio'] = null;
+  if (talalt) {
+    akcio = {
+      slug: talalt.slug,
+      nev: talalt.nev,
+      megtakaritas: szallasdij - talalt.teljes_ar,
+    };
+    szallasdij = talalt.teljes_ar;
+    // Az akciós ár fix: a hétvégi felár benne van, nem jön rá külön.
+    hetvegi_felar = 0;
   }
 
   const extraMap = new Map(extrak.map((e) => [e.id, e]));
@@ -225,6 +306,7 @@ export function arajanlat(params: {
     naponta,
     szallasdij,
     hetvegi_felar,
+    akcio,
     extrak_dij,
     extra_tetelek,
     vegosszeg: szallasdij + extrak_dij,

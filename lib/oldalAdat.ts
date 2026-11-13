@@ -11,9 +11,13 @@ import type { HazAdat, ExtraAdat } from '@/components/FoglaloUrlap';
  * a látogató így is lát árat, leírást és elérhetőséget.
  */
 
-export type OldalAdat = { hazak: HazAdat[]; extrak: ExtraAdat[] };
+/** A futó akció, amit a nyitóképnél sávban is megmutatunk. */
+export type AkcioAdat = { slug: string; nev: string; leiras: string } | null;
+
+export type OldalAdat = { hazak: HazAdat[]; extrak: ExtraAdat[]; akcio: AkcioAdat };
 
 const TARTALEK: OldalAdat = {
+  akcio: null,
   hazak: [
     { slug: 'fuge', nev: 'Füge', max_fo: 4, alap_ar: 42000, min_ejszaka: 2 },
     { slug: 'mandula', nev: 'Mandula', max_fo: 6, alap_ar: 48000, min_ejszaka: 2 },
@@ -25,7 +29,7 @@ export async function oldalAdat(nyelv: Nyelv): Promise<OldalAdat> {
   try {
     const db = supabaseAdmin();
 
-    const [{ data: hazak }, { data: extrak }] = await Promise.all([
+    const [{ data: hazak }, { data: extrak }, { data: akciok }] = await Promise.all([
       db
         .from('hazak')
         .select('slug, nev, max_fo, alap_ar, min_ejszaka')
@@ -36,6 +40,13 @@ export async function oldalAdat(nyelv: Nyelv): Promise<OldalAdat> {
         .select('slug, ar, ejszakankent, extrak_forditas(nyelv, nev, leiras)')
         .eq('aktiv', true)
         .order('ar', { ascending: true }),
+      // A lejárt akciót az adatbázis szűri ki — nem kell törölni.
+      db
+        .from('akciok')
+        .select('slug, akciok_forditas(nyelv, nev, leiras)')
+        .eq('aktiv', true)
+        .gte('ervenyes_ig', new Date().toISOString().slice(0, 10))
+        .limit(1),
     ]);
 
     if (!hazak?.length) return TARTALEK;
@@ -64,7 +75,19 @@ export async function oldalAdat(nyelv: Nyelv): Promise<OldalAdat> {
       }
     );
 
-    return { hazak: hazak as HazAdat[], extrak: extrakAdat };
+    type AkcioSor = {
+      slug: string;
+      akciok_forditas: { nyelv: string; nev: string; leiras: string | null }[] | null;
+    };
+    const elsoAkcio = ((akciok ?? []) as unknown as AkcioSor[])[0];
+    const f =
+      elsoAkcio?.akciok_forditas?.find((x) => x.nyelv === nyelv) ??
+      elsoAkcio?.akciok_forditas?.[0];
+    const akcio: AkcioAdat = elsoAkcio && f
+      ? { slug: elsoAkcio.slug, nev: f.nev, leiras: f.leiras ?? '' }
+      : null;
+
+    return { hazak: hazak as HazAdat[], extrak: extrakAdat, akcio };
   } catch (e) {
     console.error('[oldalAdat] az adatbázis nem érhető el:', e);
     return TARTALEK;

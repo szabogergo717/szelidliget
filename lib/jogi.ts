@@ -19,8 +19,18 @@ import { CEG, type Nyelv } from './tartalom';
 export type Bekezdes = { cim?: string; szoveg: string[] };
 export type JogiOldal = { cim: string; frissitve: string; blokkok: Bekezdes[] };
 
-const FRISSITVE = '2026. szeptember 30.';
-const FRISSITVE_EN = '30 September 2026';
+const FRISSITVE = '2026. november 13.';
+const FRISSITVE_EN = '13 November 2026';
+
+/**
+ * Az ÁSZF és az adatkezelési tájékoztató verziószáma.
+ *
+ * Ezt mentjük el minden foglalás mellé (foglalasok.aszf_verzio), hogy
+ * később bizonyítható legyen, a vendég MELYIK szöveget fogadta el.
+ * Ha érdemben módosítjátok a feltételeket, LÉPTESSÉTEK ELŐRE — és a
+ * FRISSITVE dátumot is írjátok át.
+ */
+export const ASZF_VERZIO = '2026-11-13';
 
 // ============================================================
 //  ÁSZF
@@ -42,10 +52,15 @@ export function aszf(nyelv: Nyelv): JogiOldal {
           cim: '1. The service provider',
           szoveg: [
             `Name: ${CEG.nev}`,
-            CEG.adoszam ? `Tax number: ${CEG.adoszam}` : 'Tax number: to be completed',
             CEG.szekhely ? `Registered office: ${CEG.szekhely}` : 'Registered office: to be completed',
+            CEG.cegjegyzekszam
+              ? `Company registration number: ${CEG.cegjegyzekszam}`
+              : 'Company registration number: to be completed',
+            CEG.adoszam ? `Tax number: ${CEG.adoszam}` : 'Tax number: to be completed',
             `Property: ${CEG.cim}`,
             `Email: ${CEG.email}`,
+            CEG.telefon ? `Phone: ${CEG.telefon}` : 'Phone: to be completed',
+            'The language of the contract is Hungarian. The booking is recorded electronically and confirmed by email; details can be corrected on the booking form before the order is placed.',
           ],
         },
         {
@@ -54,7 +69,29 @@ export function aszf(nyelv: Nyelv): JogiOldal {
             'A booking is made online, by selecting the cabin, the dates and any extras. The price shown at the time of booking is the price payable.',
             'The full amount is due at the time of booking. Payment can be made by bank card through Barion (operated by Barion Payment Zrt.) or by bank transfer.',
             'For card payments the booking is confirmed once the payment is authorised. For bank transfers we hold the dates and the booking becomes final when the amount arrives in our account. If the transfer does not arrive within the stated deadline, we may release the dates.',
+            'Placing a booking creates an obligation to pay. Acceptance of these Terms and of the Privacy Notice is required before the order is placed.',
             'An invoice is issued electronically and sent to the email address given at booking.',
+          ],
+        },
+        {
+          cim: '2.1. Card payment — Barion',
+          szoveg: [
+            'Online card payments are processed by Barion. Card details never reach the merchant.',
+            'Barion Payment Zrt. is supervised by the Central Bank of Hungary; licence number H-EN-I-1064/2013.',
+            'Barion Payment Zrt. — registered office: Irinyi József utca 4–20. 2nd floor, 1117 Budapest, Hungary; company registration number: 01-10-048552; tax number: 25353192-2-43.',
+            'Accepted payment methods: Mastercard, Maestro, Visa and Visa Electron cards, Barion wallet balance, Apple Pay and Google Pay. Payment is made in HUF over a secure (SSL) connection with 3D Secure authentication.',
+            'Payment takes place on the Barion payment page, to which you are redirected when finalising the booking. After a successful payment you are returned to our site and receive an email confirmation.',
+            'Payment is recognised solely on the basis of Barion\'s confirmation. If a payment fails or is interrupted, no booking is created and the dates are released; the booking can then be repeated.',
+            'Refunds are made using the same payment method and to the same card used for the payment.',
+          ],
+        },
+        {
+          cim: '2.2. Fulfilment time',
+          szoveg: [
+            'Our service is accommodation, so there is no shipping: the service is provided on the dates booked, on site.',
+            'The booking is processed and the confirmation email sent immediately and automatically after successful payment — within 24 hours at the latest.',
+            'Extras priced on request (e.g. massage, activities) are confirmed within 2 working days.',
+            'If no confirmation arrives within 24 hours, you are released from the booking; please contact us on the phone number above.',
           ],
         },
         {
@@ -75,6 +112,13 @@ export function aszf(nyelv: Nyelv): JogiOldal {
             'Cancellation within 14 days of arrival, or non-arrival: no refund is given.',
             'Modification of dates is possible subject to availability; we will confirm any modification in writing.',
             'If we are unable to provide the accommodation for a reason within our control, we refund the full amount paid.',
+          ],
+        },
+        {
+          cim: '4.1. The 14-day right of withdrawal',
+          szoveg: [
+            'Under Section 29(1)(l) of Government Decree 45/2014 (II. 26.), a consumer has NO 14-day right of withdrawal in the case of a contract for accommodation services for a specified date.',
+            'Cancellations are therefore governed by section 4 above, not by the 14-day withdrawal rules.',
           ],
         },
         {
@@ -126,20 +170,46 @@ export function aszf(nyelv: Nyelv): JogiOldal {
         cim: '1. A szolgáltató',
         szoveg: [
           `Név: ${CEG.nev}`,
-          CEG.adoszam ? `Adószám: ${CEG.adoszam}` : 'Adószám: kitöltendő',
           CEG.szekhely ? `Székhely: ${CEG.szekhely}` : 'Székhely: kitöltendő',
+          CEG.cegjegyzekszam
+            ? `Cégjegyzékszám: ${CEG.cegjegyzekszam}`
+            : 'Cégjegyzékszám: kitöltendő',
+          CEG.adoszam ? `Adószám: ${CEG.adoszam}` : 'Adószám: kitöltendő',
           `A szálláshely címe: ${CEG.cim}`,
           `E-mail: ${CEG.email}`,
           CEG.telefon ? `Telefon: ${CEG.telefon}` : 'Telefon: kitöltendő',
+          'A szerződés nyelve: magyar. A szerződés írásbeli szerződésnek minősül; a foglalást elektronikusan rögzítjük, és visszaigazoló e-mailben küldjük meg. A foglalás leadása előtt az adatok a foglalási űrlapon javíthatók.',
         ],
       },
       {
         cim: '2. A foglalás és a fizetés',
         szoveg: [
           'A foglalás online történik: kiválasztod a faházat, az időpontot és az esetleges extrákat. A foglaláskor megjelenített ár a fizetendő ár.',
-          'A teljes összeg a foglaláskor esedékes. Fizetni bankkártyával a Barion rendszerén keresztül (üzemeltető: Barion Payment Zrt.) vagy banki átutalással lehet.',
+          'A teljes összeg a foglaláskor esedékes. Fizetni bankkártyával a Barion rendszerén keresztül vagy banki átutalással lehet.',
           'Bankkártyás fizetésnél a foglalás a sikeres tranzakcióval válik véglegessé. Átutalásnál az időpontot fenntartjuk, és a foglalás akkor válik véglegessé, amikor az összeg megérkezik a számlánkra. Ha az utalás a megadott határidőn belül nem érkezik meg, az időpontot felszabadíthatjuk.',
-          'A számlát elektronikusan állítjuk ki, és a foglaláskor megadott e-mail címre küldjük.',
+          'A foglalás leadása fizetési kötelezettséget keletkeztet. A megrendelés leadása előtt a jelen ÁSZF és az Adatkezelési tájékoztató elfogadása kötelező.',
+          'A számlát elektronikusan állítjuk ki, és a foglaláskor megadott e-mail címre küldjük. Az elektronikus számlát elfogadod.',
+        ],
+      },
+      {
+        cim: '2.1. A bankkártyás fizetésről — Barion',
+        szoveg: [
+          'Az online bankkártyás fizetések a Barion rendszerén keresztül valósulnak meg. A bankkártya adatai a kereskedőhöz nem jutnak el.',
+          'A szolgáltatást nyújtó Barion Payment Zrt. a Magyar Nemzeti Bank felügyelete alatt álló intézmény, engedélyének száma: H-EN-I-1064/2013.',
+          'Barion Payment Zrt. — székhely: 1117 Budapest, Irinyi József utca 4–20. 2. emelet; cégjegyzékszám: 01-10-048552; adószám: 25353192-2-43.',
+          'Elfogadott fizetési módok: Mastercard, Maestro, Visa, Visa Electron bankkártya, Barion-tárca egyenleg, valamint Apple Pay és Google Pay. A fizetés HUF-ban, biztonságos (SSL) csatornán, 3D Secure azonosítással történik.',
+          'A fizetés a Barion fizetőoldalán zajlik, ahova a foglalás véglegesítésekor irányítunk át. Sikeres fizetés után a rendszer visszatereli az oldalunkra, és a visszaigazolást e-mailben is megküldjük.',
+          'A fizetés tényét kizárólag a Barion visszaigazolása alapján állapítjuk meg. Sikertelen vagy megszakadt fizetés esetén a foglalás nem jön létre, és az időpont felszabadul; ilyenkor a foglalás megismételhető.',
+          'Visszatérítés esetén az összeget azon a fizetési módon és arra a kártyára térítjük vissza, amellyel a fizetés történt.',
+        ],
+      },
+      {
+        cim: '2.2. A teljesítés ideje',
+        szoveg: [
+          'Szolgáltatásunk szállás, ezért nincs kiszállítás: a teljesítés a foglalásban megjelölt időpontban, a helyszínen történik.',
+          'A foglalás feldolgozása és a visszaigazoló e-mail kiküldése a sikeres fizetést követően azonnal, automatikusan megtörténik — legkésőbb 24 órán belül.',
+          'Az e-mailben kért, egyedi árazású extrákat (pl. masszázs, programok) 2 munkanapon belül visszaigazoljuk.',
+          'Ha a visszaigazolás 24 órán belül nem érkezik meg, a foglalási kötelezettség alól mentesülsz; ilyen esetben kérjük, keress minket a fenti telefonszámon.',
         ],
       },
       {
@@ -160,6 +230,13 @@ export function aszf(nyelv: Nyelv): JogiOldal {
           'Érkezés előtt 14 napon belüli lemondás, illetve meg nem jelenés esetén visszatérítésre nincs mód.',
           'Az időpont módosítására szabad kapacitás függvényében van lehetőség; a módosítást írásban visszaigazoljuk.',
           'Ha a szállást rajtunk múló okból nem tudjuk biztosítani, a befizetett teljes összeget visszatérítjük.',
+        ],
+      },
+      {
+        cim: '4.1. A 14 napos elállási jogról',
+        szoveg: [
+          'A fogyasztó és a vállalkozás közötti szerződések részletes szabályairól szóló 45/2014. (II. 26.) Korm. rendelet 29. § (1) bekezdés l) pontja alapján a szállásnyújtásra irányuló, határnapra szóló szerződés esetén a fogyasztót NEM illeti meg a 14 napos indokolás nélküli elállási jog.',
+          'Ez azt jelenti, hogy a foglalás lemondására a fenti 4. pont szerinti feltételek az irányadók, nem a 14 napos elállás.',
         ],
       },
       {
@@ -189,8 +266,11 @@ export function aszf(nyelv: Nyelv): JogiOldal {
       {
         cim: '8. Panaszkezelés',
         szoveg: [
-          'Kérjük, az esetleges panaszt még a tartózkodás alatt jelezd, hogy orvosolni tudjuk.',
-          'Fogyasztói jogvita esetén az illetékes békéltető testülethez lehet fordulni. A szerződésre a magyar jog az irányadó.',
+          'Kérjük, az esetleges panaszt még a tartózkodás alatt jelezd, hogy orvosolni tudjuk. Írásbeli panaszt a fenti e-mail címen fogadunk, és 30 napon belül érdemben megválaszolunk.',
+          'Fogyasztóvédelmi panasszal a lakóhely szerint illetékes fővárosi vagy megyei kormányhivatal fogyasztóvédelmi hatóságához lehet fordulni.',
+          'Békéltető testület (a székhelyünk szerint illetékes): Pest Megyei és Érd Megyei Jogú Városi Kereskedelmi és Iparkamara mellett működő Békéltető Testület, 1055 Budapest, Balassi Bálint utca 25. IV/2.',
+          'Online vásárolt szolgáltatás esetén az Európai Bizottság online vitarendezési platformja is igénybe vehető.',
+          'A szerződésre a magyar jog az irányadó.',
         ],
       },
     ],
@@ -213,7 +293,20 @@ export function adatvedelem(nyelv: Nyelv): JogiOldal {
           ],
         },
         {
-          cim: '1. What we collect and why',
+          cim: '1. The data controller',
+          szoveg: [
+            `Name: ${CEG.nev}`,
+            CEG.szekhely ? `Registered office: ${CEG.szekhely}` : 'Registered office: to be completed',
+            CEG.cegjegyzekszam
+              ? `Company registration number: ${CEG.cegjegyzekszam}`
+              : 'Company registration number: to be completed',
+            CEG.adoszam ? `Tax number: ${CEG.adoszam}` : 'Tax number: to be completed',
+            `Email: ${CEG.email}`,
+            CEG.telefon ? `Phone: ${CEG.telefon}` : 'Phone: to be completed',
+          ],
+        },
+        {
+          cim: '2. What we collect and why',
           szoveg: [
             'Booking: name, email address, phone number, and billing details if given. We need these to provide the accommodation and to issue an invoice. Legal basis: performance of a contract, and a legal obligation for invoicing.',
             'Newsletter: email address and name, only if you tick the box or subscribe on the site. Legal basis: your consent, which you may withdraw at any time.',
@@ -221,7 +314,16 @@ export function adatvedelem(nyelv: Nyelv): JogiOldal {
           ],
         },
         {
-          cim: '2. Who else sees the data',
+          cim: '2.1. Legal bases',
+          szoveg: [
+            'Booking and guest data: performance of the contract (GDPR Art. 6(1)(b)). Without this data a booking cannot be made.',
+            'Invoicing data and retention of invoices: compliance with a legal obligation (GDPR Art. 6(1)(c)) under Hungarian accounting law.',
+            'Newsletter: your separate, voluntary consent (GDPR Art. 6(1)(a)). Subscribing is independent of booking and is never a condition of purchase. Consent can be withdrawn at any time, without giving a reason, using the unsubscribe link in every email or by writing to the address above.',
+            'The fact, time and document version of the acceptance of these Terms: legitimate interest (GDPR Art. 6(1)(f)) — proving that the contract was concluded.',
+          ],
+        },
+        {
+          cim: '3. Who else sees the data',
           szoveg: [
             'Barion Payment Zrt. — card payment processing.',
             'Resend — sending transactional and newsletter emails.',
@@ -232,20 +334,20 @@ export function adatvedelem(nyelv: Nyelv): JogiOldal {
           ],
         },
         {
-          cim: '3. Data transfer statement',
+          cim: '4. Data transfer statement',
           szoveg: [
-            `I acknowledge that the following personal data stored by ${CEG.nev} in the user account of www.szelidliget.hu will be transferred to OTP Mobil Kft. as data processor. The scope of the data transferred: name, email address, phone number, billing address, amount. The purpose of the data processing by the data processor: assisting the customer with online payment, confirming the transaction and fraud prevention.`,
+            `I acknowledge that the following personal data stored by ${CEG.nev} as data controller in the user database of www.szelidliget.hu will be transferred to Barion Payment Zrt. (Irinyi József utca 4–20. 2nd floor, 1117 Budapest, Hungary) as data processor. The scope of the data transferred: name, email address, phone number, billing address, amount. The nature and purpose of the processing carried out by the data processor can be reviewed in Barion's privacy notice: https://www.barion.com/en/privacy-policy/`,
           ],
         },
         {
-          cim: '4. How long we keep it',
+          cim: '5. How long we keep it',
           szoveg: [
             'Booking and invoicing data: for the period required by accounting law (currently eight years).',
             'Newsletter data: until you unsubscribe.',
           ],
         },
         {
-          cim: '5. Your rights',
+          cim: '6. Your rights',
           szoveg: [
             'You may request access to, correction or deletion of your data, restriction of processing, or a copy in a portable format. You may withdraw consent for the newsletter at any time using the unsubscribe link.',
             `Requests: ${CEG.email}`,
@@ -253,7 +355,7 @@ export function adatvedelem(nyelv: Nyelv): JogiOldal {
           ],
         },
         {
-          cim: '6. Cookies',
+          cim: '7. Cookies',
           szoveg: [
             'The site uses no tracking or advertising cookies.',
             'The map on the contact page loads from Google Maps only after you click it. Until then, no data is sent to Google.',
@@ -270,10 +372,25 @@ export function adatvedelem(nyelv: Nyelv): JogiOldal {
       {
         szoveg: [
           `Ez a tájékoztató azt írja le, hogyan kezeli a ${CEG.nev} a www.szelidliget.hu oldalon keresztül megadott személyes adatokat.`,
+          'Az adatkezelés az Európai Parlament és a Tanács (EU) 2016/679 rendelete (GDPR) és az információs önrendelkezési jogról szóló 2011. évi CXII. törvény szerint történik.',
         ],
       },
       {
-        cim: '1. Milyen adatot kezelünk és miért',
+        cim: '1. Az adatkezelő',
+        szoveg: [
+          `Név: ${CEG.nev}`,
+          CEG.szekhely ? `Székhely: ${CEG.szekhely}` : 'Székhely: kitöltendő',
+          CEG.cegjegyzekszam
+            ? `Cégjegyzékszám: ${CEG.cegjegyzekszam}`
+            : 'Cégjegyzékszám: kitöltendő',
+          CEG.adoszam ? `Adószám: ${CEG.adoszam}` : 'Adószám: kitöltendő',
+          `E-mail: ${CEG.email}`,
+          CEG.telefon ? `Telefon: ${CEG.telefon}` : 'Telefon: kitöltendő',
+          'Önálló adatvédelmi tisztviselő kijelölése nem kötelező, ezért nem jelöltünk ki ilyet. Adatvédelmi kérdésekben a fenti e-mail címen válaszolunk.',
+        ],
+      },
+      {
+        cim: '2. Milyen adatot kezelünk és miért',
         szoveg: [
           'Foglalás: név, e-mail cím, telefonszám, valamint — ha megadod — számlázási adatok. Ezekre a szállás biztosításához és a számla kiállításához van szükség. Jogalap: szerződés teljesítése, illetve a számlázás körében jogi kötelezettség.',
           'Hírlevél: e-mail cím és név, kizárólag akkor, ha a jelölőnégyzetet bepipálod, vagy feliratkozol az oldalon. Jogalap: a te hozzájárulásod, amit bármikor visszavonhatsz.',
@@ -281,7 +398,16 @@ export function adatvedelem(nyelv: Nyelv): JogiOldal {
         ],
       },
       {
-        cim: '2. Kik láthatják még az adatokat',
+        cim: '2.1. Milyen jogalapon',
+        szoveg: [
+          'Foglalási és vendégadatok: a szerződés teljesítése (GDPR 6. cikk (1) b)). Ezek megadása nélkül a foglalás nem jöhet létre.',
+          'Számlázási adatok és a számla megőrzése: jogi kötelezettség teljesítése (GDPR 6. cikk (1) c)), a számviteli törvény alapján.',
+          'Hírlevél: a te önkéntes, külön hozzájárulásod (GDPR 6. cikk (1) a)). A hírlevélre feliratkozni a foglalástól függetlenül lehet, és ez SOHA nem feltétele a vásárlásnak. A hozzájárulás bármikor, indokolás nélkül visszavonható: minden levél alján van leiratkozó link, vagy írj a fenti e-mail címre. A visszavonás a korábbi adatkezelés jogszerűségét nem érinti.',
+          'Az ÁSZF elfogadásának ténye, időpontja és a dokumentum verziószáma: jogos érdek (GDPR 6. cikk (1) f)) — a szerződés létrejöttének bizonyítása, esetleges jogvita esetén.',
+        ],
+      },
+      {
+        cim: '3. Kik láthatják még az adatokat',
         szoveg: [
           'Barion Payment Zrt. — bankkártyás fizetés lebonyolítása.',
           'Resend — a visszaigazoló és hírlevél e-mailek kiküldése.',
@@ -292,20 +418,20 @@ export function adatvedelem(nyelv: Nyelv): JogiOldal {
         ],
       },
       {
-        cim: '3. Adattovábbítási nyilatkozat',
+        cim: '4. Adattovábbítási nyilatkozat',
         szoveg: [
           `Tudomásul veszem, hogy a ${CEG.nev} adatkezelő által a www.szelidliget.hu felhasználói adatbázisában tárolt alábbi személyes adataim átadásra kerülnek a Barion Payment Zrt. (1117 Budapest, Irinyi József utca 4–20. 2. emelet), mint adatfeldolgozó részére. Az adatkezelő által továbbított adatok köre az alábbi: név, e-mail cím, telefonszám, számlázási cím, összeg. Az adatfeldolgozó által végzett adatfeldolgozási tevékenység jellege és célja a Barion Adatkezelési tájékoztatójában tekinthető meg: https://www.barion.com/hu/adatvedelmi-tajekoztato/`,
         ],
       },
       {
-        cim: '4. Meddig őrizzük',
+        cim: '5. Meddig őrizzük',
         szoveg: [
           'Foglalási és számlázási adatok: a számviteli törvény szerinti ideig (jelenleg nyolc év).',
           'Hírlevél-adatok: a leiratkozásig.',
         ],
       },
       {
-        cim: '5. A te jogaid',
+        cim: '6. A te jogaid',
         szoveg: [
           'Kérheted az adataidhoz való hozzáférést, azok helyesbítését vagy törlését, a kezelés korlátozását, illetve másolatot hordozható formátumban. A hírlevélhez adott hozzájárulást bármikor visszavonhatod a levelek alján lévő leiratkozó linkkel.',
           `Megkeresés: ${CEG.email}`,
@@ -313,7 +439,7 @@ export function adatvedelem(nyelv: Nyelv): JogiOldal {
         ],
       },
       {
-        cim: '6. Sütik',
+        cim: '7. Sütik',
         szoveg: [
           'Az oldal nem használ nyomkövető vagy hirdetési sütit.',
           'A kapcsolat résznél lévő térkép csak akkor töltődik be a Google Mapsből, ha rákattintasz. Addig semmilyen adat nem kerül a Google-höz.',
@@ -483,8 +609,9 @@ export function impresszum(nyelv: Nyelv): JogiOldal {
           cim: 'Service provider',
           szoveg: [
             `Company: ${CEG.nev}`,
-            `Tax number: ${CEG.adoszam || hianyzo}`,
             `Registered office: ${CEG.szekhely || hianyzo}`,
+            `Company registration number: ${CEG.cegjegyzekszam || hianyzo}`,
+            `Tax number: ${CEG.adoszam || hianyzo}`,
             `Property: ${CEG.cim}`,
             `Email: ${CEG.email}`,
             CEG.telefon ? `Phone: ${CEG.telefon}` : `Phone: ${hianyzo}`,
@@ -515,8 +642,9 @@ export function impresszum(nyelv: Nyelv): JogiOldal {
         cim: 'Szolgáltató',
         szoveg: [
           `Cégnév: ${CEG.nev}`,
-          `Adószám: ${CEG.adoszam || hianyzo}`,
           `Székhely: ${CEG.szekhely || hianyzo}`,
+          `Cégjegyzékszám: ${CEG.cegjegyzekszam || hianyzo}`,
+          `Adószám: ${CEG.adoszam || hianyzo}`,
           `A szálláshely címe: ${CEG.cim}`,
           `E-mail: ${CEG.email}`,
           CEG.telefon ? `Telefon: ${CEG.telefon}` : `Telefon: ${hianyzo}`,

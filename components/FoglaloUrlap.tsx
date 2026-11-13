@@ -5,6 +5,7 @@ import { T, CEG, IFA_FO_EJ, type Nyelv } from '@/lib/tartalom';
 import Naptar from './Naptar';
 import ExtraKep from './ExtraKep';
 import { vanKep } from '@/lib/galeria';
+import BarionJelveny from './BarionJelveny';
 
 /**
  * Foglalóűrlap.
@@ -34,6 +35,7 @@ type Arvalasz = {
   ejszakak: number;
   szallasdij: number;
   hetvegi_felar?: number;
+  akcio?: { slug: string; nev?: string; megtakaritas: number } | null;
   extrak_dij: number;
   vegosszeg: number;
   min_ejszaka: number;
@@ -119,6 +121,7 @@ export default function FoglaloUrlap({
   const [szlaAdoszam, setSzlaAdoszam] = useState('');
 
   const [fizetesiMod, setFizetesiMod] = useState<FizetesiMod>('kartya');
+  const [aszf, setAszf] = useState(false);
   const [hirlevel, setHirlevel] = useState(false);
   const [kuldes, setKuldes] = useState(false);
   const [kuldesiHiba, setKuldesiHiba] = useState<string | null>(null);
@@ -186,7 +189,9 @@ export default function FoglaloUrlap({
   const adatokKeszek =
     nev.trim().length > 1 && emailErvenyes && telefonErvenyes && szamlazasKesz;
 
-  const kuldheto = Boolean(ar?.foglalhato) && adatokKeszek && !kuldes && !tolt;
+  // Az ÁSZF elfogadása a foglalás feltétele — enélkül a gomb nem él.
+  const kuldheto =
+    Boolean(ar?.foglalhato) && adatokKeszek && aszf && !kuldes && !tolt;
 
   // Ha bármelyik extrához van kép, a többi ugyanakkora helyet hagy ki,
   // hogy a nevek egy vonalban kezdődjenek.
@@ -228,6 +233,8 @@ export default function FoglaloUrlap({
           },
           megjegyzes,
           hirlevel,
+          /** Az elfogadás tényét rögzítjük — jogvita esetén ez a bizonyíték. */
+          aszf_elfogadva: aszf,
         }),
       });
       const adat = await v.json();
@@ -544,6 +551,36 @@ export default function FoglaloUrlap({
           </label>
         </div>
 
+        {/* A Barion jelvénye ott, ahol a fizetési módot választják. */}
+        {fizetesiMod === 'kartya' && <BarionJelveny nyelv={nyelv} helye="urlap" />}
+
+        {/* Jogszabály szerint a vásárlás előfeltétele. A gomb addig
+            nem él, amíg nincs bepipálva. */}
+        <label className={`hirlevel aszf-sor${aszf ? '' : ' kell'}`}>
+          <input
+            type="checkbox"
+            checked={aszf}
+            onChange={(e) => setAszf(e.target.checked)}
+            required
+          />
+          <span>
+            {T.aszfElfogadas[nyelv]}
+            <span className="aszf-linkek">
+              <a href={nyelv === 'hu' ? '/aszf' : '/en/aszf'} target="_blank" rel="noopener">
+                {T.aszfLink[nyelv]}
+              </a>
+              {' · '}
+              <a
+                href={nyelv === 'hu' ? '/adatvedelem' : '/en/adatvedelem'}
+                target="_blank"
+                rel="noopener"
+              >
+                {T.adatvedelemLink[nyelv]}
+              </a>
+            </span>
+          </span>
+        </label>
+
         <label className="hirlevel">
           <input
             type="checkbox"
@@ -555,6 +592,10 @@ export default function FoglaloUrlap({
             <span className="hirlevel-magyarazat">{T.hirlevelMagyarazat[nyelv]}</span>
           </span>
         </label>
+
+        {!aszf && adatokKeszek && Boolean(ar?.foglalhato) && (
+          <div className="notice warn">{T.aszfKotelezo[nyelv]}</div>
+        )}
 
         {uzenet && (
           <div className={`notice ${uzenet.stilus}`} role="status" aria-live="polite">
@@ -574,6 +615,15 @@ export default function FoglaloUrlap({
           <span>{T.osszSzallas[nyelv]}</span>
           <span>{ft(ar?.szallasdij ?? 0, nyelv)}</span>
         </div>
+        {/* Az ajándékutalvány a szállásdíj HELYÉBE lép — itt mutatjuk meg,
+            mennyit spórolt vele a vendég. */}
+        {ar?.akcio && (
+          <div className="sum akcio-sor">
+            <span>{ar.akcio.nev ?? T.osszAkcio[nyelv]}</span>
+            <span>−{ft(ar.akcio.megtakaritas, nyelv)}</span>
+          </div>
+        )}
+
         {/* A hétvégi felár a szállásdíjban már benne van — itt csak
             megmutatjuk, mennyi volt belőle, hogy az összeg érthető legyen. */}
         {Boolean(ar?.hetvegi_felar) && (

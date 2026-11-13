@@ -11,6 +11,9 @@ import StrukturaltAdat from './StrukturaltAdat';
 import Terkep from './Terkep';
 import HatterVideo from './HatterVideo';
 import HirlevelDoboz from './HirlevelDoboz';
+import MobilMenu from './MobilMenu';
+import BemutatoVideo from './BemutatoVideo';
+import BarionJelveny from './BarionJelveny';
 
 /**
  * A teljes főoldal, nyelvtől függetlenül. A magyar és az angol változat
@@ -49,6 +52,8 @@ function Fejlec({ nyelv }: { nyelv: Nyelv }) {
           </div>
           <Link href="#foglalas" className="btn small">{T.gombFoglalas[nyelv]}</Link>
         </div>
+        {/* 900 px alatt ez veszi át a navigációt — a fenti sor ott elrejtve. */}
+        <MobilMenu nyelv={nyelv} vanGaleria={VAN_GALERIA} />
       </div>
     </header>
   );
@@ -85,9 +90,16 @@ function Lablec({ nyelv }: { nyelv: Nyelv }) {
           </Link>
           <p className="foot-ceg">
             {CEG.nev}
-            {CEG.adoszam && <><br />Adószám: {CEG.adoszam}</>}
             {CEG.szekhely && <><br />Székhely: {CEG.szekhely}</>}
+            {CEG.cegjegyzekszam && <><br />Cégjegyzékszám: {CEG.cegjegyzekszam}</>}
+            {CEG.adoszam && <><br />Adószám: {CEG.adoszam}</>}
             <br />{CEG.cim}
+          </p>
+          {/* Telefonon egy koppintás, gépen is látható szám. */}
+          <p className="foot-elerhetoseg">
+            <a href={`tel:${CEG.telefonHivas}`}>{CEG.telefon}</a>
+            <br />
+            <a href={`mailto:${CEG.email}`}>{CEG.email}</a>
           </p>
         </div>
         <ul className="foot-linkek">
@@ -96,6 +108,8 @@ function Lablec({ nyelv }: { nyelv: Nyelv }) {
           <li><Link href={utvonal(nyelv, '/hazirend')}>{T.lablecHazirend[nyelv]}</Link></li>
           <li><Link href={utvonal(nyelv, '/impresszum')}>{T.lablecImpresszum[nyelv]}</Link></li>
         </ul>
+        {/* A Barion elfogadóhelyi jelvénye — a szabályzat előírja. */}
+        <BarionJelveny nyelv={nyelv} />
         <div className="foot-jobb">
           <SocialLinkek />
           <div className="foot-copy">© {new Date().getFullYear()} {CEG.nev}</div>
@@ -244,9 +258,10 @@ function SzolgOszlop({
 }
 
 export default function Oldal({
-  nyelv, hazak, extrak,
+  nyelv, hazak, extrak, akcio,
 }: {
   nyelv: Nyelv; hazak: HazAdat[]; extrak: ExtraAdat[];
+  akcio?: { slug: string; nev: string; leiras: string } | null;
 }) {
   // A nyitóképernyő háttere: ha vannak `hero` képek, azok peregnek;
   // ha nincsenek, de be van kapcsolva a videó, az megy; egyébként a
@@ -267,6 +282,13 @@ export default function Oldal({
     ...KORNYEK.filter((k) => !vanKep(`kornyek/${k.kulcs}`)),
   ];
   const videoVan = !heroKepek && process.env.NEXT_PUBLIC_HERO_VIDEO === '1';
+  /**
+   * A bemutató videó a nyitóképernyő FÖLÖTT. Csak akkor jelenik meg, ha
+   * a fájlok fel vannak töltve, és a Vercelen be van kapcsolva:
+   * NEXT_PUBLIC_BEMUTATO_VIDEO = 1. Így a kapcsoló nélkül semmi nem
+   * törik el, és a videó egy kattintással kivehető az oldalról.
+   */
+  const bemutatoVan = process.env.NEXT_PUBLIC_BEMUTATO_VIDEO === '1';
   const hatterVan = heroKepek || videoVan;
 
   const fuge = hazak.find((h) => h.slug === 'fuge');
@@ -279,6 +301,8 @@ export default function Oldal({
       <StrukturaltAdat nyelv={nyelv} hazak={hazak} />
 
       <Fejlec nyelv={nyelv} />
+
+      {bemutatoVan && <BemutatoVideo nyelv={nyelv} />}
 
       <section className={`hero${hatterVan ? ' hero-video' : ''}`} id="top">
         {hatterVan && (
@@ -346,6 +370,21 @@ export default function Oldal({
           <div className="fact"><strong>24</strong><span>{T.tenyVisszaigazolas[nyelv]}</span></div>
         </div>
       </section>
+
+      {/* Futó ajánlat — csak akkor látszik, amíg érvényes. */}
+      {akcio && (
+        <aside className="akcio-sav">
+          <div className="wrap">
+            <div className="akcio-sav-szoveg">
+              <strong>{akcio.nev}</strong>
+              <span>{akcio.leiras}</span>
+            </div>
+            <Link href="#foglalas" className="btn small">
+              {T.akcioSavGomb[nyelv]}
+            </Link>
+          </div>
+        </aside>
+      )}
 
       {/* ---------- Faházak ---------- */}
       <section className="cabins" id="hazak">

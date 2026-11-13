@@ -31,21 +31,44 @@ function normalizaltUrl(nyers: string): string {
     .replace(/\/+$/, '');
 }
 
-const nyersUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-if (!nyersUrl || !anonKey) {
-  throw new Error(
-    'Hiányzik a NEXT_PUBLIC_SUPABASE_URL vagy a NEXT_PUBLIC_SUPABASE_ANON_KEY. ' +
-      'Vidd fel őket a Vercel "Environment Variables" beállításai közé ' +
-      '(vagy helyi futtatásnál a .env.local fájlba).'
-  );
+/**
+ * A kulcsokat NEM a fájl betöltésekor ellenőrizzük, hanem akkor, amikor
+ * tényleg kell egy kliens.
+ *
+ * Miért számít ez: a `next build` minden API-útvonalat betölt, hogy
+ * összegyűjtse az adataikat. Ha a betöltés önmagában hibát dob, az
+ * egész fordítás elhasal — akkor is, ha a futó rendszerben a kulcsok
+ * rendben lennének. Így viszont a build mindig lefut, és a hiányzó
+ * kulcs ott derül ki, ahol javítani is lehet: az első kérésnél,
+ * beszédes hibaüzenettel.
+ */
+function alapUrl(): string {
+  const nyers = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!nyers) {
+    throw new Error(
+      'Hiányzik a NEXT_PUBLIC_SUPABASE_URL. ' +
+        'Vidd fel a Vercel "Environment Variables" beállításai közé ' +
+        '(vagy helyi futtatásnál a .env.local fájlba).'
+    );
+  }
+  return normalizaltUrl(nyers);
 }
 
-const url = normalizaltUrl(nyersUrl);
-
-/** Böngészőben és szerveren is használható, publikus adatokhoz. */
-export const supabase = createClient(url, anonKey);
+/**
+ * Publikus adatokhoz (házak, árak, extrák). Az anon kulccsal csak azt
+ * lehet elérni, amit az RLS szabályok nyilvánosnak jelölnek.
+ *
+ * Jelenleg a teljes adatlekérés szerveroldalon történik, ezért ezt a
+ * függvényt semmi nem hívja — de megmarad, ha később a böngészőből is
+ * kérdezni akarunk.
+ */
+export function supabaseNyilvanos() {
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!anonKey) {
+    throw new Error('Hiányzik a NEXT_PUBLIC_SUPABASE_ANON_KEY környezeti változó.');
+  }
+  return createClient(alapUrl(), anonKey);
+}
 
 /**
  * Csak szerveroldalon (route handler, server action, cron).
@@ -66,7 +89,7 @@ export function supabaseAdmin() {
     throw new Error('Hiányzik a SUPABASE_SERVICE_ROLE_KEY környezeti változó.');
   }
 
-  return createClient(url, serviceKey, {
+  return createClient(alapUrl(), serviceKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }

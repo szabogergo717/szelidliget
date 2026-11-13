@@ -8,6 +8,6 @@ import { oldalAdat } from '@/lib/oldalAdat';
 export const dynamic = 'force-dynamic';
 
 export default async function Fooldal() {
-  const { hazak, extrak } = await oldalAdat('hu');
-  return <Oldal nyelv="hu" hazak={hazak} extrak={extrak} />;
+  const { hazak, extrak, akcio } = await oldalAdat('hu');
+  return <Oldal nyelv="hu" hazak={hazak} extrak={extrak} akcio={akcio} />;
 }

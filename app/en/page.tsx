@@ -23,6 +23,6 @@ export const metadata: Metadata = {
 };
 
 export default async function EnglishHome() {
-  const { hazak, extrak } = await oldalAdat('en');
-  return <Oldal nyelv="en" hazak={hazak} extrak={extrak} />;
+  const { hazak, extrak, akcio } = await oldalAdat('en');
+  return <Oldal nyelv="en" hazak={hazak} extrak={extrak} akcio={akcio} />;
 }

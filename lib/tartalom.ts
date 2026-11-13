@@ -29,6 +29,16 @@ export const CEG = {
    * sürgős javításhoz nem kell kódot módosítani.
    */
   adoszam: process.env.NEXT_PUBLIC_ADOSZAM || '12377785-2-13',
+  /**
+   * Cégjegyzékszám (pl. '13 09 123456').
+   *
+   * A Barion elfogadóhelyi követelménye és a 45/2014. (II. 26.) Korm.
+   * rendelet is előírja az ÁSZF-ben és az impresszumban.
+   *
+   * Felülírható kódmódosítás nélkül: Vercel → Settings →
+   * Environment Variables → NEXT_PUBLIC_CEGJEGYZEKSZAM.
+   */
+  cegjegyzekszam: process.env.NEXT_PUBLIC_CEGJEGYZEKSZAM || '13 09 082611',
   szekhely: process.env.NEXT_PUBLIC_SZEKHELY || '2092 Budakeszi, Gábor Áron utca 123.',
   /** A szálláshely címe — ez nem azonos a székhellyel. */
   cim: '6328 Dunapataj-Szelidi tó, Kastély utca 17.',
@@ -180,6 +190,13 @@ export const T = {
 
   // ---------- galéria ----------
   menuKepek: S('Képek', 'Photos'),
+  videoCimke: S('Bemutató videó', 'Introduction video'),
+  videoIndit: S('Videó indítása', 'Play video'),
+  videoHangBe: S('Hang bekapcsolása', 'Unmute'),
+  videoHangKi: S('Hang kikapcsolása', 'Mute'),
+  menuNyit: S('Menü megnyitása', 'Open menu'),
+  menuBezar: S('Menü bezárása', 'Close menu'),
+  menuCimke: S('Főmenü', 'Main menu'),
   galeriaCimke: S('KÉPEK', 'PHOTOS'),
   galeriaCim: S('Nézz körül', 'Take a look around'),
   galeriaBevezeto: S(
@@ -283,6 +300,17 @@ export const T = {
   ejszaka: S('éjszaka', 'nights'),
 
   osszHetvegiFelar: S('ebből hétvégi felár', 'incl. weekend surcharge'),
+  osszAkcio: S('Ajándékutalvány', 'Gift voucher'),
+  osszAkcioMegtakaritas: S('Megtakarítás', 'You save'),
+
+  // ---------- nyitó ajándékutalvány ----------
+  akcioSavCim: S('Nyitó ajándékutalvány', 'Opening gift voucher'),
+  akcioSavSzoveg: S(
+    'Három éjszaka a kettő áráért — 98 000 Ft. 2027. november 30-ig, a szabad helyek függvényében.',
+    'Three nights for the price of two — 98,000 HUF. Until 30 November 2027, subject to availability.'
+  ),
+  akcioSavGomb: S('Megnézem a szabad időpontokat', 'See available dates'),
+
   osszIfa: S('Idegenforgalmi adó', 'Tourist tax'),
   osszIfaMagyarazat: S(
     'A helyszínen fizetendő, {ar} Ft/fő/éj. Nem része a fenti összegnek.',
@@ -457,6 +485,17 @@ export const T = {
   ),
 
   // A foglalóűrlapon lévő jelölőnégyzet
+  aszfElfogadas: S(
+    'Elolvastam és elfogadom az Általános Szerződési Feltételeket és az Adatkezelési tájékoztatót.',
+    'I have read and accept the Terms and Conditions and the Privacy Notice.'
+  ),
+  aszfLink: S('Általános Szerződési Feltételek', 'Terms and Conditions'),
+  adatvedelemLink: S('Adatkezelési tájékoztató', 'Privacy Notice'),
+  aszfKotelezo: S(
+    'A foglaláshoz el kell fogadnod a feltételeket.',
+    'You must accept the terms to complete the booking.'
+  ),
+
   hirlevelCimke: S(
     'Szeretnék értesülni az akciókról és a szabad időpontokról',
     'I would like to hear about offers and available dates'

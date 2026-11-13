@@ -5,6 +5,7 @@ import type { Haz, Arazas, Extra } from '@/lib/pricing';
 import { szabad } from '@/lib/availability';
 import { fizetestIndit } from '@/lib/barion';
 import { utalasiEmail, adminErtesito } from '@/lib/email';
+import { ASZF_VERZIO } from '@/lib/jogi';
 
 /**
  * Foglalás létrehozása és fizetés indítása.
@@ -41,6 +42,8 @@ type Keres = {
   megjegyzes?: string;
   /** Külön, önkéntes hozzájárulás marketing levelekhez. */
   hirlevel?: boolean;
+  /** Az ÁSZF és az adatkezelési tájékoztató elfogadása — kötelező. */
+  aszf_elfogadva?: boolean;
   /** 'kartya' = Barion, 'utalas' = banki átutalás. */
   fizetesi_mod?: 'kartya' | 'utalas';
 };
@@ -76,6 +79,19 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
+  // Az ÁSZF elfogadása jogszabály szerint a vásárlás előfeltétele.
+  // A böngészőben is ellenőrizzük, de az ott megkerülhető — a döntés itt születik.
+  if (k.aszf_elfogadva !== true) {
+    return NextResponse.json(
+      {
+        hiba:
+          'A foglaláshoz el kell fogadnod az Általános Szerződési Feltételeket ' +
+          'és az Adatkezelési tájékoztatót.',
+      },
+      { status: 400 }
+    );
+  }
+
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(k.vendeg.email)) {
     return NextResponse.json({ hiba: 'Az e-mail cím formátuma hibás.' }, { status: 400 });
   }
@@ -116,6 +132,8 @@ export async function POST(req: NextRequest) {
     slugbolValasztott.length > 0 ? slugbolValasztott : k.extrak ?? [];
 
   // ---------- Ár újraszámítása szerveroldalon ----------
+  const akciok = await akciokBetoltese(db);
+
   const ajanlat = arajanlat({
     haz: haz as Haz,
     erkezes: k.erkezes,
@@ -123,6 +141,7 @@ export async function POST(req: NextRequest) {
     arazasok: (arazasok ?? []) as Arazas[],
     extrak: extrakLista,
     valasztott_extrak: valasztottExtrak,
+    akciok,
   });
 
   const hibak = foglalasHibai({
@@ -196,6 +215,9 @@ export async function POST(req: NextRequest) {
       elolegoosszeg: ajanlat.vegosszeg,
       megjegyzes: k.megjegyzes,
       fizetesi_mod: fizetesiMod,
+      // A szerződés bizonyítéka: mikor, melyik szöveget fogadták el.
+      aszf_elfogadva: new Date().toISOString(),
+      aszf_verzio: ASZF_VERZIO,
     })
     .select('id, azonosito')
     .single();
@@ -330,4 +352,45 @@ export async function POST(req: NextRequest) {
       { status: 502 }
     );
   }
+}
+
+/**
+ * Az érvényes akciók betöltése.
+ *
+ * A lejártakat már az adatbázis kiszűri, de a dátumot az árszámítás is
+ * ellenőrzi — így egy elfelejtett sor sem tud régi árat adni.
+ */
+async function akciokBetoltese(db: ReturnType<typeof supabaseAdmin>) {
+  const { data, error } = await db
+    .from('akciok')
+    .select('slug, ejszakak, teljes_ar, ervenyes_tol, ervenyes_ig, aktiv, ' +
+            'akcio_hazak(hazak(slug)), akciok_forditas(nyelv, nev)')
+    .eq('aktiv', true)
+    .gte('ervenyes_ig', new Date().toISOString().slice(0, 10));
+
+  if (error) {
+    // Az akció hiánya nem állíthatja meg a foglalást: rendes áron megy.
+    console.error('[akciok] betöltés:', error.message);
+    return [];
+  }
+
+  type Sor = {
+    slug: string; ejszakak: number; teljes_ar: number;
+    ervenyes_tol: string; ervenyes_ig: string; aktiv: boolean;
+    akcio_hazak: { hazak: { slug: string } | null }[] | null;
+    akciok_forditas: { nyelv: string; nev: string }[] | null;
+  };
+
+  return ((data ?? []) as unknown as Sor[]).map((a) => ({
+    slug: a.slug,
+    ejszakak: a.ejszakak,
+    teljes_ar: a.teljes_ar,
+    ervenyes_tol: a.ervenyes_tol,
+    ervenyes_ig: a.ervenyes_ig,
+    aktiv: a.aktiv,
+    haz_slugok: (a.akcio_hazak ?? [])
+      .map((x) => x.hazak?.slug)
+      .filter((x): x is string => Boolean(x)),
+    nev: a.akciok_forditas?.find((f) => f.nyelv === 'hu')?.nev,
+  }));
 }
