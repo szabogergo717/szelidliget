@@ -410,6 +410,16 @@ export default function FoglaloUrlap({
                 </div>
               </div>
             )}
+
+            {/* Az elérhetőség akkor is látszik, ha nincs kérésre árazott
+                extra kiválasztva — az extrákról a legtöbb kérdés telefonon
+                dől el a leggyorsabban. */}
+            <p className="extra-elerhetoseg">
+              {T.extraKerdes[nyelv]}{' '}
+              <a href={`tel:${CEG.telefonHivas}`}>{CEG.telefon}</a>
+              {' · '}
+              <a href={`mailto:${CEG.email}`}>{CEG.email}</a>
+            </p>
           </>
         )}
 

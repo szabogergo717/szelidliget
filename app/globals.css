@@ -1421,3 +1421,21 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
   text-decoration: none;
 }
 .foot-elerhetoseg a:hover { text-decoration: underline; }
+
+
+/* Elérhetőség az extrák listája alatt — mindig látszik. */
+.extra-elerhetoseg {
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--slate-soft);
+}
+.extra-elerhetoseg a {
+  color: var(--ochre);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.extra-elerhetoseg a:hover { text-decoration: underline; }

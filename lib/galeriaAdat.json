@@ -1,4 +1,2635 @@
 {
-  "keszult": "",
-  "csoportok": []
+  "keszult": "2026-11-10",
+  "csoportok": [
+    {
+      "kulcs": "extrak/evfordulo",
+      "cim": {
+        "hu": "Evfordulo",
+        "en": "Evfordulo"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "eredeti-extrak-evfordulo",
+          "leiras": "eredeti extrak evfordulo",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/extrak/evfordulo/eredeti-extrak-evfordulo-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/extrak/evfordulo/eredeti-extrak-evfordulo-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/extrak/evfordulo/eredeti-extrak-evfordulo-1000.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "extrak/gourmet_reggeli",
+      "cim": {
+        "hu": "Gourmet reggeli",
+        "en": "Gourmet reggeli"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "01-reggeli-kosar-narile-tej",
+          "leiras": "reggeli kosar narile tej",
+          "szelesseg": 1157,
+          "magassag": 710,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/extrak/gourmet_reggeli/01-reggeli-kosar-narile-tej-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/extrak/gourmet_reggeli/01-reggeli-kosar-narile-tej-960.webp"
+            },
+            {
+              "szelesseg": 1157,
+              "fajl": "/kepek/extrak/gourmet_reggeli/01-reggeli-kosar-narile-tej-1157.webp"
+            }
+          ]
+        },
+        {
+          "nev": "gourmet-reggeli-nga-2585",
+          "leiras": "gourmet reggeli NGA 2585",
+          "szelesseg": 1000,
+          "magassag": 596,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/extrak/gourmet_reggeli/gourmet-reggeli-nga-2585-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/extrak/gourmet_reggeli/gourmet-reggeli-nga-2585-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/extrak/gourmet_reggeli/gourmet-reggeli-nga-2585-1000.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "extrak/lanykeres",
+      "cim": {
+        "hu": "Lanykeres",
+        "en": "Lanykeres"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "lanykeres-nga-3060",
+          "leiras": "lanykeres NGA 3060",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/extrak/lanykeres/lanykeres-nga-3060-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/extrak/lanykeres/lanykeres-nga-3060-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/extrak/lanykeres/lanykeres-nga-3060-1000.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "extrak/sajttal",
+      "cim": {
+        "hu": "Sajttal",
+        "en": "Sajttal"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "01-sajttal-img-0970",
+          "leiras": "sajttal IMG 0970",
+          "szelesseg": 5712,
+          "magassag": 4284,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/extrak/sajttal/01-sajttal-img-0970-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/extrak/sajttal/01-sajttal-img-0970-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/extrak/sajttal/01-sajttal-img-0970-1600.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "fuge",
+      "cim": {
+        "hu": "Füge",
+        "en": "Füge"
+      },
+      "galeriaban": true,
+      "kepek": [
+        {
+          "nev": "01-haz-nga-2727",
+          "leiras": "haz NGA 2727",
+          "szelesseg": 697,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/01-haz-nga-2727-480.webp"
+            },
+            {
+              "szelesseg": 697,
+              "fajl": "/kepek/fuge/01-haz-nga-2727-697.webp"
+            }
+          ]
+        },
+        {
+          "nev": "02-szoba-04",
+          "leiras": "szoba 04",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/02-szoba-04-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/fuge/02-szoba-04-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/fuge/02-szoba-04-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "03-terasz-nga-2396",
+          "leiras": "terasz NGA 2396",
+          "szelesseg": 665,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/03-terasz-nga-2396-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/fuge/03-terasz-nga-2396-665.webp"
+            }
+          ]
+        },
+        {
+          "nev": "04-jakuzzi-nga-2740",
+          "leiras": "jakuzzi NGA 2740",
+          "szelesseg": 665,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/04-jakuzzi-nga-2740-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/fuge/04-jakuzzi-nga-2740-665.webp"
+            }
+          ]
+        },
+        {
+          "nev": "05-bor-nga-2377",
+          "leiras": "bor NGA 2377",
+          "szelesseg": 678,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/05-bor-nga-2377-480.webp"
+            },
+            {
+              "szelesseg": 678,
+              "fajl": "/kepek/fuge/05-bor-nga-2377-678.webp"
+            }
+          ]
+        },
+        {
+          "nev": "06-furdo-09",
+          "leiras": "furdo 09",
+          "szelesseg": 1996,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/06-furdo-09-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/fuge/06-furdo-09-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/fuge/06-furdo-09-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "07-furdo-12",
+          "leiras": "furdo 12",
+          "szelesseg": 1822,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/07-furdo-12-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/fuge/07-furdo-12-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/fuge/07-furdo-12-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "08-erdo-nga-1702",
+          "leiras": "erdo NGA 1702",
+          "szelesseg": 2341,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/08-erdo-nga-1702-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/fuge/08-erdo-nga-1702-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/fuge/08-erdo-nga-1702-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "09-terasz-nga-2653",
+          "leiras": "terasz NGA 2653",
+          "szelesseg": 665,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/09-terasz-nga-2653-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/fuge/09-terasz-nga-2653-665.webp"
+            }
+          ]
+        },
+        {
+          "nev": "10-kv-05",
+          "leiras": "kv 05",
+          "szelesseg": 1996,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/10-kv-05-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/fuge/10-kv-05-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/fuge/10-kv-05-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "11-hangulat-14",
+          "leiras": "hangulat 14",
+          "szelesseg": 2507,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/11-hangulat-14-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/fuge/11-hangulat-14-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/fuge/11-hangulat-14-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "12-terasz-nga-2481",
+          "leiras": "terasz NGA 2481",
+          "szelesseg": 665,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/12-terasz-nga-2481-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/fuge/12-terasz-nga-2481-665.webp"
+            }
+          ]
+        },
+        {
+          "nev": "13-szoba-nga-2492",
+          "leiras": "szoba NGA 2492",
+          "szelesseg": 1000,
+          "magassag": 666,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/13-szoba-nga-2492-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/fuge/13-szoba-nga-2492-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/fuge/13-szoba-nga-2492-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "14-konyha-nga-2522",
+          "leiras": "konyha NGA 2522",
+          "szelesseg": 665,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/fuge/14-konyha-nga-2522-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/fuge/14-konyha-nga-2522-665.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "hero",
+      "cim": {
+        "hu": "Nyitókép",
+        "en": "Cover"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "01-fahaz",
+          "leiras": "fahaz",
+          "szelesseg": 1000,
+          "magassag": 685,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/01-fahaz-640.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/01-fahaz-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "02-jacuzzi",
+          "leiras": "jacuzzi",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/02-jacuzzi-640.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/02-jacuzzi-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "03-szoba",
+          "leiras": "szoba",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/03-szoba-640.webp"
+            },
+            {
+              "szelesseg": 1280,
+              "fajl": "/kepek/hero/03-szoba-1280.webp"
+            },
+            {
+              "szelesseg": 1920,
+              "fajl": "/kepek/hero/03-szoba-1920.webp"
+            },
+            {
+              "szelesseg": 2560,
+              "fajl": "/kepek/hero/03-szoba-2560.webp"
+            }
+          ]
+        },
+        {
+          "nev": "05-kaja",
+          "leiras": "kaja",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/05-kaja-640.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/05-kaja-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "06-to",
+          "leiras": "to",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/06-to-640.webp"
+            },
+            {
+              "szelesseg": 1280,
+              "fajl": "/kepek/hero/06-to-1280.webp"
+            },
+            {
+              "szelesseg": 1920,
+              "fajl": "/kepek/hero/06-to-1920.webp"
+            },
+            {
+              "szelesseg": 2560,
+              "fajl": "/kepek/hero/06-to-2560.webp"
+            }
+          ]
+        },
+        {
+          "nev": "07-szoba2",
+          "leiras": "szoba2",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/07-szoba2-640.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/07-szoba2-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "08-jakuzzi",
+          "leiras": "jakuzzi",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/08-jakuzzi-640.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/08-jakuzzi-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "09-szoba",
+          "leiras": "szoba",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/09-szoba-640.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/09-szoba-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "10-to",
+          "leiras": "to",
+          "szelesseg": 3000,
+          "magassag": 2003,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/10-to-640.webp"
+            },
+            {
+              "szelesseg": 1280,
+              "fajl": "/kepek/hero/10-to-1280.webp"
+            },
+            {
+              "szelesseg": 1920,
+              "fajl": "/kepek/hero/10-to-1920.webp"
+            },
+            {
+              "szelesseg": 2560,
+              "fajl": "/kepek/hero/10-to-2560.webp"
+            }
+          ]
+        },
+        {
+          "nev": "11-jakuzzi",
+          "leiras": "jakuzzi",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/11-jakuzzi-640.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/11-jakuzzi-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "12-haz-nga-2666",
+          "leiras": "haz NGA 2666",
+          "szelesseg": 1000,
+          "magassag": 544,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/12-haz-nga-2666-640.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/hero/12-haz-nga-2666-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "13-to-nga-7455",
+          "leiras": "to NGA 7455",
+          "szelesseg": 3000,
+          "magassag": 2003,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/13-to-nga-7455-640.webp"
+            },
+            {
+              "szelesseg": 1280,
+              "fajl": "/kepek/hero/13-to-nga-7455-1280.webp"
+            },
+            {
+              "szelesseg": 1920,
+              "fajl": "/kepek/hero/13-to-nga-7455-1920.webp"
+            },
+            {
+              "szelesseg": 2560,
+              "fajl": "/kepek/hero/13-to-nga-7455-2560.webp"
+            }
+          ]
+        },
+        {
+          "nev": "14-to-nga-1677",
+          "leiras": "to NGA 1677",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/14-to-nga-1677-640.webp"
+            },
+            {
+              "szelesseg": 1280,
+              "fajl": "/kepek/hero/14-to-nga-1677-1280.webp"
+            },
+            {
+              "szelesseg": 1920,
+              "fajl": "/kepek/hero/14-to-nga-1677-1920.webp"
+            },
+            {
+              "szelesseg": 2560,
+              "fajl": "/kepek/hero/14-to-nga-1677-2560.webp"
+            }
+          ]
+        },
+        {
+          "nev": "15-to-nga-7494",
+          "leiras": "to NGA 7494",
+          "szelesseg": 3000,
+          "magassag": 2003,
+          "valtozatok": [
+            {
+              "szelesseg": 640,
+              "fajl": "/kepek/hero/15-to-nga-7494-640.webp"
+            },
+            {
+              "szelesseg": 1280,
+              "fajl": "/kepek/hero/15-to-nga-7494-1280.webp"
+            },
+            {
+              "szelesseg": 1920,
+              "fajl": "/kepek/hero/15-to-nga-7494-1920.webp"
+            },
+            {
+              "szelesseg": 2560,
+              "fajl": "/kepek/hero/15-to-nga-7494-2560.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kiemelt",
+      "cim": {
+        "hu": "Kiemelt szolgáltatások",
+        "en": "Highlights"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "01-jaku-nga-2898",
+          "leiras": "jaku NGA 2898",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kiemelt/01-jaku-nga-2898-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kiemelt/01-jaku-nga-2898-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/kiemelt/01-jaku-nga-2898-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "02-kaja-nga-2709",
+          "leiras": "kaja NGA 2709",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kiemelt/02-kaja-nga-2709-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kiemelt/02-kaja-nga-2709-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/kiemelt/02-kaja-nga-2709-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "03-pezsi-jaku-nga-2846",
+          "leiras": "pezsi jaku NGA 2846",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kiemelt/03-pezsi-jaku-nga-2846-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kiemelt/03-pezsi-jaku-nga-2846-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/kiemelt/03-pezsi-jaku-nga-2846-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "04-tv-nga-2961a",
+          "leiras": "tv NGA 2961a",
+          "szelesseg": 1000,
+          "magassag": 648,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kiemelt/04-tv-nga-2961a-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kiemelt/04-tv-nga-2961a-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/kiemelt/04-tv-nga-2961a-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "05-kv-06",
+          "leiras": "kv 06",
+          "szelesseg": 2329,
+          "magassag": 2648,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kiemelt/05-kv-06-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kiemelt/05-kv-06-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kiemelt/05-kv-06-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "06-pezsi-nga-2903",
+          "leiras": "pezsi NGA 2903",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kiemelt/06-pezsi-nga-2903-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kiemelt/06-pezsi-nga-2903-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/kiemelt/06-pezsi-nga-2903-1000.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "konyha",
+      "cim": {
+        "hu": "Konyha",
+        "en": "Kitchen"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "01-konyha-nga-2545",
+          "leiras": "konyha NGA 2545",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/konyha/01-konyha-nga-2545-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/konyha/01-konyha-nga-2545-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/konyha/01-konyha-nga-2545-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "02-konyha-nga-2490a",
+          "leiras": "konyha NGA 2490a",
+          "szelesseg": 1000,
+          "magassag": 647,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/konyha/02-konyha-nga-2490a-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/konyha/02-konyha-nga-2490a-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/konyha/02-konyha-nga-2490a-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "03-konyha-nga-3021a",
+          "leiras": "konyha NGA 3021a",
+          "szelesseg": 1000,
+          "magassag": 643,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/konyha/03-konyha-nga-3021a-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/konyha/03-konyha-nga-3021a-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/konyha/03-konyha-nga-3021a-1000.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kornyek/bowling",
+      "cim": {
+        "hu": "Bowling",
+        "en": "Bowling"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "nga-1725",
+          "leiras": "NGA 1725",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/bowling/nga-1725-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/bowling/nga-1725-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/bowling/nga-1725-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1731",
+          "leiras": "NGA 1731",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/bowling/nga-1731-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/bowling/nga-1731-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/bowling/nga-1731-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1740",
+          "leiras": "NGA 1740",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/bowling/nga-1740-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/bowling/nga-1740-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/bowling/nga-1740-1600.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kornyek/csonakazas",
+      "cim": {
+        "hu": "Csonakazas",
+        "en": "Csonakazas"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "nga-1665",
+          "leiras": "NGA 1665",
+          "szelesseg": 3000,
+          "magassag": 1919,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/csonakazas/nga-1665-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/csonakazas/nga-1665-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/csonakazas/nga-1665-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1865",
+          "leiras": "NGA 1865",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/csonakazas/nga-1865-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/csonakazas/nga-1865-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/csonakazas/nga-1865-1600.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kornyek/duna",
+      "cim": {
+        "hu": "Duna",
+        "en": "Duna"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "nga-1628",
+          "leiras": "NGA 1628",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/duna/nga-1628-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/duna/nga-1628-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/duna/nga-1628-1600.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kornyek/ettermek",
+      "cim": {
+        "hu": "Ettermek",
+        "en": "Ettermek"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "nga-1735",
+          "leiras": "NGA 1735",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/ettermek/nga-1735-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/ettermek/nga-1735-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/ettermek/nga-1735-1600.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kornyek/fotozas",
+      "cim": {
+        "hu": "Fotozas",
+        "en": "Fotozas"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "nga-1618",
+          "leiras": "NGA 1618",
+          "szelesseg": 1996,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/fotozas/nga-1618-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/fotozas/nga-1618-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/fotozas/nga-1618-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1622",
+          "leiras": "NGA 1622",
+          "szelesseg": 1996,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/fotozas/nga-1622-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/fotozas/nga-1622-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/fotozas/nga-1622-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1670",
+          "leiras": "NGA 1670",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/fotozas/nga-1670-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/fotozas/nga-1670-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/fotozas/nga-1670-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1673",
+          "leiras": "NGA 1673",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/fotozas/nga-1673-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/fotozas/nga-1673-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/fotozas/nga-1673-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1693",
+          "leiras": "NGA 1693",
+          "szelesseg": 1996,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/fotozas/nga-1693-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/fotozas/nga-1693-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/fotozas/nga-1693-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1871",
+          "leiras": "NGA 1871",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/fotozas/nga-1871-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/fotozas/nga-1871-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/fotozas/nga-1871-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1916",
+          "leiras": "NGA 1916",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/fotozas/nga-1916-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/fotozas/nga-1916-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/fotozas/nga-1916-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-7390",
+          "leiras": "NGA 7390",
+          "szelesseg": 2003,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/fotozas/nga-7390-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/fotozas/nga-7390-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/fotozas/nga-7390-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-7406",
+          "leiras": "NGA 7406",
+          "szelesseg": 3000,
+          "magassag": 2003,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/fotozas/nga-7406-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/fotozas/nga-7406-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/fotozas/nga-7406-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-7484",
+          "leiras": "NGA 7484",
+          "szelesseg": 2003,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/fotozas/nga-7484-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/fotozas/nga-7484-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/fotozas/nga-7484-1600.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kornyek/kalocsa",
+      "cim": {
+        "hu": "Kalocsa",
+        "en": "Kalocsa"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "nga-1756",
+          "leiras": "NGA 1756",
+          "szelesseg": 2640,
+          "magassag": 1872,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1756-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1756-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1756-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1766",
+          "leiras": "NGA 1766",
+          "szelesseg": 2860,
+          "magassag": 1948,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1766-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1766-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1766-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1769",
+          "leiras": "NGA 1769",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1769-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1769-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1769-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1775",
+          "leiras": "NGA 1775",
+          "szelesseg": 2896,
+          "magassag": 1952,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1775-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1775-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1775-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1785",
+          "leiras": "NGA 1785",
+          "szelesseg": 3000,
+          "magassag": 2276,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1785-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1785-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1785-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1787",
+          "leiras": "NGA 1787",
+          "szelesseg": 1996,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1787-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1787-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1787-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1792",
+          "leiras": "NGA 1792",
+          "szelesseg": 3000,
+          "magassag": 1992,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1792-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1792-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1792-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1798",
+          "leiras": "NGA 1798",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1798-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1798-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1798-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1803",
+          "leiras": "NGA 1803",
+          "szelesseg": 2632,
+          "magassag": 1848,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1803-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1803-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/kalocsa/nga-1803-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-7427",
+          "leiras": "NGA 7427",
+          "szelesseg": 3000,
+          "magassag": 2003,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/kalocsa/nga-7427-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/kalocsa/nga-7427-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/kalocsa/nga-7427-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-7429",
+          "leiras": "NGA 7429",
+          "szelesseg": 3000,
+          "magassag": 2003,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/kalocsa/nga-7429-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/kalocsa/nga-7429-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/kalocsa/nga-7429-1600.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kornyek/kerekpar",
+      "cim": {
+        "hu": "Kerekpar",
+        "en": "Kerekpar"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "nga-1647",
+          "leiras": "NGA 1647",
+          "szelesseg": 3000,
+          "magassag": 2020,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/kerekpar/nga-1647-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/kerekpar/nga-1647-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/kerekpar/nga-1647-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1707",
+          "leiras": "NGA 1707",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/kerekpar/nga-1707-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/kerekpar/nga-1707-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/kerekpar/nga-1707-1600.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kornyek/lovasbemutato",
+      "cim": {
+        "hu": "Lovasbemutato",
+        "en": "Lovasbemutato"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "oip",
+          "leiras": "OIP",
+          "szelesseg": 474,
+          "magassag": 269,
+          "valtozatok": [
+            {
+              "szelesseg": 474,
+              "fajl": "/kepek/kornyek/lovasbemutato/oip-474.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kornyek/madarles",
+      "cim": {
+        "hu": "Madarles",
+        "en": "Madarles"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "nga-1622",
+          "leiras": "NGA 1622",
+          "szelesseg": 1996,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/madarles/nga-1622-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/madarles/nga-1622-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/madarles/nga-1622-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1655",
+          "leiras": "NGA 1655",
+          "szelesseg": 3000,
+          "magassag": 1828,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/madarles/nga-1655-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/madarles/nga-1655-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/madarles/nga-1655-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1749",
+          "leiras": "NGA 1749",
+          "szelesseg": 1996,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/madarles/nga-1749-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/madarles/nga-1749-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/madarles/nga-1749-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-7375",
+          "leiras": "NGA 7375",
+          "szelesseg": 3000,
+          "magassag": 2003,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/madarles/nga-7375-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/madarles/nga-7375-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/madarles/nga-7375-1600.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kornyek/naplemente",
+      "cim": {
+        "hu": "Naplemente",
+        "en": "Naplemente"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "nga-1673",
+          "leiras": "NGA 1673",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/naplemente/nga-1673-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/naplemente/nga-1673-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/naplemente/nga-1673-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1677",
+          "leiras": "NGA 1677",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/naplemente/nga-1677-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/naplemente/nga-1677-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/naplemente/nga-1677-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1952",
+          "leiras": "NGA 1952",
+          "szelesseg": 3000,
+          "magassag": 1114,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/naplemente/nga-1952-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/naplemente/nga-1952-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/naplemente/nga-1952-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1968",
+          "leiras": "NGA 1968",
+          "szelesseg": 2914,
+          "magassag": 1939,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/naplemente/nga-1968-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/naplemente/nga-1968-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/naplemente/nga-1968-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-7413",
+          "leiras": "NGA 7413",
+          "szelesseg": 3000,
+          "magassag": 2166,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/naplemente/nga-7413-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/naplemente/nga-7413-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/naplemente/nga-7413-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-7470",
+          "leiras": "NGA 7470",
+          "szelesseg": 3000,
+          "magassag": 1233,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/naplemente/nga-7470-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/naplemente/nga-7470-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/naplemente/nga-7470-1600.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kornyek/pincesor",
+      "cim": {
+        "hu": "Pincesor",
+        "en": "Pincesor"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "nga-1810",
+          "leiras": "NGA 1810",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/pincesor/nga-1810-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/pincesor/nga-1810-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/pincesor/nga-1810-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1816",
+          "leiras": "NGA 1816",
+          "szelesseg": 3000,
+          "magassag": 2174,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/pincesor/nga-1816-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/pincesor/nga-1816-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/pincesor/nga-1816-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1817",
+          "leiras": "NGA 1817",
+          "szelesseg": 1996,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/pincesor/nga-1817-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/pincesor/nga-1817-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/pincesor/nga-1817-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1820",
+          "leiras": "NGA 1820",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/pincesor/nga-1820-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/pincesor/nga-1820-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/pincesor/nga-1820-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1823",
+          "leiras": "NGA 1823",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/pincesor/nga-1823-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/pincesor/nga-1823-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/pincesor/nga-1823-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1827",
+          "leiras": "NGA 1827",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/pincesor/nga-1827-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/pincesor/nga-1827-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/pincesor/nga-1827-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1831",
+          "leiras": "NGA 1831",
+          "szelesseg": 2184,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/pincesor/nga-1831-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/pincesor/nga-1831-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/pincesor/nga-1831-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1835",
+          "leiras": "NGA 1835",
+          "szelesseg": 3000,
+          "magassag": 2070,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/pincesor/nga-1835-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/pincesor/nga-1835-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/pincesor/nga-1835-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1838",
+          "leiras": "NGA 1838",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/pincesor/nga-1838-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/pincesor/nga-1838-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/pincesor/nga-1838-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1842",
+          "leiras": "NGA 1842",
+          "szelesseg": 1996,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/pincesor/nga-1842-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/pincesor/nga-1842-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/pincesor/nga-1842-1600.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kornyek/strand",
+      "cim": {
+        "hu": "Strand",
+        "en": "Strand"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "nga-1926",
+          "leiras": "NGA 1926",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/strand/nga-1926-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/strand/nga-1926-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/strand/nga-1926-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-7447",
+          "leiras": "NGA 7447",
+          "szelesseg": 3000,
+          "magassag": 2003,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/strand/nga-7447-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/strand/nga-7447-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/strand/nga-7447-1600.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "kornyek/tanosveny",
+      "cim": {
+        "hu": "Tanosveny",
+        "en": "Tanosveny"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "nga-1614",
+          "leiras": "NGA 1614",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/tanosveny/nga-1614-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/tanosveny/nga-1614-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/tanosveny/nga-1614-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1714",
+          "leiras": "NGA 1714",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/tanosveny/nga-1714-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/tanosveny/nga-1714-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/tanosveny/nga-1714-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1716",
+          "leiras": "NGA 1716",
+          "szelesseg": 3000,
+          "magassag": 2536,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/tanosveny/nga-1716-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/tanosveny/nga-1716-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/tanosveny/nga-1716-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-1754",
+          "leiras": "NGA 1754",
+          "szelesseg": 3000,
+          "magassag": 1996,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/kornyek/tanosveny/nga-1754-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/kornyek/tanosveny/nga-1754-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/kornyek/tanosveny/nga-1754-1600.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "lakoter",
+      "cim": {
+        "hu": "Lakótér",
+        "en": "Living space"
+      },
+      "galeriaban": false,
+      "kepek": [
+        {
+          "nev": "01",
+          "leiras": "",
+          "szelesseg": 2954,
+          "magassag": 2139,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/lakoter/01-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/lakoter/01-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/lakoter/01-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "02",
+          "leiras": "",
+          "szelesseg": 2802,
+          "magassag": 1900,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/lakoter/02-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/lakoter/02-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/lakoter/02-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-2500",
+          "leiras": "NGA 2500",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/lakoter/nga-2500-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/lakoter/nga-2500-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-2500-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-2681",
+          "leiras": "NGA 2681",
+          "szelesseg": 845,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/lakoter/nga-2681-480.webp"
+            },
+            {
+              "szelesseg": 845,
+              "fajl": "/kepek/lakoter/nga-2681-845.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-2953a",
+          "leiras": "NGA 2953a",
+          "szelesseg": 1000,
+          "magassag": 690,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/lakoter/nga-2953a-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/lakoter/nga-2953a-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-2953a-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-2961a",
+          "leiras": "NGA 2961a",
+          "szelesseg": 1000,
+          "magassag": 648,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/lakoter/nga-2961a-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/lakoter/nga-2961a-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-2961a-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-2970",
+          "leiras": "NGA 2970",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/lakoter/nga-2970-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/lakoter/nga-2970-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-2970-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-3021a",
+          "leiras": "NGA 3021a",
+          "szelesseg": 1000,
+          "magassag": 643,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/lakoter/nga-3021a-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/lakoter/nga-3021a-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-3021a-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-3029",
+          "leiras": "NGA 3029",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/lakoter/nga-3029-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/lakoter/nga-3029-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-3029-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-3118",
+          "leiras": "NGA 3118",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/lakoter/nga-3118-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/lakoter/nga-3118-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-3118-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-3153",
+          "leiras": "NGA 3153",
+          "szelesseg": 1000,
+          "magassag": 466,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/lakoter/nga-3153-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/lakoter/nga-3153-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-3153-1000.webp"
+            }
+          ]
+        },
+        {
+          "nev": "nga-3171",
+          "leiras": "NGA 3171",
+          "szelesseg": 1000,
+          "magassag": 665,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/lakoter/nga-3171-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/lakoter/nga-3171-960.webp"
+            },
+            {
+              "szelesseg": 1000,
+              "fajl": "/kepek/lakoter/nga-3171-1000.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kulcs": "mandula",
+      "cim": {
+        "hu": "Mandula",
+        "en": "Mandula"
+      },
+      "galeriaban": true,
+      "kepek": [
+        {
+          "nev": "01-fahaz-nga-2668",
+          "leiras": "fahaz NGA 2668",
+          "szelesseg": 673,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/01-fahaz-nga-2668-480.webp"
+            },
+            {
+              "szelesseg": 673,
+              "fajl": "/kepek/mandula/01-fahaz-nga-2668-673.webp"
+            }
+          ]
+        },
+        {
+          "nev": "02-jakuzzi-nga-2976",
+          "leiras": "jakuzzi NGA 2976",
+          "szelesseg": 693,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/02-jakuzzi-nga-2976-480.webp"
+            },
+            {
+              "szelesseg": 693,
+              "fajl": "/kepek/mandula/02-jakuzzi-nga-2976-693.webp"
+            }
+          ]
+        },
+        {
+          "nev": "03-szoba-nga-3104",
+          "leiras": "szoba NGA 3104",
+          "szelesseg": 739,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/03-szoba-nga-3104-480.webp"
+            },
+            {
+              "szelesseg": 739,
+              "fajl": "/kepek/mandula/03-szoba-nga-3104-739.webp"
+            }
+          ]
+        },
+        {
+          "nev": "04-konyha-nga-3025a",
+          "leiras": "konyha NGA 3025a",
+          "szelesseg": 733,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/04-konyha-nga-3025a-480.webp"
+            },
+            {
+              "szelesseg": 733,
+              "fajl": "/kepek/mandula/04-konyha-nga-3025a-733.webp"
+            }
+          ]
+        },
+        {
+          "nev": "05-furdo-nga-3034",
+          "leiras": "furdo NGA 3034",
+          "szelesseg": 665,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/05-furdo-nga-3034-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/mandula/05-furdo-nga-3034-665.webp"
+            }
+          ]
+        },
+        {
+          "nev": "06-furdo-nga-3037",
+          "leiras": "furdo NGA 3037",
+          "szelesseg": 629,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/06-furdo-nga-3037-480.webp"
+            },
+            {
+              "szelesseg": 629,
+              "fajl": "/kepek/mandula/06-furdo-nga-3037-629.webp"
+            }
+          ]
+        },
+        {
+          "nev": "07-erdo-nga-1749",
+          "leiras": "erdo NGA 1749",
+          "szelesseg": 1996,
+          "magassag": 3000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/07-erdo-nga-1749-480.webp"
+            },
+            {
+              "szelesseg": 960,
+              "fajl": "/kepek/mandula/07-erdo-nga-1749-960.webp"
+            },
+            {
+              "szelesseg": 1600,
+              "fajl": "/kepek/mandula/07-erdo-nga-1749-1600.webp"
+            }
+          ]
+        },
+        {
+          "nev": "08-bor-nga-2377",
+          "leiras": "bor NGA 2377",
+          "szelesseg": 678,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/08-bor-nga-2377-480.webp"
+            },
+            {
+              "szelesseg": 678,
+              "fajl": "/kepek/mandula/08-bor-nga-2377-678.webp"
+            }
+          ]
+        },
+        {
+          "nev": "09-jakuzzi-nga-2933",
+          "leiras": "jakuzzi NGA 2933",
+          "szelesseg": 665,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/09-jakuzzi-nga-2933-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/mandula/09-jakuzzi-nga-2933-665.webp"
+            }
+          ]
+        },
+        {
+          "nev": "10-jakuzzi-nga-2990",
+          "leiras": "jakuzzi NGA 2990",
+          "szelesseg": 936,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/10-jakuzzi-nga-2990-480.webp"
+            },
+            {
+              "szelesseg": 936,
+              "fajl": "/kepek/mandula/10-jakuzzi-nga-2990-936.webp"
+            }
+          ]
+        },
+        {
+          "nev": "11-hangulat-nga-3049",
+          "leiras": "hangulat NGA 3049",
+          "szelesseg": 665,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/11-hangulat-nga-3049-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/mandula/11-hangulat-nga-3049-665.webp"
+            }
+          ]
+        },
+        {
+          "nev": "12-jakuzzi-nga-3074",
+          "leiras": "jakuzzi NGA 3074",
+          "szelesseg": 665,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/12-jakuzzi-nga-3074-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/mandula/12-jakuzzi-nga-3074-665.webp"
+            }
+          ]
+        },
+        {
+          "nev": "13-hangulat-nga-3125",
+          "leiras": "hangulat NGA 3125",
+          "szelesseg": 665,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/13-hangulat-nga-3125-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/mandula/13-hangulat-nga-3125-665.webp"
+            }
+          ]
+        },
+        {
+          "nev": "14-szoba-nga-3136",
+          "leiras": "szoba NGA 3136",
+          "szelesseg": 665,
+          "magassag": 1000,
+          "valtozatok": [
+            {
+              "szelesseg": 480,
+              "fajl": "/kepek/mandula/14-szoba-nga-3136-480.webp"
+            },
+            {
+              "szelesseg": 665,
+              "fajl": "/kepek/mandula/14-szoba-nga-3136-665.webp"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

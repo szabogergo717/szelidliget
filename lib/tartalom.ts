@@ -233,6 +233,10 @@ export const T = {
     'Ezeknek az áráról előre is szívesen adunk tájékoztatást — hívj minket, vagy írj egy e-mailt:',
     'We are happy to quote these in advance — call us or send an email:'
   ),
+  extraKerdes: S(
+    'Kérdésed van az extrákról? Hívj minket:',
+    'Questions about the extras? Call us:'
+  ),
   gombHivas: S('Hívás', 'Call'),
   gombEmail: S('E-mail írása', 'Send an email'),
 
