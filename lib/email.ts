@@ -76,7 +76,7 @@ async function foglalastBetolt(foglalasId: string): Promise<FoglalasSor> {
 }
 
 async function naploz(
-  foglalasId: string,
+  foglalasId: string | null,
   tipus: string,
   cimzett: string,
   nyelv: string,
@@ -127,7 +127,7 @@ function adatTabla(sorok: string): string {
 }
 
 async function kuld(
-  foglalasId: string,
+  foglalasId: string | null,
   tipus: string,
   cimzett: string,
   nyelv: string,
@@ -505,5 +505,102 @@ export async function adminErtesito(
     'hu',
     `[Szelid Liget] ${cim} — ${f.azonosito}`,
     html
+  );
+}
+
+
+// ============================================================
+//  6. Ajándékutalvány — sikeres vásárlás után
+// ============================================================
+
+/**
+ * A megvásárolt ajándékutalvány kiküldése.
+ *
+ * Akkor fut, amikor a Barion visszaigazolta a fizetést. A kódot ekkor
+ * már megkapta a vásárlás (lásd app/api/barion/visszahivas), itt csak
+ * elküldjük.
+ *
+ * Ez a levél MAGA az utalvány: kinyomtatható, továbbküldhető. Ezért
+ * benne van minden, ami a beváltáshoz kell — a kód, a lejárat, és
+ * hogy mit fed és mit nem.
+ */
+export async function utalvanyEmail(vasarlasId: string): Promise<void> {
+  const db = supabaseAdmin();
+
+  const { data, error } = await db
+    .from('utalvany_vasarlasok')
+    .select('id, azonosito, nev, email, osszeg, ajandekozott, uzenet')
+    .eq('id', vasarlasId)
+    .single();
+
+  if (error || !data) throw new Error(`Utalványvásárlás nem található: ${vasarlasId}`);
+
+  const { data: kupon } = await db
+    .from('kuponok')
+    .select('kod, ejszakak, csomag_ar, ervenyes_ig')
+    .eq('vasarlas_id', vasarlasId)
+    .maybeSingle();
+
+  if (!kupon) throw new Error(`Nincs kupon ehhez a vásárláshoz: ${vasarlasId}`);
+
+  const lejarat = datum(kupon.ervenyes_ig as string, 'hu');
+
+  const tartalom = `
+    <h1 style="margin:0 0 6px;font-size:25px;font-weight:400;text-align:center">
+      Ajándékutalvány
+    </h1>
+    <p style="margin:0 0 26px;text-align:center;color:#5d6273;font-size:15px">
+      ${kupon.ejszakak} éjszaka a Szelid Ligetben, két főnek
+    </p>
+
+    <div style="border:2px solid #a97231;border-radius:3px;padding:22px;text-align:center;margin-bottom:26px">
+      <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#a97231">
+        A beváltáshoz szükséges kód
+      </div>
+      <div style="font-family:'Courier New',monospace;font-size:28px;font-weight:700;letter-spacing:.08em;margin:10px 0 6px">
+        ${kupon.kod}
+      </div>
+      <div style="font-size:13px;color:#5d6273">
+        Felhasználható ${lejarat}-ig
+      </div>
+    </div>
+
+    ${adatTabla(
+      adatSor('Utalvány azonosítója', data.azonosito as string) +
+      adatSor('Amit tartalmaz', `${kupon.ejszakak} éjszaka szállás, 2 fő`) +
+      adatSor('Kifizetett összeg', ft(data.osszeg as number))
+    )}
+
+    <p style="margin:24px 0 8px;font-size:15px;font-weight:600">Hogyan váltható be</p>
+    <ol style="margin:0 0 20px;padding-left:20px;font-size:15px;line-height:1.7;color:#5d6273">
+      <li>Keresd fel a <a href="${OLDAL}/#foglalas" style="color:#a97231">foglalási oldalt</a>,
+          és válassz egy pontosan ${kupon.ejszakak} éjszakás időpontot.</li>
+      <li>A foglalás véglegesítésekor írd be a fenti kódot a „Kuponkód" mezőbe.</li>
+      <li>A szállásdíj helyébe az utalvány lép; a visszaigazolást e-mailben küldjük.</li>
+    </ol>
+
+    <p style="margin:0 0 20px;font-size:14px;line-height:1.7;color:#5d6273">
+      <strong>Jó tudni:</strong> az utalvány a szabad helyek függvényében használható fel,
+      hétköznapi éjszakákra. Pénteki és szombati éjszakára hétvégi felár jön rá,
+      éjszakánként ${ft(12000)}. Az extra szolgáltatások ára szintén az utalványon felül
+      értendő. A kód egyszer váltható be, és átadható másnak.
+    </p>
+
+    ${data.ajandekozott ? `
+      <p style="margin:0 0 20px;font-size:14px;color:#5d6273">
+        Ajándékozott neve a vásárláskor: <strong>${data.ajandekozott}</strong>
+      </p>` : ''}
+
+    <p style="margin:0;font-size:14px;color:#5d6273">
+      Kérdés esetén hívj minket a ${CEG.telefon} számon, vagy válaszolj erre a levélre.
+    </p>`;
+
+  await kuld(
+    null,
+    'ajandekutalvany',
+    data.email as string,
+    'hu',
+    `Ajándékutalvány — ${kupon.kod}`,
+    keret(tartalom, 'hu')
   );
 }

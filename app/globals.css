@@ -1439,3 +1439,89 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
   white-space: nowrap;
 }
 .extra-elerhetoseg a:hover { text-decoration: underline; }
+
+/* ---------- kuponkód a foglalóűrlapon ---------- */
+.kupon-sor {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+  margin-bottom: 4px;
+}
+.kupon-mezo {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 14px;
+  font-family: var(--sans);
+  /* Egyenközű betű: így a kód karakterei nem csúsznak össze, és
+     könnyebb ellenőrizni, amit beírtál. */
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-size: 15px;
+  color: var(--slate);
+  background: #fff;
+  border: 1px solid var(--line);
+}
+.kupon-mezo:focus { outline: none; border-color: var(--ochre); }
+.kupon-mezo::placeholder { letter-spacing: .1em; color: #b9b5a8; }
+.kupon-sor .btn { flex: none; white-space: nowrap; }
+
+.kupon-uzenet { margin-top: 10px; }
+
+.kupon-ajanlat {
+  margin: 10px 0 0;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--slate-soft);
+}
+.kupon-ajanlat a { color: var(--ochre); }
+
+/* ---------- ajándékutalvány oldal ---------- */
+.utalvany-oldal { padding: 56px 0 80px; }
+.utalvany-oldal .wrap { max-width: 640px; }
+.utalvany-oldal h1 {
+  font-size: clamp(27px, 3.6vw, 40px);
+  line-height: 1.2;
+  margin: 6px 0 12px;
+  color: var(--slate);
+}
+.utalvany-oldal .lead { margin-bottom: 30px; }
+
+.utalvany-kartya {
+  border: 2px solid var(--ochre);
+  padding: 24px 26px;
+  margin-bottom: 30px;
+  background: #fff;
+}
+.utalvany-ar {
+  font-family: var(--sans);
+  font-size: 34px;
+  color: var(--ochre);
+  margin-bottom: 14px;
+}
+.utalvany-lista { margin: 0; padding-left: 18px; font-size: 15px; line-height: 1.85; }
+.utalvany-lista li { margin-bottom: 2px; }
+.utalvany-lista li::marker { color: var(--ochre-light); }
+
+.utalvany-urlap .row { display: flex; gap: 16px; flex-wrap: wrap; }
+.utalvany-urlap .field { flex: 1; min-width: 200px; margin-bottom: 14px; }
+.utalvany-urlap .btn { width: 100%; justify-content: center; margin-top: 8px; }
+
+.utalvany-kapcsolat {
+  margin: 16px 0 0;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--slate-soft);
+  text-align: center;
+}
+.utalvany-kapcsolat a { color: var(--ochre); text-decoration: none; }
+
+/* Az utalványsáv a futó akció sávjának testvére, de megkülönböztetjük:
+   ez nem automatikus kedvezmény, hanem megvásárolható termék. */
+.utalvany-sav {
+  background: var(--slate);
+  border-top: 1px solid rgba(254, 252, 245, .14);
+  border-bottom: 1px solid rgba(254, 252, 245, .14);
+}
+.utalvany-sav .akcio-sav-szoveg strong { color: var(--ochre-light); }
+.utalvany-sav .akcio-sav-szoveg span { color: rgba(254, 252, 245, .78); }

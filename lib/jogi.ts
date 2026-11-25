@@ -90,8 +90,20 @@ export function aszf(nyelv: Nyelv): JogiOldal {
           szoveg: [
             'Our service is accommodation, so there is no shipping: the service is provided on the dates booked, on site.',
             'The booking is processed and the confirmation email sent immediately and automatically after successful payment — within 24 hours at the latest.',
-            'Extras priced on request (e.g. massage, activities) are confirmed within 2 working days.',
+            'Extra services priced on request are confirmed within 2 working days.',
             'If no confirmation arrives within 24 hours, you are released from the booking; please contact us on the phone number above.',
+          ],
+        },
+        {
+          cim: '2.3. Gift vouchers',
+          szoveg: [
+            'Gift vouchers can also be bought on our website. A voucher covers three nights of accommodation for two people, to the value of 98,000 HUF.',
+            'The purchase is complete once the payment has arrived. The unique redemption code is then sent to the email address given at purchase, immediately and within 24 hours at the latest.',
+            'The voucher can be redeemed until 20 December 2027; the arrival date cannot be later than this. Redemption is subject to availability, on dates agreed in advance and confirmed by email.',
+            'The voucher applies to weekday nights. A weekend surcharge of 12,000 HUF per night applies to Friday and Saturday nights. Extra services and tourist tax are payable in addition to the value of the voucher.',
+            'The code can be redeemed once and is freely transferable: the buyer may redeem it or pass it on. Vouchers cannot be exchanged for cash and cannot be redeemed in part.',
+            'Vouchers are not issued to a named person. We cannot accept liability for a code that is lost or falls into the wrong hands; redemption is made to the bearer of the code.',
+            'Under Government Decree 45/2014 (II. 26.) the purchase of a voucher is a contract for leisure services with no fixed date, to which the 14-day right of withdrawal does not apply. Unused vouchers cannot be refunded after expiry.',
           ],
         },
         {
@@ -208,8 +220,20 @@ export function aszf(nyelv: Nyelv): JogiOldal {
         szoveg: [
           'Szolgáltatásunk szállás, ezért nincs kiszállítás: a teljesítés a foglalásban megjelölt időpontban, a helyszínen történik.',
           'A foglalás feldolgozása és a visszaigazoló e-mail kiküldése a sikeres fizetést követően azonnal, automatikusan megtörténik — legkésőbb 24 órán belül.',
-          'Az e-mailben kért, egyedi árazású extrákat (pl. masszázs, programok) 2 munkanapon belül visszaigazoljuk.',
+          'Az e-mailben kért, egyedi árazású extra szolgáltatásokat 2 munkanapon belül visszaigazoljuk.',
           'Ha a visszaigazolás 24 órán belül nem érkezik meg, a foglalási kötelezettség alól mentesülsz; ilyen esetben kérjük, keress minket a fenti telefonszámon.',
+        ],
+      },
+      {
+        cim: '2.3. Ajándékutalvány',
+        szoveg: [
+          'Weboldalunkon ajándékutalvány is vásárolható. Az utalvány három éjszaka szállást fedez két fő részére, 98 000 Ft értékben; az ár a választott faházra vonatkozik.',
+          'A vásárlás a fizetés beérkezésével válik véglegessé. Ezt követően a beváltáshoz szükséges egyedi kódot haladéktalanul, de legkésőbb 24 órán belül elküldjük a vásárláskor megadott e-mail címre.',
+          'Az utalvány 2027. december 20-ig váltható be; az érkezés napja nem lehet ennél későbbi. Beváltás a szabad helyek függvényében, előzetesen egyeztetett időpontban lehetséges, e-mailes visszaigazolással.',
+          'Az utalvány hétköznapi éjszakákra szól. Pénteki és szombati éjszakára hétvégi felár fizetendő, éjszakánként 12 000 Ft. Az extra szolgáltatások és az idegenforgalmi adó az utalvány értékén felül értendők.',
+          'A kód egyszer váltható be, és szabadon átruházható: a vásárló beválthatja maga, vagy továbbadhatja másnak. Az utalvány készpénzre nem váltható, és részben nem használható fel.',
+          'Az utalvány nem névre szól. Az elveszett vagy illetéktelen kézbe került kódért felelősséget nem tudunk vállalni; a beváltás a kód bemutatójának történik.',
+          'A 45/2014. (II. 26.) Korm. rendelet alapján az utalvány megvásárlása szabadidős szolgáltatásra szóló, határnapra nem rögzített szerződés, amelyre a 14 napos elállási jog nem terjed ki. Fel nem használt utalvány lejárat utáni visszatérítésére nincs mód.',
         ],
       },
       {
@@ -552,7 +576,7 @@ export function hazirend(nyelv: Nyelv): JogiOldal {
       {
         cim: 'A jakuzzi — alapvető szabályok',
         szoveg: [
-          'A kültéri jakuzzit mindenki saját felelősségére, egészségi állapota tudatában veheti igénybe. A medencében egyszerre 2 fő tartózkodhat.',
+          'A kültéri jakuzzit mindenki saját felelősségére, egészségi állapota tudatában veheti igénybe. A medencében két fekvő- és két ülőhely van, egyszerre 4 fő tartózkodhat benne.',
           'A jakuzzi lazításra és masszázsra való, tisztálkodásra kérjük ne használd. Használat előtt mindig zuhanyozz le, és mosd le a krémeket, testápolót, sminket — ezek erősen habzó vizet okoznak és rontják a víz minőségét.',
           'Izzadtan (napozás, sportolás után) ne menj be a vízbe. Idegen anyagot — szappant, tusfürdőt — bevinni tilos. Ételt és italt kérjük ne vigyél a jakuzziba.',
           'Gyertyát, mécsest a jakuzzi peremére helyezni tilos. Elektromos eszközt ne használj a vízben, mert áramütést okozhat. Viharban ne tartózkodj a vízben.',
@@ -566,6 +590,7 @@ export function hazirend(nyelv: Nyelv): JogiOldal {
           'A kijelzőn az aktuális hőmérséklet látható, a fel-le nyilakkal állítható, fél fokonként. Amíg a hőmérséklet villog, más gombhoz ne nyúlj, mert elállítódhat a program.',
           'Az alapbeállítás hideg időben 37, nyáron 34 fok. Kérjük, ne állítsd 38 fok fölé: a hosszas fürdőzés ennél melegebb vízben árthat az egészségnek.',
           'A masszázsprogram 15 percig megy, majd leáll — a JET gombbal újraindítható. A peremen lévő szürke gomb eltekerésével oxigénnel dúsítható a víz. A LIGHT gomb a fényterápiát kapcsolja (epilepszia vagy fényérzékenység esetén hagyd kikapcsolva), a FLIP a kijelző irányát fordítja.',
+          'A MENÜ gombhoz kérjük, NE nyúlj. Azon a medence alapbeállításai érhetők el — ha ezek elállítódnak, a víz hőfoka és tisztítási programja is felborul, és csak mi tudjuk visszaállítani.',
           'A jakuzzi időnként magától vizet forgat és tisztít: ilyenkor egyes fúvókák működnek, és ózonbuborékok jönnek fel. Ez normális, kikapcsolni nem lehet. Ugyanígy a fűtés közbeni vízforgatás is.',
           'Ha valami beleesik a vízbe, a reggeli szekrényke oldalában találsz hálót.',
         ],

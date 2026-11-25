@@ -3,6 +3,7 @@ import { supabaseAdmin } from '@/lib/supabase';
 import { arajanlat, foglalasHibai } from '@/lib/pricing';
 import type { Haz, Arazas, Extra } from '@/lib/pricing';
 import { szabad } from '@/lib/availability';
+import { kuponBetoltese, normalizalKod } from '@/lib/kupon';
 
 /**
  * Árelőnézet a foglalóűrlaphoz.
@@ -23,6 +24,7 @@ export async function POST(req: NextRequest) {
     tavozas?: string;
     fo?: number;
     extrak?: string[]; // slug-ok
+    kupon_kod?: string;
   };
 
   try {
@@ -70,6 +72,11 @@ export async function POST(req: NextRequest) {
 
   const akciok = await akciokBetoltese(db);
 
+  // A kupon itt csak az ÁR MEGMUTATÁSÁHOZ kell. Lefoglalni nem
+  // foglaljuk — azt a foglalás mentése teszi, egyetlen lépésben.
+  const kuponKod = k.kupon_kod ? normalizalKod(k.kupon_kod) : '';
+  const kupon = kuponKod ? await kuponBetoltese(db, kuponKod) : null;
+
   const ajanlat = arajanlat({
     haz: haz as Haz,
     erkezes: k.erkezes,
@@ -78,6 +85,7 @@ export async function POST(req: NextRequest) {
     extrak: extrakLista,
     valasztott_extrak: valasztott,
     akciok,
+    kupon,
   });
 
   const hibak = foglalasHibai({
@@ -105,6 +113,10 @@ export async function POST(req: NextRequest) {
     szallasdij: ajanlat.szallasdij,
     hetvegi_felar: ajanlat.hetvegi_felar,
     akcio: ajanlat.akcio,
+    kupon: ajanlat.kupon,
+    kupon_hiba: ajanlat.kupon_hiba,
+    // Megkülönböztetjük: nincs megadva kód / van, de nem fogadtuk el.
+    kupon_ismeretlen: Boolean(kuponKod) && !kupon,
     extrak_dij: ajanlat.extrak_dij,
     vegosszeg: ajanlat.vegosszeg,
     min_ejszaka: ajanlat.min_ejszaka,

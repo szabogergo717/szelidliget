@@ -169,13 +169,13 @@ export const T = {
 
   szolgKiemeltCim: S('Kiemelt szolgáltatások', 'Highlights'),
   szolgKiemelt: S(
-    'Privát jakuzzi|Ajándék pezsgő|Gourmet reggeli kosár (opcionális)|WiFi|Full HD Smart TV|Netflix|Bicikli bérlési lehetőség|Kávé és tea fogyasztás|Szappan, tusfürdő',
-    'Private hot tub|Complimentary sparkling wine|Gourmet breakfast basket (optional)|WiFi|Full HD Smart TV|Netflix|Bicycle rental available|Coffee and tea included|Soap and shower gel'
+    'Privát jakuzzi|Ajándék pezsgő|Gourmet reggeli kosár (opcionális)|Ingyenes WiFi|Full HD Smart TV|Netflix|Sweet TV|Bicikli bérlési lehetőség|Kávé és tea fogyasztás|Szappan, tusfürdő',
+    'Private hot tub|Complimentary sparkling wine|Gourmet breakfast basket (optional)|Free WiFi|Full HD Smart TV|Netflix|Sweet TV|Bicycle rental available|Coffee and tea included|Soap and shower gel'
   ),
   szolgLakterCim: S('Lakótér', 'Living space'),
   szolgLakter: S(
-    'Franciaágy 160×200 cm|Légkondicionáló|Kerti pihenő|Hajszárító|Ágynemű, törülközők és fürdőköntös',
-    'Double bed 160×200 cm|Air conditioning|Garden seating|Hairdryer|Bed linen, towels and bathrobes'
+    'Franciaágy 160×200 cm|Légkondicionáló|Kerti pihenő|Parkolás: fedett beálló kerten belül|Hajszárító|Ágynemű, törülközők és fürdőköntös',
+    'Double bed 160×200 cm|Air conditioning|Garden seating|Parking: covered carport inside the garden|Hairdryer|Bed linen, towels and bathrobes'
   ),
   szolgBiztositunkCim: S('Amit biztosítunk neked', 'Included for you'),
   szolgBiztositunk: S(
@@ -234,9 +234,63 @@ export const T = {
     'We are happy to quote these in advance — call us or send an email:'
   ),
   extraKerdes: S(
-    'Kérdésed van az extrákról? Hívj minket:',
-    'Questions about the extras? Call us:'
+    'Kérdésed van az extrákról? (Torta, csokoládé, virág és egyéb plusz kívánságok telefonon egyeztetve lehetségesek.) Hívj minket:',
+    'Questions about the extras? (Cake, chocolate, flowers and other special requests can be arranged by phone.) Call us:'
   ),
+  // ---------- kuponkód és ajándékutalvány ----------
+  kuponCim: S('Kuponkód vagy ajándékutalvány', 'Coupon or gift voucher'),
+  kuponHely: S('SZL-XXXX-XXXX', 'SZL-XXXX-XXXX'),
+  kuponBevalt: S('Beváltás', 'Apply'),
+  kuponTorles: S('Törlés', 'Remove'),
+  kuponRendben: S('A kódot elfogadtuk. Kedvezmény:', 'Code accepted. Discount:'),
+  kuponErvenytelen: S(
+    'Ez a kód nem érvényes, vagy már beváltották.',
+    'This code is not valid, or it has already been used.'
+  ),
+  kuponLejart: S(
+    'A kód az érkezés napjára már lejárt.',
+    'The code has expired for the arrival date.'
+  ),
+  kuponEjszakak: S(
+    'Ez a kód más éjszakaszámra szól. Módosítsd a dátumokat, vagy vedd ki a kódot.',
+    'This code is for a different number of nights. Adjust the dates, or remove the code.'
+  ),
+  kuponMindentFedez: S(
+    'A kupon a teljes összeget fedezi — nincs mit fizetned. A foglalás a küldés után azonnal véglegessé válik.',
+    'The coupon covers the full amount — there is nothing to pay. The booking is confirmed as soon as you submit it.'
+  ),
+  kuponNincs: S('Nincs kódod?', 'No code yet?'),
+  kuponVasarlas: S('Ajándékutalvány vásárlása', 'Buy a gift voucher'),
+
+  utalvanySavCim: S(
+    'Nyitási ajándékutalvány — 3 éjszaka a 2 áráért',
+    'Opening gift voucher — 3 nights for the price of 2'
+  ),
+  utalvanySavSzoveg: S(
+    '98 000 Ft, két főnek, 2027. december 20-ig felhasználható. A kódot vásárlás után e-mailben küldjük — magadnak is megtarthatod, és ajándékba is adhatod.',
+    '98,000 HUF for two people, valid until 20 December 2027. We email the code right after purchase — keep it for yourself or give it as a gift.'
+  ),
+  utalvanySavGomb: S('Megnézem', 'See the voucher'),
+
+  // ---------- utalványvásárlás oldal ----------
+  utalvanyCimke: S('AJÁNDÉKUTALVÁNY', 'GIFT VOUCHER'),
+  utalvanyCim: S('Nyitási ajándékutalvány', 'Opening gift voucher'),
+  utalvanyAlcim: S(
+    'Három éjszaka a kettő áráért, két főnek',
+    'Three nights for the price of two, for two people'
+  ),
+  utalvanyGomb: S('Megveszem', 'Buy now'),
+  utalvanyNev: S('Vásárló neve', 'Your name'),
+  utalvanyEmail: S('E-mail cím (ide küldjük az utalványt)', 'Email (we send the voucher here)'),
+  utalvanyTelefon: S('Telefonszám', 'Phone number'),
+  utalvanyAjandekozott: S('Kinek ajándékozod? (nem kötelező)', 'Who is it for? (optional)'),
+  utalvanyUzenet: S('Üzenet az ajándékhoz (nem kötelező)', 'Message with the gift (optional)'),
+  utalvanySikerCim: S('Köszönjük a vásárlást!', 'Thank you for your purchase'),
+  utalvanySikerSzoveg: S(
+    'Az ajándékutalványt a megadott e-mail címre küldjük, a benne lévő kóddal együtt. Ha pár percen belül nem érkezik meg, nézd meg a levélszemét mappát is.',
+    'We are sending the gift voucher, with its code, to the email address you gave. If it does not arrive within a few minutes, please check your spam folder.'
+  ),
+
   gombHivas: S('Hívás', 'Call'),
   gombEmail: S('E-mail írása', 'Send an email'),
 

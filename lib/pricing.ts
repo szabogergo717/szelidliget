@@ -75,6 +75,27 @@ export type Akcio = {
   nev?: string;
 };
 
+/**
+ * Beváltható kuponkód.
+ *
+ * Kétféle lehet, és pontosan az egyik van kitöltve:
+ *  - CSOMAG (`csomag_ar` + `ejszakak`): az ajándékutalvány ilyen.
+ *    Pontosan annyi éjszakára fix szállásdíjat ad. A HÉTVÉGI FELÁR
+ *    ezen FELÜL fizetendő — ez szándékos, így szól az ajánlat.
+ *  - KEDVEZMÉNY (`kedvezmeny_ft`): egyszerű forintos levonás.
+ */
+export type Kupon = {
+  kod: string;
+  ejszakak?: number | null;
+  csomag_ar?: number | null;
+  kedvezmeny_ft?: number | null;
+  /** 'YYYY-MM-DD'. Az ÉRKEZÉS napja nem lehet ennél későbbi. */
+  ervenyes_ig: string;
+};
+
+/** Miért nem váltható be a kód. A felület ezt fordítja mondattá. */
+export type KuponHiba = 'lejart' | 'ejszakak' | 'nem_kedvezobb';
+
 export type Arajanlat = {
   ejszakak: number;
   naponta: ArTetel[];
@@ -83,6 +104,9 @@ export type Arajanlat = {
   hetvegi_felar: number;
   /** Az érvényesült akció, ha volt ilyen. */
   akcio: { slug: string; nev?: string; megtakaritas: number } | null;
+  /** A beváltott kupon, ha volt. A `hiba` mondja meg, miért nem érvényesült. */
+  kupon: { kod: string; megtakaritas: number } | null;
+  kupon_hiba: KuponHiba | null;
   extrak_dij: number;
   extra_tetelek: { extra_id: string; slug: string; mennyiseg: number; egysegar: number; osszeg: number }[];
   vegosszeg: number;
@@ -227,6 +251,38 @@ export function ervenyesAkcio(params: {
 }
 
 /**
+ * Beváltható-e ez a kupon erre a foglalásra.
+ *
+ * A kód LÉTEZÉSÉT és azt, hogy nem használták-e már el, az adatbázis
+ * dönti el — ide már csak egy megtalált, szabad kupon kerül. Itt csak
+ * azt nézzük, illik-e a foglaláshoz.
+ *
+ * Visszatérés: `null`, ha rendben, különben a hiba oka.
+ */
+export function kuponHibaja(params: {
+  kupon: Kupon;
+  erkezes: string;
+  ejszakak: number;
+  /** A szállásdíj hétvégi felár NÉLKÜL. */
+  alapSzallasdij: number;
+}): KuponHiba | null {
+  const { kupon, erkezes, ejszakak, alapSzallasdij } = params;
+
+  // Az érkezés napjáig kell érvényesnek lennie, nem a foglalásig.
+  if (erkezes > kupon.ervenyes_ig) return 'lejart';
+
+  if (kupon.csomag_ar != null) {
+    if (kupon.ejszakak != null && kupon.ejszakak !== ejszakak) return 'ejszakak';
+    // Egy rosszul kiadott kupon soha ne drágítson.
+    if (kupon.csomag_ar >= alapSzallasdij) return 'nem_kedvezobb';
+    return null;
+  }
+
+  if (kupon.kedvezmeny_ft != null && kupon.kedvezmeny_ft > 0) return null;
+  return 'nem_kedvezobb';
+}
+
+/**
  * Teljes árajánlat. Ezt hívja a foglalás API és az ár-előnézet is,
  * hogy a vendég pontosan azt az összeget lássa, amit fizetni fog.
  */
@@ -239,6 +295,8 @@ export function arajanlat(params: {
   valasztott_extrak: ExtraValasztas[];
   /** Teljes tartózkodásra szóló akciók. Üres lista = nincs akció. */
   akciok?: Akcio[];
+  /** Beváltandó kupon, ha a vendég megadott egyet. */
+  kupon?: Kupon | null;
 }): Arajanlat {
   const { haz, erkezes, tavozas, arazasok, extrak, valasztott_extrak } = params;
   const akciok = params.akciok ?? [];
@@ -281,6 +339,40 @@ export function arajanlat(params: {
     hetvegi_felar = 0;
   }
 
+  /**
+   * Kupon. Az akció UTÁN jön, és felülírja: ha valaki kódot vált be,
+   * az a mérvadó. A gyakorlatban a kettő nem találkozik, mert az
+   * automatikus akció ki van kapcsolva.
+   *
+   * A csomagkupon (ajándékutalvány) a szállásdíj ALAPJÁT váltja ki,
+   * a hétvégi felár marad fizetendő — így szól az ajánlat.
+   */
+  let kupon: Arajanlat['kupon'] = null;
+  let kupon_hiba: KuponHiba | null = null;
+
+  if (params.kupon) {
+    const alapSzallasdij = szallasdij - hetvegi_felar;
+    kupon_hiba = kuponHibaja({
+      kupon: params.kupon, erkezes, ejszakak, alapSzallasdij,
+    });
+
+    if (!kupon_hiba) {
+      const k = params.kupon;
+      if (k.csomag_ar != null) {
+        const ujSzallasdij = k.csomag_ar + hetvegi_felar;
+        kupon = { kod: k.kod, megtakaritas: szallasdij - ujSzallasdij };
+        szallasdij = ujSzallasdij;
+      } else if (k.kedvezmeny_ft != null) {
+        // A kedvezmény nem viheti nulla alá a szállásdíjat.
+        const levonas = Math.min(k.kedvezmeny_ft, szallasdij);
+        kupon = { kod: k.kod, megtakaritas: levonas };
+        szallasdij -= levonas;
+      }
+      // A kupon kiváltja az akciót — ne mutassuk mindkettőt.
+      if (kupon) akcio = null;
+    }
+  }
+
   const extraMap = new Map(extrak.map((e) => [e.id, e]));
   const extra_tetelek: Arajanlat['extra_tetelek'] = [];
   let extrak_dij = 0;
@@ -307,6 +399,8 @@ export function arajanlat(params: {
     szallasdij,
     hetvegi_felar,
     akcio,
+    kupon,
+    kupon_hiba,
     extrak_dij,
     extra_tetelek,
     vegosszeg: szallasdij + extrak_dij,

@@ -1,7 +1,9 @@
 import { NextRequest } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import { fizetesAllapota, statuszbolFoglalas } from '@/lib/barion';
-import { visszaigazoloEmail, adminErtesito } from '@/lib/email';
+import { visszaigazoloEmail, adminErtesito, utalvanyEmail } from '@/lib/email';
+import { kuponKiadasa } from '@/lib/kupon';
+import { UTALVANY } from '@/lib/utalvany';
 
 /**
  * Barion visszahívás (szerver-szerver értesítés).
@@ -69,7 +71,17 @@ async function feldolgozas(paymentId: string | null) {
   }
 
   try {
-    await foglalastFrissit(paymentId, allapot);
+    /**
+     * Kétféle fizetés érkezhet ide: foglalás és ajándékutalvány.
+     * A megrendelésszám előtagja mondja meg, melyik — a foglalásé
+     * „SZL-", az utalványé „UTA-". Ezért kell egyedi azonosítót
+     * küldeni a Barionnak indításkor.
+     */
+    if (allapot.orderRef?.startsWith('UTA-')) {
+      await utalvanytFrissit(paymentId, allapot);
+    } else {
+      await foglalastFrissit(paymentId, allapot);
+    }
   } catch (e) {
     // A pénz beérkezhetett, de nálunk hiba volt. Naplózzuk, és 500-at
     // adunk, hogy a Barion ismételjen — a feldolgozás idempotens.
@@ -141,5 +153,82 @@ async function foglalastFrissit(
 
     // TODO: Számlázz.hu számlakiállítás — szándékosan külön lépés,
     // hogy egy számlázási hiba ne akadályozza a foglalás lezárását.
+  }
+}
+
+/**
+ * Ajándékutalvány-vásárlás lezárása.
+ *
+ * A KÓD ITT SZÜLETIK MEG, és csak sikeres fizetés után. Ez a
+ * legfontosabb szabály: egy elindított, de ki nem fizetett vásárlás
+ * soha nem adhat érvényes kódot.
+ *
+ * Idempotens: a Barion ismételheti az értesítést, ezért ha a vásárlás
+ * már ki van fizetve, nem adunk ki második kódot és nem küldünk
+ * második levelet.
+ */
+async function utalvanytFrissit(
+  paymentId: string,
+  allapot: { status: string; orderRef: string | null; nyers: Record<string, unknown> }
+) {
+  const db = supabaseAdmin();
+  const ujStatusz = statuszbolFoglalas(allapot.status);
+
+  if (ujStatusz === 'fuggoben') {
+    console.log('[barion] utalvány köztes állapot, kihagyva:', allapot.status, paymentId);
+    return;
+  }
+
+  const { data: vasarlas, error } = await db
+    .from('utalvany_vasarlasok')
+    .select('id, azonosito, nev, email, statusz')
+    .eq('azonosito', allapot.orderRef)
+    .maybeSingle();
+
+  if (error) throw new Error(`Utalványvásárlás lekérdezése: ${error.message}`);
+  if (!vasarlas) throw new Error(`Ismeretlen utalvány-azonosító: ${allapot.orderRef}`);
+
+  if (vasarlas.statusz === 'kifizetve' && ujStatusz === 'kifizetve') {
+    console.log('[barion] ismételt utalvány-értesítés, kihagyva:', allapot.orderRef);
+    return;
+  }
+
+  await db
+    .from('utalvany_vasarlasok')
+    .update({
+      statusz: ujStatusz === 'kifizetve' ? 'kifizetve' : 'lemondva',
+      barion_id: paymentId,
+      modositva: new Date().toISOString(),
+    })
+    .eq('id', vasarlas.id);
+
+  if (ujStatusz !== 'kifizetve') return;
+
+  // Kódkiadás. Ha már van kód ehhez a vásárláshoz (ismételt értesítés
+  // egy félbemaradt feldolgozás után), nem adunk ki újat.
+  const { data: meglevo } = await db
+    .from('kuponok')
+    .select('kod')
+    .eq('vasarlas_id', vasarlas.id)
+    .maybeSingle();
+
+  if (!meglevo) {
+    await kuponKiadasa(db, {
+      ejszakak: UTALVANY.ejszakak,
+      csomag_ar: UTALVANY.ar,
+      ervenyes_ig: UTALVANY.ervenyes_ig,
+      vasarlas_id: vasarlas.id as string,
+      kiadva_nev: vasarlas.nev as string,
+      kiadva_email: vasarlas.email as string,
+      megjegyzes: `Vásárlás: ${vasarlas.azonosito}`,
+    });
+  }
+
+  try {
+    await utalvanyEmail(vasarlas.id as string);
+  } catch (e) {
+    // A kód megvan és eltároltuk; ha a levél nem ment ki, az admin
+    // felületen kiolvasható és kézzel elküldhető.
+    console.error('[barion] utalvány e-mail nem ment ki:', e);
   }
 }

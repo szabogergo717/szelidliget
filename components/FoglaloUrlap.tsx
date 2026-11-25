@@ -36,6 +36,9 @@ type Arvalasz = {
   szallasdij: number;
   hetvegi_felar?: number;
   akcio?: { slug: string; nev?: string; megtakaritas: number } | null;
+  kupon?: { kod: string; megtakaritas: number } | null;
+  kupon_hiba?: 'lejart' | 'ejszakak' | 'nem_kedvezobb' | null;
+  kupon_ismeretlen?: boolean;
   extrak_dij: number;
   vegosszeg: number;
   min_ejszaka: number;
@@ -121,6 +124,13 @@ export default function FoglaloUrlap({
   const [szlaAdoszam, setSzlaAdoszam] = useState('');
 
   const [fizetesiMod, setFizetesiMod] = useState<FizetesiMod>('kartya');
+  /**
+   * Kuponkód. A `kuponKod` az, amit a vendég ÉPPEN gépel; a
+   * `bevaltottKod` az, amit már elküldtünk az árszámításnak. A kettő
+   * azért külön, hogy ne induljon új árlekérés minden leütésre.
+   */
+  const [kuponKod, setKuponKod] = useState('');
+  const [bevaltottKod, setBevaltottKod] = useState('');
   const [aszf, setAszf] = useState(false);
   const [hirlevel, setHirlevel] = useState(false);
   const [kuldes, setKuldes] = useState(false);
@@ -148,6 +158,7 @@ export default function FoglaloUrlap({
           tavozas,
           fo,
           extrak: valasztottExtrak,
+          kupon_kod: bevaltottKod || undefined,
         }),
       });
       const adat = await v.json();
@@ -157,7 +168,7 @@ export default function FoglaloUrlap({
     } finally {
       if (sajatSorszam === keresSorszam.current) setTolt(false);
     }
-  }, [hazSlug, erkezes, tavozas, fo, valasztottExtrak]);
+  }, [hazSlug, erkezes, tavozas, fo, valasztottExtrak, bevaltottKod]);
 
   useEffect(() => {
     const id = setTimeout(arLekerdez, 300);
@@ -235,6 +246,7 @@ export default function FoglaloUrlap({
           hirlevel,
           /** Az elfogadás tényét rögzítjük — jogvita esetén ez a bizonyíték. */
           aszf_elfogadva: aszf,
+          kupon_kod: bevaltottKod || undefined,
         }),
       });
       const adat = await v.json();
@@ -532,7 +544,79 @@ export default function FoglaloUrlap({
           </div>
         </div>
 
+        {/* ---------- Kuponkód ---------- */}
+        {/* Az ajándékutalvány kódja ide kerül. A beváltás szerveroldalon
+            történik — amit itt látsz, az csak az ár előnézete. */}
+        <div className="extras-title" style={{ marginTop: 26 }}>
+          {T.kuponCim[nyelv].toUpperCase()}
+        </div>
+        <div className="kupon-sor">
+          <input
+            type="text"
+            className="kupon-mezo"
+            placeholder={T.kuponHely[nyelv]}
+            value={kuponKod}
+            autoComplete="off"
+            spellCheck={false}
+            onChange={(e) => setKuponKod(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                setBevaltottKod(kuponKod.trim());
+              }
+            }}
+          />
+          {bevaltottKod ? (
+            <button
+              type="button"
+              className="btn small ghost"
+              onClick={() => { setKuponKod(''); setBevaltottKod(''); }}
+            >
+              {T.kuponTorles[nyelv]}
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn small"
+              disabled={!kuponKod.trim()}
+              onClick={() => setBevaltottKod(kuponKod.trim())}
+            >
+              {T.kuponBevalt[nyelv]}
+            </button>
+          )}
+        </div>
+
+        {bevaltottKod && ar?.kupon && (
+          <div className="notice ok kupon-uzenet">
+            {T.kuponRendben[nyelv]} −{ft(ar.kupon.megtakaritas, nyelv)}
+          </div>
+        )}
+        {bevaltottKod && !ar?.kupon && ar && (
+          <div className="notice warn kupon-uzenet">
+            {ar.kupon_hiba === 'ejszakak'
+              ? T.kuponEjszakak[nyelv]
+              : ar.kupon_hiba === 'lejart'
+                ? T.kuponLejart[nyelv]
+                : T.kuponErvenytelen[nyelv]}
+          </div>
+        )}
+
+        <p className="kupon-ajanlat">
+          {T.kuponNincs[nyelv]}{' '}
+          <a href={nyelv === 'hu' ? '/utalvany' : '/en/utalvany'}>
+            {T.kuponVasarlas[nyelv]}
+          </a>
+        </p>
+
         {/* ---------- Fizetési mód ---------- */}
+        {/* Ha a kupon mindent fedez, nincs mit fizetni — ilyenkor a
+            fizetési mód választása értelmetlen, ezért elrejtjük. */}
+        {ar?.vegosszeg === 0 && ar?.kupon ? (
+          <div className="notice ok" style={{ marginTop: 20 }}>
+            {T.kuponMindentFedez[nyelv]}
+          </div>
+        ) : (
+        <>
         <div className="extras-title" style={{ marginTop: 26 }}>
           {T.fizetesCim[nyelv].toUpperCase()}
         </div>
@@ -563,6 +647,8 @@ export default function FoglaloUrlap({
 
         {/* A Barion jelvénye ott, ahol a fizetési módot választják. */}
         {fizetesiMod === 'kartya' && <BarionJelveny nyelv={nyelv} helye="urlap" />}
+        </>
+        )}
 
         {/* Jogszabály szerint a vásárlás előfeltétele. A gomb addig
             nem él, amíg nincs bepipálva. */}

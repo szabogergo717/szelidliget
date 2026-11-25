@@ -248,6 +248,7 @@ alter table fizetesek            enable row level security;
 alter table szamlak              enable row level security;
 alter table email_naplo          enable row level security;
 alter table blokkolt_idoszakok   enable row level security;
+alter table foglalas_extrak      enable row level security;
 
 -- Publikusan olvasható: a házak és az áraik
 drop policy if exists "hazak publikus" on hazak;

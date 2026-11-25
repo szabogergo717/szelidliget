@@ -4,8 +4,12 @@ import { arajanlat, foglalasHibai, foglalasAzonosito } from '@/lib/pricing';
 import type { Haz, Arazas, Extra } from '@/lib/pricing';
 import { szabad } from '@/lib/availability';
 import { fizetestIndit } from '@/lib/barion';
-import { utalasiEmail, adminErtesito } from '@/lib/email';
+import { utalasiEmail, adminErtesito, visszaigazoloEmail } from '@/lib/email';
 import { ASZF_VERZIO } from '@/lib/jogi';
+import {
+  kuponBetoltese, kuponLefoglalasa, kuponFelszabaditasa, kuponFoglalashozKotese,
+  normalizalKod,
+} from '@/lib/kupon';
 
 /**
  * Foglalás létrehozása és fizetés indítása.
@@ -46,6 +50,8 @@ type Keres = {
   aszf_elfogadva?: boolean;
   /** 'kartya' = Barion, 'utalas' = banki átutalás. */
   fizetesi_mod?: 'kartya' | 'utalas';
+  /** Beváltandó kuponkód (ajándékutalvány vagy kedvezmény). */
+  kupon_kod?: string;
 };
 
 export async function POST(req: NextRequest) {
@@ -131,6 +137,19 @@ export async function POST(req: NextRequest) {
   const valasztottExtrak =
     slugbolValasztott.length > 0 ? slugbolValasztott : k.extrak ?? [];
 
+  // ---------- Kupon ----------
+  // A kódot CSAK itt ellenőrizzük. A böngészőben látott kedvezmény
+  // tájékoztató jellegű — a fizetendőt ez a számítás dönti el.
+  const kuponKod = k.kupon_kod ? normalizalKod(k.kupon_kod) : '';
+  const kuponSor = kuponKod ? await kuponBetoltese(db, kuponKod) : null;
+
+  if (kuponKod && !kuponSor) {
+    return NextResponse.json(
+      { hiba: 'Ez a kuponkód nem érvényes, vagy már beváltották.' },
+      { status: 400 }
+    );
+  }
+
   // ---------- Ár újraszámítása szerveroldalon ----------
   const akciok = await akciokBetoltese(db);
 
@@ -142,7 +161,23 @@ export async function POST(req: NextRequest) {
     extrak: extrakLista,
     valasztott_extrak: valasztottExtrak,
     akciok,
+    kupon: kuponSor,
   });
+
+  // A kód létezik, de nem illik a foglaláshoz. Ezt meg kell mondani,
+  // különben a vendég azt hinné, érvényesült a kedvezmény.
+  if (kuponSor && ajanlat.kupon_hiba) {
+    const uzenet: Record<string, string> = {
+      lejart: 'A kuponkód az érkezés napjára már lejárt.',
+      ejszakak:
+        `Ez a kuponkód pontosan ${kuponSor.ejszakak} éjszakás foglalásra váltható be.`,
+      nem_kedvezobb: 'Erre a foglalásra a kuponkód nem ad kedvezményt.',
+    };
+    return NextResponse.json(
+      { hiba: uzenet[ajanlat.kupon_hiba] ?? 'A kuponkód nem váltható be.' },
+      { status: 400 }
+    );
+  }
 
   const hibak = foglalasHibai({
     haz: haz as Haz,
@@ -166,7 +201,32 @@ export async function POST(req: NextRequest) {
   }
 
   const vendegNyelv = k.vendeg.nyelv === 'en' ? 'en' : 'hu';
-  const fizetesiMod = k.fizetesi_mod === 'utalas' ? 'utalas' : 'kartya';
+
+  /**
+   * A kupon lefoglalása MÉG A FOGLALÁS MENTÉSE ELŐTT.
+   *
+   * Miért így: ha előbb mentenénk a foglalást, két egyszerre érkező
+   * vendég ugyanazzal a kóddal mindkettő átmenne, és csak utána derülne
+   * ki a baj — akkor viszont már pénzt kértünk valakitől. Így a kód a
+   * szűk keresztmetszet: aki másodikként ér ide, elutasítást kap,
+   * mielőtt bármi történne.
+   *
+   * Ha a foglalás mentése később mégis elbukik, a kódot visszaadjuk.
+   */
+  if (kuponSor && !(await kuponLefoglalasa(db, kuponKod))) {
+    return NextResponse.json(
+      { hiba: 'Ezt a kuponkódot az imént váltották be. Kérjük, ellenőrizd a kódot.' },
+      { status: 409 }
+    );
+  }
+
+  /** Teljesen kifizetve a kuponnal? Ilyenkor nincs mit fizetni. */
+  const nincsFizetendo = ajanlat.vegosszeg === 0;
+  const fizetesiMod = nincsFizetendo
+    ? 'kupon'
+    : k.fizetesi_mod === 'utalas'
+      ? 'utalas'
+      : 'kartya';
 
   // ---------- Vendég ----------
   const { data: vendeg, error: vendegHiba } = await db
@@ -188,6 +248,7 @@ export async function POST(req: NextRequest) {
 
   if (vendegHiba || !vendeg) {
     console.error('[foglalas] vendég mentése:', vendegHiba);
+    if (kuponSor) await kuponFelszabaditasa(db, kuponKod);
     return NextResponse.json({ hiba: 'Nem sikerült menteni az adatokat.' }, { status: 500 });
   }
 
@@ -218,6 +279,7 @@ export async function POST(req: NextRequest) {
       // A szerződés bizonyítéka: mikor, melyik szöveget fogadták el.
       aszf_elfogadva: new Date().toISOString(),
       aszf_verzio: ASZF_VERZIO,
+      kupon_kod: kuponSor ? kuponKod : null,
     })
     .select('id, azonosito')
     .single();
@@ -225,6 +287,7 @@ export async function POST(req: NextRequest) {
   if (foglalasHiba || !foglalas) {
     // A '23P01' az exclusion constraint kódja: valaki megelőzött minket
     // a két ellenőrzés között. Ez a rendszer helyes működése, nem hiba.
+    if (kuponSor) await kuponFelszabaditasa(db, kuponKod);
     if (foglalasHiba?.code === '23P01') {
       await db.from('vendegek').delete().eq('id', vendeg.id);
       return NextResponse.json(
@@ -235,6 +298,10 @@ export async function POST(req: NextRequest) {
     console.error('[foglalas] mentés:', foglalasHiba);
     return NextResponse.json({ hiba: 'Nem sikerült rögzíteni a foglalást.' }, { status: 500 });
   }
+
+  // A kupont hozzákötjük a foglaláshoz. A kód ekkor már le van
+  // foglalva; ez csak azt rögzíti, melyik foglalás használta el.
+  if (kuponSor) await kuponFoglalashozKotese(db, kuponKod, foglalas.id);
 
   // ---------- Extrák rögzítése ----------
   if (ajanlat.extra_tetelek.length) {
@@ -274,6 +341,33 @@ export async function POST(req: NextRequest) {
   }
 
   const alap = process.env.NEXT_PUBLIC_OLDAL_URL ?? 'https://www.szelidliget.hu';
+
+  // ---------- Teljesen kuponnal fizetve ----------
+  // A végösszeg nulla: nincs mit a fizetőkapura küldeni. A foglalás
+  // azonnal véglegessé válik, és megy a visszaigazolás.
+  if (nincsFizetendo) {
+    await db
+      .from('foglalasok')
+      .update({ statusz: 'kifizetve', modositva: new Date().toISOString() })
+      .eq('id', foglalas.id);
+
+    try {
+      await visszaigazoloEmail(foglalas.id);
+    } catch (e) {
+      console.error('[foglalas] visszaigazoló e-mail:', e);
+    }
+    try {
+      await adminErtesito(foglalas.id, 'kifizetve');
+    } catch (e) {
+      console.error('[foglalas] admin értesítő:', e);
+    }
+
+    return NextResponse.json({
+      azonosito: foglalas.azonosito,
+      vegosszeg: 0,
+      tovabb: `${alap}/foglalas/siker?ref=${foglalas.azonosito}&lang=${vendegNyelv}`,
+    });
+  }
 
   // ---------- Utalásos foglalás ----------
   // Nincs fizetőoldal: a foglalás „fuggoben” marad, és e-mailben

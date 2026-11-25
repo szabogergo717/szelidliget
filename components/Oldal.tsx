@@ -371,7 +371,7 @@ export default function Oldal({
         </div>
       </section>
 
-      {/* Futó ajánlat — csak akkor látszik, amíg érvényes. */}
+      {/* Adatbázisból jövő futó ajánlat — csak amíg érvényes. */}
       {akcio && (
         <aside className="akcio-sav">
           <div className="wrap">
@@ -385,6 +385,21 @@ export default function Oldal({
           </div>
         </aside>
       )}
+
+      {/* Megvásárolható ajándékutalvány. Ez nem automatikus kedvezmény:
+          a vevő kifizeti, kódot kap, és azt bármikor beválthatja —
+          vagy odaadhatja ajándékba. */}
+      <aside className="akcio-sav utalvany-sav">
+        <div className="wrap">
+          <div className="akcio-sav-szoveg">
+            <strong>{T.utalvanySavCim[nyelv]}</strong>
+            <span>{T.utalvanySavSzoveg[nyelv]}</span>
+          </div>
+          <Link href={utvonal(nyelv, '/utalvany')} className="btn small">
+            {T.utalvanySavGomb[nyelv]}
+          </Link>
+        </div>
+      </aside>
 
       {/* ---------- Faházak ---------- */}
       <section className="cabins" id="hazak">
