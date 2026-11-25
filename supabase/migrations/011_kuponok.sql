@@ -23,7 +23,17 @@
 -- venné meg. A sort nem töröljük: ha mégis vissza kell kapcsolni,
 -- elég az `aktiv = true`.
 
-update akciok set aktiv = false where slug = 'nyito_utalvany';
+-- A `do` blokk azért kell, mert ha a 006-os migráció valamiért nem
+-- futott le, az `akciok` tábla nem létezik — egy sima UPDATE ilyenkor
+-- megállítaná az egész fájlt. Így viszont átlépi, és megy tovább.
+do $$ begin
+  if to_regclass('public.akciok') is not null then
+    update akciok set aktiv = false where slug = 'nyito_utalvany';
+    raise notice 'Az automatikus akció kikapcsolva.';
+  else
+    raise notice 'Nincs `akciok` tábla — nincs mit kikapcsolni, ez rendben van.';
+  end if;
+end $$;
 
 
 -- ---------- 2. Utalványvásárlások ----------
@@ -121,7 +131,11 @@ comment on column foglalasok.kupon_kod is
 -- FIGYELEM: a PostgreSQL nem engedi, hogy egy frissen hozzáadott enum
 -- értéket UGYANABBAN a tranzakcióban használjunk is. Itt csak
 -- hozzáadjuk; használni majd a weboldal fogja, külön kérésben.
-alter type fizetesi_mod add value if not exists 'kupon';
+do $$ begin
+  if exists (select 1 from pg_type where typname = 'fizetesi_mod') then
+    alter type fizetesi_mod add value if not exists 'kupon';
+  end if;
+end $$;
 
 
 -- ---------- 5. Kódgenerálás ----------
