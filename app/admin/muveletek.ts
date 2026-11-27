@@ -2,7 +2,9 @@
 
 import { revalidatePath } from 'next/cache';
 import { supabaseAdmin } from '@/lib/supabase';
-import { lemondasEmail, visszaigazoloEmail, adminErtesito } from '@/lib/email';
+import { lemondasEmail, visszaigazoloEmail, adminErtesito, utalvanyEmail } from '@/lib/email';
+import { kuponKiadasa } from '@/lib/kupon';
+import { UTALVANY } from '@/lib/utalvany';
 
 /**
  * Admin műveletek.
@@ -104,4 +106,69 @@ export async function zaratTorol(id: string) {
   const { error } = await db.from('blokkolt_idoszakok').delete().eq('id', id);
   if (error) throw new Error(`A törlés nem sikerült: ${error.message}`);
   revalidatePath('/admin/naptar');
+}
+
+
+/**
+ * Utalásos utalványvásárlás lezárása — a pénz megérkezett.
+ *
+ * EZ A LÉPÉS ADJA KI A KÓDOT. Utalásnál a beérkezést nem tudjuk
+ * automatikusan észlelni, ezért te mondod meg, mikor rendeződött.
+ *
+ * Idempotens: ha már van kód ehhez a vásárláshoz, nem ad ki újat és
+ * nem küld második levelet. Így a kétszer megnyomott gomb sem árt.
+ */
+export async function utalvanyKifizetve(azonosito: string) {
+  const db = supabaseAdmin();
+
+  const { data: v, error } = await db
+    .from('utalvany_vasarlasok')
+    .select('id, azonosito, nev, email, statusz')
+    .eq('azonosito', azonosito)
+    .single();
+
+  if (error || !v) throw new Error('A vásárlás nem található.');
+
+  const { data: meglevo } = await db
+    .from('kuponok')
+    .select('kod')
+    .eq('vasarlas_id', v.id)
+    .maybeSingle();
+
+  if (!meglevo) {
+    await kuponKiadasa(db, {
+      ejszakak: UTALVANY.ejszakak,
+      csomag_ar: UTALVANY.ar,
+      ervenyes_ig: UTALVANY.ervenyes_ig,
+      vasarlas_id: v.id as string,
+      kiadva_nev: v.nev as string,
+      kiadva_email: v.email as string,
+      megjegyzes: `Utalásos vásárlás: ${v.azonosito}`,
+    });
+  }
+
+  await db
+    .from('utalvany_vasarlasok')
+    .update({ statusz: 'kifizetve', modositva: new Date().toISOString() })
+    .eq('id', v.id);
+
+  // A levelet akkor is megpróbáljuk, ha a kód már megvolt — így egy
+  // korábban elakadt kiküldés a gomb újranyomásával pótolható.
+  try {
+    await utalvanyEmail(v.id as string);
+  } catch (e) {
+    console.error('[admin] utalvány e-mail:', e);
+  }
+
+  revalidatePath('/admin/utalvanyok');
+}
+
+/** Visszavonás: a vásárlás lemondva. A már kiadott kódot NEM törli. */
+export async function utalvanyLemondva(azonosito: string) {
+  const db = supabaseAdmin();
+  await db
+    .from('utalvany_vasarlasok')
+    .update({ statusz: 'lemondva', modositva: new Date().toISOString() })
+    .eq('azonosito', azonosito);
+  revalidatePath('/admin/utalvanyok');
 }

@@ -270,3 +270,58 @@ export async function feliratkozok(): Promise<Feliratkozo[]> {
   if (error) return [];
   return (data ?? []) as Feliratkozo[];
 }
+
+export type UtalvanySor = {
+  id: string;
+  azonosito: string;
+  nev: string;
+  email: string;
+  telefon: string | null;
+  osszeg: number;
+  statusz: string;
+  ajandekozott: string | null;
+  letrehozva: string;
+  /** A kiadott kód, ha már megvan. Addig null. */
+  kod: string | null;
+  kod_ervenyes_ig: string | null;
+  kod_felhasznalva: string | null;
+};
+
+/**
+ * Utalványvásárlások, a hozzájuk kiadott kóddal együtt.
+ *
+ * A kód külön táblában van, ezért külön kérdezzük le, és utána
+ * párosítjuk. Egy vásárláshoz legfeljebb egy kód tartozik.
+ */
+export async function utalvanyok(): Promise<UtalvanySor[]> {
+  const db = supabaseAdmin();
+
+  const { data: vasarlasok, error } = await db
+    .from('utalvany_vasarlasok')
+    .select('id, azonosito, nev, email, telefon, osszeg, statusz, ajandekozott, letrehozva')
+    .order('letrehozva', { ascending: false });
+
+  if (error) {
+    console.error('[admin] utalványok:', error);
+    return [];
+  }
+
+  const { data: kodok } = await db
+    .from('kuponok')
+    .select('vasarlas_id, kod, ervenyes_ig, felhasznalva')
+    .not('vasarlas_id', 'is', null);
+
+  const kodTerkep = new Map(
+    (kodok ?? []).map((k) => [k.vasarlas_id as string, k])
+  );
+
+  return (vasarlasok ?? []).map((v) => {
+    const k = kodTerkep.get(v.id as string);
+    return {
+      ...(v as Omit<UtalvanySor, 'kod' | 'kod_ervenyes_ig' | 'kod_felhasznalva'>),
+      kod: (k?.kod as string) ?? null,
+      kod_ervenyes_ig: (k?.ervenyes_ig as string) ?? null,
+      kod_felhasznalva: (k?.felhasznalva as string) ?? null,
+    };
+  });
+}

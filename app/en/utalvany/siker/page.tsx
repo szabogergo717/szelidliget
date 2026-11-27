@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function Oldal() {
-  return <UtalvanyOldal nyelv="en" siker />;
+export default function Oldal({
+  searchParams,
+}: {
+  searchParams: { mod?: string };
+}) {
+  return <UtalvanyOldal nyelv="en" siker utalas={searchParams.mod === 'utalas'} />;
 }

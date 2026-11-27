@@ -13,9 +13,12 @@ import UtalvanyUrlap from './UtalvanyUrlap';
 export default function UtalvanyOldal({
   nyelv,
   siker = false,
+  utalas = false,
 }: {
   nyelv: Nyelv;
   siker?: boolean;
+  /** Utalásos rendelésnél más a folytatás, ezért más a szöveg is. */
+  utalas?: boolean;
 }) {
   return (
     <>
@@ -36,9 +39,19 @@ export default function UtalvanyOldal({
       <main className="utalvany-oldal">
         <div className="wrap">
           <div className="label">{T.utalvanyCimke[nyelv]}</div>
-          <h1>{siker ? T.utalvanySikerCim[nyelv] : T.utalvanyCim[nyelv]}</h1>
+          <h1>
+            {!siker
+              ? T.utalvanyCim[nyelv]
+              : utalas
+                ? T.utalvanySikerUtalasCim[nyelv]
+                : T.utalvanySikerCim[nyelv]}
+          </h1>
           <p className="lead">
-            {siker ? T.utalvanySikerSzoveg[nyelv] : T.utalvanyAlcim[nyelv]}
+            {!siker
+              ? T.utalvanyAlcim[nyelv]
+              : utalas
+                ? T.utalvanySikerUtalas[nyelv]
+                : T.utalvanySikerSzoveg[nyelv]}
           </p>
 
           {siker ? (

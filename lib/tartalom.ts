@@ -262,6 +262,22 @@ export const T = {
   kuponNincs: S('Nincs kódod?', 'No code yet?'),
   kuponVasarlas: S('Ajándékutalvány vásárlása', 'Buy a gift voucher'),
 
+  utalvanyUnnepiCimke: S('KARÁCSONYI AJÁNDÉK', 'A CHRISTMAS GIFT'),
+  utalvanyKartyaCim: S(
+    'Három éjszaka a kettő áráért',
+    'Three nights for the price of two'
+  ),
+  utalvanyKartyaSzoveg: S(
+    'Nem tudod, mikor érnétek rá? Vedd meg utalványként — a kódot azonnal e-mailben küldjük, és bármikor beváltható 2027. december 20-ig. Magadnak is megtarthatod, és ajándékba is adhatod.',
+    'Not sure when you could come? Buy it as a voucher — we email the code immediately, and it can be redeemed any time until 20 December 2027. Keep it for yourself or give it as a gift.'
+  ),
+  utalvanyKartyaAr: S('két főnek, 3 éjszakára', 'for two people, 3 nights'),
+  utalvanyKartyaGomb: S('Ajándékutalvány vásárlása', 'Buy a gift voucher'),
+  utalvanyKartyaLab: S(
+    'Bankkártyával vagy átutalással · a kód e-mailben érkezik',
+    'Card or bank transfer · the code arrives by email'
+  ),
+
   utalvanySavCim: S(
     'Nyitási ajándékutalvány — 3 éjszaka a 2 áráért',
     'Opening gift voucher — 3 nights for the price of 2'
@@ -286,6 +302,11 @@ export const T = {
   utalvanyAjandekozott: S('Kinek ajándékozod? (nem kötelező)', 'Who is it for? (optional)'),
   utalvanyUzenet: S('Üzenet az ajándékhoz (nem kötelező)', 'Message with the gift (optional)'),
   utalvanySikerCim: S('Köszönjük a vásárlást!', 'Thank you for your purchase'),
+  utalvanySikerUtalasCim: S('Megkaptuk a rendelésed', 'We have your order'),
+  utalvanySikerUtalas: S(
+    'Az utalási adatokat elküldtük a megadott e-mail címre. A közlemény rovatba kérjük, a rendelésszámot írd be. Az ajándékutalványt a beváltási kóddal együtt az összeg beérkezése után küldjük — jellemzően egy munkanapon belül.',
+    'We have emailed the bank transfer details. Please quote the order number as the payment reference. The gift voucher and its redemption code will be sent once the payment arrives, usually within one working day.'
+  ),
   utalvanySikerSzoveg: S(
     'Az ajándékutalványt a megadott e-mail címre küldjük, a benne lévő kóddal együtt. Ha pár percen belül nem érkezik meg, nézd meg a levélszemét mappát is.',
     'We are sending the gift voucher, with its code, to the email address you gave. If it does not arrive within a few minutes, please check your spam folder.'

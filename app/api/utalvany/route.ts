@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import { fizetestIndit } from '@/lib/barion';
 import { UTALVANY } from '@/lib/utalvany';
+import { utalvanyUtalasiEmail } from '@/lib/email';
 
 /**
  * Ajándékutalvány vásárlása.
@@ -27,6 +28,8 @@ type Keres = {
   ajandekozott?: string;
   uzenet?: string;
   aszf_elfogadva?: boolean;
+  /** 'kartya' = Barion, 'utalas' = banki átutalás. */
+  fizetesi_mod?: 'kartya' | 'utalas';
 };
 
 export async function POST(req: NextRequest) {
@@ -88,6 +91,23 @@ export async function POST(req: NextRequest) {
 
   const alap = process.env.NEXT_PUBLIC_OLDAL_URL ?? 'https://www.szelidliget.hu';
 
+  // ---------- Utalásos vásárlás ----------
+  // Nincs fizetőkapu: elküldjük az utalási adatokat, és a kód akkor
+  // születik meg, amikor az admin felületen kifizetettre állítod.
+  if (k.fizetesi_mod === 'utalas') {
+    try {
+      await utalvanyUtalasiEmail(vasarlas.id as string);
+    } catch (e) {
+      // A rendelés él; ha a levél nem ment ki, az admin felületen látod.
+      console.error('[utalvany] utalási e-mail:', e);
+    }
+    return NextResponse.json({
+      azonosito: vasarlas.azonosito,
+      osszeg: UTALVANY.ar,
+      tovabb: `${alap}/utalvany/siker?ref=${vasarlas.azonosito}&mod=utalas`,
+    });
+  }
+
   try {
     const fizetes = await fizetestIndit({
       orderRef: vasarlas.azonosito,
@@ -114,8 +134,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         hiba:
-          'A vásárlás rögzült, de a fizetést nem sikerült elindítani. ' +
-          `Kérjük, írj nekünk a(z) ${vasarlas.azonosito} azonosítóval.`,
+          'A bankkártyás fizetést most nem sikerült elindítani. ' +
+          'Válaszd az átutalásos fizetést, vagy próbáld újra néhány perc múlva. ' +
+          `Ha írsz nekünk, hivatkozz erre a rendelésszámra: ${vasarlas.azonosito} ` +
+          '(ez NEM a beváltási kód — azt a fizetés után küldjük).',
       },
       { status: 502 }
     );

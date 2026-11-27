@@ -25,6 +25,7 @@ export default function UtalvanyUrlap({ nyelv }: { nyelv: Nyelv }) {
   const [telefon, setTelefon] = useState('');
   const [ajandekozott, setAjandekozott] = useState('');
   const [uzenet, setUzenet] = useState('');
+  const [fizetesiMod, setFizetesiMod] = useState<'kartya' | 'utalas'>('kartya');
   const [aszf, setAszf] = useState(false);
   const [kuldes, setKuldes] = useState(false);
   const [hiba, setHiba] = useState<string | null>(null);
@@ -49,6 +50,7 @@ export default function UtalvanyUrlap({ nyelv }: { nyelv: Nyelv }) {
           ajandekozott: ajandekozott.trim() || undefined,
           uzenet: uzenet.trim() || undefined,
           aszf_elfogadva: aszf,
+          fizetesi_mod: fizetesiMod,
         }),
       });
       const adat = await v.json();
@@ -58,8 +60,10 @@ export default function UtalvanyUrlap({ nyelv }: { nyelv: Nyelv }) {
         setKuldes(false);
         return;
       }
-      // Átirányítás a Barion fizetőoldalára.
-      window.location.href = adat.fizetesi_url;
+      // Kártyásnál a Barion fizetőoldalára megyünk, utalásnál a
+      // köszönőoldalra — ott áll az, hogy a kód a pénz beérkezése
+      // után érkezik.
+      window.location.href = adat.fizetesi_url ?? adat.tovabb;
     } catch {
       setHiba('A kapcsolat megszakadt. Próbáld újra.');
       setKuldes(false);
@@ -125,6 +129,40 @@ export default function UtalvanyUrlap({ nyelv }: { nyelv: Nyelv }) {
         />
       </div>
 
+      <div className="extras-title" style={{ marginTop: 10, marginBottom: 10 }}>
+        FIZETÉSI MÓD
+      </div>
+      <div className="fizetes-valaszto">
+        <label className={`fizetes-opcio${fizetesiMod === 'kartya' ? ' aktiv' : ''}`}>
+          <input
+            type="radio" name="u-fizmod" value="kartya"
+            checked={fizetesiMod === 'kartya'}
+            onChange={() => setFizetesiMod('kartya')}
+          />
+          <span>
+            <strong>Bankkártya</strong>
+            <span className="fizetes-leiras">
+              Azonnali fizetés a Barion rendszerén keresztül. A kód pár percen
+              belül megérkezik e-mailben.
+            </span>
+          </span>
+        </label>
+        <label className={`fizetes-opcio${fizetesiMod === 'utalas' ? ' aktiv' : ''}`}>
+          <input
+            type="radio" name="u-fizmod" value="utalas"
+            checked={fizetesiMod === 'utalas'}
+            onChange={() => setFizetesiMod('utalas')}
+          />
+          <span>
+            <strong>Banki átutalás</strong>
+            <span className="fizetes-leiras">
+              Az utalási adatokat e-mailben küldjük. A kódot a pénz beérkezése
+              után kapod meg, jellemzően egy munkanapon belül.
+            </span>
+          </span>
+        </label>
+      </div>
+
       <label className={`hirlevel aszf-sor${aszf ? '' : ' kell'}`}>
         <input
           type="checkbox" checked={aszf} required
@@ -150,10 +188,14 @@ export default function UtalvanyUrlap({ nyelv }: { nyelv: Nyelv }) {
       {hiba && <div className="notice warn">{hiba}</div>}
 
       <button type="submit" className="btn" disabled={!kuldheto}>
-        {kuldes ? '…' : `${T.utalvanyGomb[nyelv]} · ${ft(UTALVANY.ar, nyelv)}`}
+        {kuldes
+          ? '…'
+          : fizetesiMod === 'utalas'
+            ? `Megrendelem · ${ft(UTALVANY.ar, nyelv)}`
+            : `${T.utalvanyGomb[nyelv]} · ${ft(UTALVANY.ar, nyelv)}`}
       </button>
 
-      <BarionJelveny nyelv={nyelv} helye="urlap" />
+      {fizetesiMod === 'kartya' && <BarionJelveny nyelv={nyelv} helye="urlap" />}
 
       <p className="utalvany-kapcsolat">
         Kérdés esetén hívj minket:{' '}

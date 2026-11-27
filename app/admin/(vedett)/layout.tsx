@@ -17,6 +17,7 @@ export default function VedettLayout({ children }: { children: React.ReactNode }
           <nav>
             <Link href="/admin">Foglalások</Link>
             <Link href="/admin/naptar">Naptár</Link>
+            <Link href="/admin/utalvanyok">Utalványok</Link>
             <Link href="/admin/hirlevel">Hírlevél</Link>
             <Link href="/" target="_blank" rel="noreferrer">Weboldal ↗</Link>
           </nav>

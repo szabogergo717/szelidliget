@@ -6,6 +6,7 @@ import Naptar from './Naptar';
 import ExtraKep from './ExtraKep';
 import { vanKep } from '@/lib/galeria';
 import BarionJelveny from './BarionJelveny';
+import UtalvanyKartya from './UtalvanyKartya';
 
 /**
  * Foglalóűrlap.
@@ -601,13 +602,6 @@ export default function FoglaloUrlap({
           </div>
         )}
 
-        <p className="kupon-ajanlat">
-          {T.kuponNincs[nyelv]}{' '}
-          <a href={nyelv === 'hu' ? '/utalvany' : '/en/utalvany'}>
-            {T.kuponVasarlas[nyelv]}
-          </a>
-        </p>
-
         {/* ---------- Fizetési mód ---------- */}
         {/* Ha a kupon mindent fedez, nincs mit fizetni — ilyenkor a
             fizetési mód választása értelmetlen, ezért elrejtjük. */}
@@ -617,6 +611,8 @@ export default function FoglaloUrlap({
           </div>
         ) : (
         <>
+        <div className="fizetes-racs">
+        <div className="fizetes-bal">
         <div className="extras-title" style={{ marginTop: 26 }}>
           {T.fizetesCim[nyelv].toUpperCase()}
         </div>
@@ -647,6 +643,12 @@ export default function FoglaloUrlap({
 
         {/* A Barion jelvénye ott, ahol a fizetési módot választják. */}
         {fizetesiMod === 'kartya' && <BarionJelveny nyelv={nyelv} helye="urlap" />}
+        </div>
+
+        {/* A fizetési blokk mellett maradt üres sáv: ide kerül az
+            ajándékutalvány ajánlója, ahol tényleg észreveszik. */}
+        <UtalvanyKartya nyelv={nyelv} />
+        </div>
         </>
         )}
 

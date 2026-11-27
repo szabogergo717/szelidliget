@@ -604,3 +604,63 @@ export async function utalvanyEmail(vasarlasId: string): Promise<void> {
     keret(tartalom, 'hu')
   );
 }
+
+
+/**
+ * Utalásos utalványvásárlás — az utalási adatok kiküldése.
+ *
+ * A KÓD MÉG NEM SZEREPEL BENNE. Utalásnál a pénz beérkezését nem
+ * tudjuk automatikusan észlelni, ezért a kód akkor születik meg,
+ * amikor az admin felületen „kifizetve"-re állítod a vásárlást.
+ * Addig ez a levél csak annyit mond: megvan a rendelés, ennyit kell
+ * utalni, és a kód utána jön.
+ */
+export async function utalvanyUtalasiEmail(vasarlasId: string): Promise<void> {
+  const db = supabaseAdmin();
+  const { data, error } = await db
+    .from('utalvany_vasarlasok')
+    .select('id, azonosito, nev, email, osszeg')
+    .eq('id', vasarlasId)
+    .single();
+
+  if (error || !data) throw new Error(`Utalványvásárlás nem található: ${vasarlasId}`);
+
+  const hatarido = new Date();
+  hatarido.setDate(hatarido.getDate() + UTALAS.hatarido_nap);
+
+  const tartalom = `
+    <h1 style="margin:0 0 10px;font-size:24px;font-weight:400">Megkaptuk a rendelésed</h1>
+    <p style="margin:0 0 22px;font-size:15px;line-height:1.7;color:#5d6273">
+      Az ajándékutalványt az összeg beérkezése után küldjük el erre az e-mail címre,
+      a beváltáshoz szükséges kóddal együtt. Ez általában egy munkanapot vesz igénybe.
+    </p>
+
+    <p style="margin:0 0 8px;font-size:15px;font-weight:600">Utalási adatok</p>
+    ${adatTabla(
+      adatSor('Kedvezményezett', UTALAS.kedvezmenyezett) +
+      (UTALAS.szamlaszam ? adatSor('Számlaszám', UTALAS.szamlaszam) : '') +
+      (UTALAS.iban ? adatSor('IBAN', UTALAS.iban) : '') +
+      adatSor('Közlemény', data.azonosito as string) +
+      adatSor('Utalandó összeg', ft(data.osszeg as number)) +
+      adatSor('Határidő', datum(hatarido.toISOString().slice(0, 10), 'hu'))
+    )}
+
+    <p style="margin:22px 0 0;font-size:14px;line-height:1.7;color:#5d6273">
+      <strong>A közlemény rovatba kérjük, írd be a(z) ${data.azonosito} azonosítót</strong> —
+      ebből tudjuk beazonosítani az utalásodat. Ez NEM a beváltási kód; azt a fizetés
+      beérkezése után küldjük.
+    </p>
+
+    <p style="margin:18px 0 0;font-size:14px;color:#5d6273">
+      Kérdés esetén hívj minket a ${CEG.telefon} számon, vagy válaszolj erre a levélre.
+    </p>`;
+
+  await kuld(
+    null,
+    'utalvany_utalas',
+    data.email as string,
+    'hu',
+    `Ajándékutalvány rendelés — ${data.azonosito}`,
+    keret(tartalom, 'hu')
+  );
+}
