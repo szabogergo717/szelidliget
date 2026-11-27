@@ -21,38 +21,38 @@ where slug in ('szuletesnap', 'evfordulo', 'lanykeres');
 
 insert into extrak_forditas (extra_id, nyelv, nev, leiras)
 select id, 'hu', 'Születésnapi dekoráció',
-  'Virágszirmok, gyertyák, léggömbök és ünnepi asztalterítés az érkezésetekre. Torta, csokoládé, virág és egyéb kívánság telefonon egyeztetve.'
+  null
 from extrak where slug = 'szuletesnap'
 on conflict (extra_id, nyelv) do update set nev = excluded.nev, leiras = excluded.leiras;
 
 insert into extrak_forditas (extra_id, nyelv, nev, leiras)
 select id, 'en', 'Birthday decoration',
-  'Rose petals, candles, balloons and a festive table setting waiting on arrival. Cake, chocolate, flowers and other requests can be arranged by phone.'
+  null
 from extrak where slug = 'szuletesnap'
 on conflict (extra_id, nyelv) do update set nev = excluded.nev, leiras = excluded.leiras;
 
 insert into extrak_forditas (extra_id, nyelv, nev, leiras)
 select id, 'hu', 'Házassági évfordulós dekoráció',
-  'Virágszirmok, gyertyák és ünnepi asztalterítés az érkezésetekre. Torta, csokoládé, virág és egyéb kívánság telefonon egyeztetve.'
+  null
 from extrak where slug = 'evfordulo'
 on conflict (extra_id, nyelv) do update set nev = excluded.nev, leiras = excluded.leiras;
 
 insert into extrak_forditas (extra_id, nyelv, nev, leiras)
 select id, 'en', 'Anniversary decoration',
-  'Rose petals, candles and a festive table setting waiting on arrival. Cake, chocolate, flowers and other requests can be arranged by phone.'
+  null
 from extrak where slug = 'evfordulo'
 on conflict (extra_id, nyelv) do update set nev = excluded.nev, leiras = excluded.leiras;
 
 -- A slug marad `lanykeres`, csak a név lesz „Eljegyzési dekoráció”.
 insert into extrak_forditas (extra_id, nyelv, nev, leiras)
 select id, 'hu', 'Eljegyzési dekoráció',
-  'Virágszirmok, gyertyák és ünnepi asztalterítés az érkezésetekre. Torta, csokoládé, virág és egyéb kívánság telefonon egyeztetve.'
+  null
 from extrak where slug = 'lanykeres'
 on conflict (extra_id, nyelv) do update set nev = excluded.nev, leiras = excluded.leiras;
 
 insert into extrak_forditas (extra_id, nyelv, nev, leiras)
 select id, 'en', 'Engagement decoration',
-  'Rose petals, candles and a festive table setting waiting on arrival. Cake, chocolate, flowers and other requests can be arranged by phone.'
+  null
 from extrak where slug = 'lanykeres'
 on conflict (extra_id, nyelv) do update set nev = excluded.nev, leiras = excluded.leiras;
 

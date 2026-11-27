@@ -12,7 +12,11 @@ import { UTALVANY } from '@/lib/utalvany';
  * ÜNNEPI VÁLTOZAT
  * November közepétől vízkeresztig ünnepi arcot kap: mélyzöld alap,
  * arany keret, egy fenyőág-motívum. A többi hónapban a ház szokásos
- * okker színeit viseli — egy júliusi karácsonyi kártya olcsónak hatna.
+ * okker színeit viseli — egy júliusi fenyőágas kártya olcsónak hatna.
+ *
+ * A FELIRAT viszont mindkét változatban „Nyitási akció": az ajánlat
+ * nem karácsonyi, hanem a nyitáshoz kötődik, és januárban is él.
+ * Csak a megjelenés ünnepi, a tartalom nem.
  *
  * A váltás a SZERVEREN dől el, a dátum alapján, és nincs hozzá
  * beállítás: magától jön és magától megy.
@@ -54,9 +58,9 @@ export default function UtalvanyKartya({ nyelv }: { nyelv: Nyelv }) {
     <aside className={`utalvany-kartya-ajanlo${unnepi ? ' unnepi' : ''}`}>
       {unnepi && <Fenyoag />}
 
-      <div className="uk-cimke">
-        {unnepi ? T.utalvanyUnnepiCimke[nyelv] : T.utalvanyCimke[nyelv]}
-      </div>
+      {/* A felirat mindig ugyanaz: az ajánlat a nyitáshoz kötődik,
+          nem az ünnephez. Csak a megjelenés váltakozik. */}
+      <div className="uk-cimke">{T.utalvanyUnnepiCimke[nyelv]}</div>
 
       <h3 className="uk-cim">{T.utalvanyKartyaCim[nyelv]}</h3>
 

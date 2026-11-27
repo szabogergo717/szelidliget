@@ -262,7 +262,7 @@ export const T = {
   kuponNincs: S('Nincs kódod?', 'No code yet?'),
   kuponVasarlas: S('Ajándékutalvány vásárlása', 'Buy a gift voucher'),
 
-  utalvanyUnnepiCimke: S('KARÁCSONYI AJÁNDÉK', 'A CHRISTMAS GIFT'),
+  utalvanyUnnepiCimke: S('NYITÁSI AKCIÓ', 'OPENING OFFER'),
   utalvanyKartyaCim: S(
     'Három éjszaka a kettő áráért',
     'Three nights for the price of two'

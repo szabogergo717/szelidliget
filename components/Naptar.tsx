@@ -73,6 +73,8 @@ export default function Naptar({
   });
 
   const [foglalt, setFoglalt] = useState<Set<string>>(new Set());
+  /** Ebből melyik ered zárásból — azokat félnap nélkül rajzoljuk. */
+  const [zart, setZart] = useState<Set<string>>(new Set());
   const [tolt, setTolt] = useState(false);
   const [hiba, setHiba] = useState(false);
 
@@ -101,9 +103,10 @@ export default function Naptar({
 
     fetch(`/api/szabad-napok?haz=${encodeURIComponent(hazSlug)}&tol=${tol}&ig=${ig}`)
       .then((v) => (v.ok ? v.json() : Promise.reject(new Error('hiba'))))
-      .then((adat: { foglalt_napok?: string[] }) => {
+      .then((adat: { foglalt_napok?: string[]; zart_napok?: string[] }) => {
         if (!ervenyes) return;
         setFoglalt(new Set(adat.foglalt_napok ?? []));
+        setZart(new Set(adat.zart_napok ?? []));
       })
       .catch(() => {
         // A naptár kiesése nem állítja meg a foglalást: az árlekérdezés
@@ -119,7 +122,7 @@ export default function Naptar({
     };
   }, [hazSlug, tol, ig]);
 
-  const allapot = (d: string): NapAllapot => napAllapot(d, ma, foglalt);
+  const allapot = (d: string): NapAllapot => napAllapot(d, ma, foglalt, zart);
   const erkezhet = (d: string): boolean => erkezhetE(d, ma, foglalt);
   const tavozhat = (kezdet: string, d: string): boolean =>
     tavozhatE(kezdet, d, foglalt);

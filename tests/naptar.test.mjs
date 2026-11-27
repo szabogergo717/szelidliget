@@ -118,3 +118,63 @@ test('üres naptárban minden nap szabad', () => {
   assert.equal(erkezhet('2026-10-11', MA, ures), true);
   assert.equal(tavozhat('2026-10-11', '2026-10-30', ures), true);
 });
+
+/* ============================================================
+   Zárások (ünnep, nyitás előtti időszak)
+
+   A félnapok csak FOGLALÁSNÁL értelmesek: ott a vendég délelőtt
+   kijelentkezik, tehát a nap fele szabad. Egy zárásnál viszont
+   senki nem érkezik és nem is távozik — az a nap egészen zárva.
+   ============================================================ */
+
+test('a zárás első napja teljesen foglalt, nem „érkező"', () => {
+  const foglalt = new Set(['2026-12-24', '2026-12-25', '2026-12-26']);
+  const zart = new Set(['2026-12-24', '2026-12-25', '2026-12-26']);
+  assert.equal(napAllapot('2026-12-24', '2026-11-01', foglalt, zart), 'foglalt');
+  assert.equal(napAllapot('2026-12-25', '2026-11-01', foglalt, zart), 'foglalt');
+  assert.equal(napAllapot('2026-12-26', '2026-11-01', foglalt, zart), 'foglalt');
+});
+
+test('a zárás utáni első nap teljesen szabad, nem „távozó"', () => {
+  const foglalt = new Set(['2026-12-24', '2026-12-25', '2026-12-26']);
+  const zart = new Set(['2026-12-24', '2026-12-25', '2026-12-26']);
+  assert.equal(napAllapot('2026-12-27', '2026-11-01', foglalt, zart), 'szabad');
+});
+
+test('a zárás előtti nap szabad marad', () => {
+  const foglalt = new Set(['2026-12-24']);
+  const zart = new Set(['2026-12-24']);
+  assert.equal(napAllapot('2026-12-23', '2026-11-01', foglalt, zart), 'szabad');
+});
+
+test('a nyitás napja szabad: a zárás az előző éjszakáig tart', () => {
+  // Nyitás előtti zárás: december 9. éjszakája az utolsó zárt.
+  const napok = ['2026-12-07', '2026-12-08', '2026-12-09'];
+  const foglalt = new Set(napok);
+  const zart = new Set(napok);
+  assert.equal(napAllapot('2026-12-09', '2026-11-01', foglalt, zart), 'foglalt');
+  assert.equal(napAllapot('2026-12-10', '2026-11-01', foglalt, zart), 'szabad');
+});
+
+test('a foglalás félnapjai zárás nélkül változatlanok', () => {
+  const foglalt = new Set(['2026-10-10', '2026-10-11']);
+  assert.equal(napAllapot('2026-10-10', '2026-10-01', foglalt, new Set()), 'erkezo');
+  assert.equal(napAllapot('2026-10-11', '2026-10-01', foglalt, new Set()), 'foglalt');
+  assert.equal(napAllapot('2026-10-12', '2026-10-01', foglalt, new Set()), 'tavozo');
+});
+
+test('zárás és foglalás egymás mellett', () => {
+  // 24–26 zárva, 27–28 foglalt. A 27. így nem „érkező", hanem foglalt,
+  // mert az előző éjszaka is foglalt volt — csak épp zárásból.
+  const zart = new Set(['2026-12-24', '2026-12-25', '2026-12-26']);
+  const foglalt = new Set([...zart, '2026-12-27', '2026-12-28']);
+  assert.equal(napAllapot('2026-12-26', '2026-11-01', foglalt, zart), 'foglalt');
+  assert.equal(napAllapot('2026-12-27', '2026-11-01', foglalt, zart), 'foglalt');
+  // A foglalás után viszont van távozó félnap.
+  assert.equal(napAllapot('2026-12-29', '2026-11-01', foglalt, zart), 'tavozo');
+});
+
+test('a múlt mindent felülír', () => {
+  const zart = new Set(['2020-01-01']);
+  assert.equal(napAllapot('2020-01-01', '2026-11-01', new Set(zart), zart), 'mult');
+});

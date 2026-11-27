@@ -67,3 +67,58 @@ export async function foglaltNapokListaja(
   }
   return [...napok].sort();
 }
+
+
+/**
+ * A ZÁRÁSOKBÓL eredő éjszakák — külön a foglalásoktól.
+ *
+ * A naptárnak tudnia kell, melyik éjszaka miért nem elérhető. Egy
+ * foglalás első és utolsó napja félig szabad (a vendég délelőtt
+ * kijelentkezik), egy zárás napja viszont egészen zárva van.
+ *
+ * Ezt a `foglalt_napok` függvény nem tudja megmondani, mert ő a kettőt
+ * összevonva adja vissza — ezért kérdezzük le külön a zárásokat.
+ *
+ * Hibánál ÜRES listát adunk vissza, nem dobunk kivételt: a naptár
+ * ilyenkor a régi, óvatosabb rajzolásra esik vissza, de működik.
+ */
+export async function zartNapokListaja(
+  hazSlug: string,
+  tol: string,
+  ig: string
+): Promise<string[]> {
+  const db = supabaseAdmin();
+
+  const { data: haz } = await db
+    .from('hazak')
+    .select('id')
+    .eq('slug', hazSlug)
+    .maybeSingle();
+
+  if (!haz) return [];
+
+  // Átfedés a kért ablakkal: a zárás kezdete a vége ELŐTT van, és a
+  // vége a kezdet UTÁN. Ugyanaz a félig nyílt logika, mint fent.
+  const { data, error } = await db
+    .from('blokkolt_idoszakok')
+    .select('kezdet, veg')
+    .eq('haz_id', haz.id)
+    .lt('kezdet', ig)
+    .gt('veg', tol);
+
+  if (error) {
+    console.error('[naptar] zárások lekérdezése:', error);
+    return [];
+  }
+
+  const napok = new Set<string>();
+  for (const i of (data ?? []) as Idoszak[]) {
+    const d = parseDatum(i.kezdet);
+    const veg = parseDatum(i.veg);
+    while (d < veg) {
+      napok.add(formatDatum(d));
+      d.setUTCDate(d.getUTCDate() + 1);
+    }
+  }
+  return [...napok].sort();
+}

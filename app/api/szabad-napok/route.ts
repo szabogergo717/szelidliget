@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { foglaltNapokListaja } from '@/lib/availability';
+import { foglaltNapokListaja, zartNapokListaja } from '@/lib/availability';
 
 /**
  * Publikus naptár-adat. Kizárólag dátumokat ad vissza — vendégadatot,
@@ -25,10 +25,29 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const napok = await foglaltNapokListaja(haz, tol, ig);
+    // A kettőt párhuzamosan kérdezzük — két külön kérdés ugyanarról
+    // az időszakról, és nem függnek egymástól.
+    const [napok, zartak] = await Promise.all([
+      foglaltNapokListaja(haz, tol, ig),
+      zartNapokListaja(haz, tol, ig),
+    ]);
+
     return NextResponse.json(
-      { haz, tol, ig, foglalt_napok: napok },
-      { headers: { 'Cache-Control': 'public, max-age=60, s-maxage=60' } }
+      {
+        haz,
+        tol,
+        ig,
+        /** Minden nem elérhető éjszaka — foglalás és zárás együtt. */
+        foglalt_napok: napok,
+        /** Ebből amelyik ZÁRÁSBÓL ered. A naptár ezeket teljesen
+         *  foglaltnak rajzolja, félnap nélkül. */
+        zart_napok: zartak,
+      },
+      {
+        // Rövid gyorsítótár: a naptár sokszor kérdez, de egy frissen
+        // felvett zárásnak is hamar látszódnia kell.
+        headers: { 'Cache-Control': 'public, max-age=30, s-maxage=30' },
+      }
     );
   } catch (e) {
     console.error('[szabad-napok]', e);

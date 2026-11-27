@@ -31,18 +31,44 @@ export function napPlusz(datum: string, n: number): string {
  *   erkezo  → csak az aznapi éjszaka foglalt: délelőtt szabad, délután nem
  *   tavozo  → csak az előző éjszaka volt foglalt: délelőtt foglalt, utána szabad
  *   szabad  → egyik éjszaka sem foglalt
+ *
+ * A FÉLNAPOK CSAK FOGLALÁSNÁL ÉRTELMESEK. Ott azért vannak, mert a
+ * vendég délelőtt kijelentkezik, és délután már be lehet költözni —
+ * az a nap tehát félig szabad.
+ *
+ * ZÁRÁSNÁL (ünnep, karbantartás, nyitás előtti időszak) ez nem így van:
+ * olyankor senki nem érkezik és nem is távozik, a ház egész nap zárva.
+ * Ezért a zárt napokat mindig TELJESEN foglaltnak rajzoljuk, és a
+ * zárás utáni első nap teljesen szabad — nem „távozó".
+ *
+ * A `zartEjszakak` ezért külön halmaz: a szerver megmondja, mely
+ * éjszakák zárásból, és nem foglalásból erednek.
  */
 export function napAllapot(
   datum: string,
   ma: string,
-  foglaltEjszakak: Set<string>
+  foglaltEjszakak: Set<string>,
+  zartEjszakak: Set<string> = new Set()
 ): NapAllapot {
   if (datum < ma) return 'mult';
+
+  // Zárt nap: nincs félnap, nincs mérlegelés.
+  if (zartEjszakak.has(datum)) return 'foglalt';
+
+  const elozo = napPlusz(datum, -1);
   const ej = foglaltEjszakak.has(datum);
-  const elozoEj = foglaltEjszakak.has(napPlusz(datum, -1));
+
+  // Az előző éjszaka bármitől lehet foglalt — zárástól is. Ha az aznapi
+  // éjszaka is foglalt, a nap egésze foglalt, akárhonnan jön.
+  const elozoEj = foglaltEjszakak.has(elozo) || zartEjszakak.has(elozo);
+
   if (ej && elozoEj) return 'foglalt';
   if (ej) return 'erkezo';
-  if (elozoEj) return 'tavozo';
+
+  // Csak FOGLALÁS után van távozó félnap. Zárás után a nap teljesen
+  // szabad: nincs kit kivárni.
+  if (foglaltEjszakak.has(elozo) && !zartEjszakak.has(elozo)) return 'tavozo';
+
   return 'szabad';
 }
 
