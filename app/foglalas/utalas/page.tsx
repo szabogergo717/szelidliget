@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Allapot from '@/components/Allapot';
 import { T, type Nyelv } from '@/lib/tartalom';
+import { utalasiAdatok } from '@/lib/utalas';
+import UtalasiAdatok from '@/components/UtalasiAdatok';
 
 /**
  * Utalásos foglalás után ide jut a vendég.
@@ -31,6 +33,10 @@ export default async function Utalas({
       szoveg={T.utalasSzoveg[nyelv]}
       azonosito={p.ref}
       megjegyzes={T.sikerEmailNemJott[nyelv]}
-    />
+    >
+      {/* Az adatok itt is, hogy a vendég azonnal tudjon utalni —
+          ne kelljen megvárnia a levelet. */}
+      <UtalasiAdatok adat={utalasiAdatok()} kozlemeny={p.ref} nyelv={nyelv} />
+    </Allapot>
   );
 }

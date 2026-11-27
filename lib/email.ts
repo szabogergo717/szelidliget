@@ -1,6 +1,7 @@
 import { Resend } from 'resend';
 import { supabaseAdmin } from './supabase';
 import { CEG, IFA_FO_EJ } from './tartalom';
+import { utalasiAdatok } from './utalas';
 
 /**
  * Tranzakciós e-mailek Resenden keresztül.
@@ -27,13 +28,11 @@ const ADMIN_CIM = process.env.EMAIL_ERTESITES ?? '';
 const OLDAL = process.env.NEXT_PUBLIC_OLDAL_URL ?? 'https://www.szelidliget.hu';
 const LOGO_URL = `${OLDAL}/logo.png`;
 
-/** Utalási adatok — a Vercel beállításaiból, hogy ne a kódban álljanak. */
-const UTALAS = {
-  kedvezmenyezett: process.env.UTALAS_KEDVEZMENYEZETT ?? CEG.nev,
-  szamlaszam: process.env.UTALAS_SZAMLASZAM ?? '',
-  iban: process.env.UTALAS_IBAN ?? '',
-  hatarido_nap: Number(process.env.UTALAS_HATARIDO_NAP ?? 3),
-};
+/**
+ * Utalási adatok. A közös forrás a `lib/utalas.ts` — ugyanazt látja a
+ * levél és a weboldal, így nem tudnak elcsúszni egymástól.
+ */
+const UTALAS = utalasiAdatok();
 
 function ft(n: number): string {
   return new Intl.NumberFormat('hu-HU').format(n) + ' Ft';

@@ -9,7 +9,9 @@ export const metadata: Metadata = {
 export default function Oldal({
   searchParams,
 }: {
-  searchParams: { mod?: string };
+  searchParams: { mod?: string; ref?: string };
 }) {
-  return <UtalvanyOldal nyelv="en" siker utalas={searchParams.mod === 'utalas'} />;
+  return <UtalvanyOldal nyelv="en" siker utalas={searchParams.mod === 'utalas'}
+      azonosito={searchParams.ref}
+    />;
 }

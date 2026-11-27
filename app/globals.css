@@ -1662,3 +1662,74 @@ details p { margin-top: 12px; color: var(--slate-soft); font-size: 16px; max-wid
   opacity: .22;
   pointer-events: none;
 }
+
+/* ---------- utalási adatok a képernyőn ----------
+   A vendég így akkor is tud utalni, ha a levél késik vagy a
+   levélszemét mappába esett. */
+.utalas-adatok {
+  margin: 14px 0 4px;
+  padding: 18px 20px;
+  background: var(--cream-2, #f7f3e8);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--water);
+  text-align: left;
+}
+.utalas-adatok.hianyos {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--slate-soft);
+  border-left-color: var(--line);
+}
+
+.ua-cim {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--water);
+  margin-bottom: 12px;
+}
+
+.ua-lista {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 7px 16px;
+  margin: 0;
+  font-size: 14.5px;
+}
+.ua-lista dt {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--slate-soft);
+  white-space: nowrap;
+}
+.ua-lista dd {
+  margin: 0;
+  color: var(--slate);
+  /* A hosszú IBAN tördelhető legyen telefonon is. */
+  overflow-wrap: anywhere;
+}
+/* Számokhoz egyenközű betű: könnyebb átmásolni és ellenőrizni. */
+.ua-szam {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 14px;
+  letter-spacing: .02em;
+}
+.ua-kiemelt {
+  font-weight: 700;
+  color: var(--ochre-dark, #8a5c26);
+}
+
+.ua-megjegyzes {
+  margin: 14px 0 0;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--slate-soft);
+}
+
+@media (max-width: 520px) {
+  .ua-lista { grid-template-columns: 1fr; gap: 2px 0; }
+  .ua-lista dd { margin-bottom: 8px; }
+}

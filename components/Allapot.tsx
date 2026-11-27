@@ -25,7 +25,7 @@ function Jel({ jelleg }: { jelleg: Jelleg }) {
 }
 
 export default function Allapot({
-  nyelv, jelleg, cim, szoveg, azonosito, megjegyzes,
+  nyelv, jelleg, cim, szoveg, azonosito, megjegyzes, children,
 }: {
   nyelv: Nyelv;
   jelleg: Jelleg;
@@ -33,6 +33,8 @@ export default function Allapot({
   szoveg: string;
   azonosito?: string;
   megjegyzes?: string;
+  /** Extra tartalom a gombok fölé — pl. az utalási adatok. */
+  children?: React.ReactNode;
 }) {
   return (
     <>
@@ -62,6 +64,8 @@ export default function Allapot({
             {megjegyzes && (
               <p style={{ fontSize: 14.5, marginTop: 18 }}>{megjegyzes}</p>
             )}
+
+            {children}
 
             <div className="allapot-gombok">
               <Link href={utvonal(nyelv) + '#foglalas'} className="btn">

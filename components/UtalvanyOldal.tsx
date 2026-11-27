@@ -2,6 +2,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { T, type Nyelv, utvonal } from '@/lib/tartalom';
 import UtalvanyUrlap from './UtalvanyUrlap';
+import UtalasiAdatok from './UtalasiAdatok';
+import { utalasiAdatok } from '@/lib/utalas';
 
 /**
  * Az ajándékutalvány vásárlási oldala.
@@ -14,11 +16,14 @@ export default function UtalvanyOldal({
   nyelv,
   siker = false,
   utalas = false,
+  azonosito,
 }: {
   nyelv: Nyelv;
   siker?: boolean;
   /** Utalásos rendelésnél más a folytatás, ezért más a szöveg is. */
   utalas?: boolean;
+  /** A rendelésszám — ez megy a közlemény rovatba. */
+  azonosito?: string;
 }) {
   return (
     <>
@@ -55,11 +60,20 @@ export default function UtalvanyOldal({
           </p>
 
           {siker ? (
-            <Link href={utvonal(nyelv)} className="btn">
-              {T.fooldalra[nyelv]}
-            </Link>
+            <>
+              {utalas && (
+                <UtalasiAdatok
+                  adat={utalasiAdatok()}
+                  kozlemeny={azonosito}
+                  nyelv={nyelv}
+                />
+              )}
+              <Link href={utvonal(nyelv)} className="btn" style={{ marginTop: 22 }}>
+                {T.fooldalra[nyelv]}
+              </Link>
+            </>
           ) : (
-            <UtalvanyUrlap nyelv={nyelv} />
+            <UtalvanyUrlap nyelv={nyelv} utalas={utalasiAdatok()} />
           )}
         </div>
       </main>

@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { T, CEG, type Nyelv } from '@/lib/tartalom';
 import { UTALVANY } from '@/lib/utalvany';
 import BarionJelveny from './BarionJelveny';
+import UtalasiAdatok from './UtalasiAdatok';
+import type { UtalasAdat } from '@/lib/utalas';
 
 /**
  * Ajándékutalvány vásárlása.
@@ -19,7 +21,14 @@ function ft(n: number, nyelv: Nyelv): string {
   return new Intl.NumberFormat(nyelv === 'en' ? 'en-GB' : 'hu-HU').format(n) + ' Ft';
 }
 
-export default function UtalvanyUrlap({ nyelv }: { nyelv: Nyelv }) {
+export default function UtalvanyUrlap({
+  nyelv,
+  utalas,
+}: {
+  nyelv: Nyelv;
+  /** Utalási adatok szerveroldalról — a böngésző magától nem látná. */
+  utalas: UtalasAdat;
+}) {
   const [nev, setNev] = useState('');
   const [email, setEmail] = useState('');
   const [telefon, setTelefon] = useState('');
@@ -162,6 +171,10 @@ export default function UtalvanyUrlap({ nyelv }: { nyelv: Nyelv }) {
           </span>
         </label>
       </div>
+
+      {fizetesiMod === 'utalas' && (
+        <UtalasiAdatok adat={utalas} nyelv={nyelv} />
+      )}
 
       <label className={`hirlevel aszf-sor${aszf ? '' : ' kell'}`}>
         <input

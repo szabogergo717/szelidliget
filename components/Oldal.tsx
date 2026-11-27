@@ -14,6 +14,7 @@ import HirlevelDoboz from './HirlevelDoboz';
 import MobilMenu from './MobilMenu';
 import BemutatoVideo from './BemutatoVideo';
 import BarionJelveny from './BarionJelveny';
+import { utalasiAdatok } from '@/lib/utalas';
 
 /**
  * A teljes főoldal, nyelvtől függetlenül. A magyar és az angol változat
@@ -495,7 +496,7 @@ export default function Oldal({
             <h2>{T.foglalasCim[nyelv]}</h2>
             <p>{T.foglalasBevezeto[nyelv]}</p>
           </div>
-          <FoglaloUrlap hazak={hazak} extrak={extrak} nyelv={nyelv} />
+          <FoglaloUrlap hazak={hazak} extrak={extrak} nyelv={nyelv} utalas={utalasiAdatok()} />
         </div>
       </section>
 

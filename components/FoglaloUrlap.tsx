@@ -7,6 +7,8 @@ import ExtraKep from './ExtraKep';
 import { vanKep } from '@/lib/galeria';
 import BarionJelveny from './BarionJelveny';
 import UtalvanyKartya from './UtalvanyKartya';
+import UtalasiAdatok from './UtalasiAdatok';
+import type { UtalasAdat } from '@/lib/utalas';
 
 /**
  * Foglalóűrlap.
@@ -69,11 +71,18 @@ export default function FoglaloUrlap({
   extrak,
   nyelv,
   kezdoHaz,
+  utalas,
 }: {
   hazak: HazAdat[];
   extrak: ExtraAdat[];
   nyelv: Nyelv;
   kezdoHaz?: string;
+  /**
+   * Utalási adatok. Szerveroldalról kapjuk, mert a környezeti
+   * változók nem `NEXT_PUBLIC_` kezdetűek — a böngésző magától nem
+   * látná őket.
+   */
+  utalas: UtalasAdat;
 }) {
   const ma = new Date();
   const alapBe = new Date(ma); alapBe.setDate(alapBe.getDate() + 14);
@@ -640,6 +649,12 @@ export default function FoglaloUrlap({
             </span>
           </label>
         </div>
+
+        {/* Az utalási adatok a képernyőn is, ne csak az e-mailben.
+            Ha a levél késik vagy spambe esik, a vendég így is tud utalni. */}
+        {fizetesiMod === 'utalas' && (
+          <UtalasiAdatok adat={utalas} nyelv={nyelv} />
+        )}
 
         {/* A Barion jelvénye ott, ahol a fizetési módot választják. */}
         {fizetesiMod === 'kartya' && <BarionJelveny nyelv={nyelv} helye="urlap" />}
